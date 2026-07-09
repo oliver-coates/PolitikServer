@@ -2,13 +2,14 @@ using TinyPolitik.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "content");
-Directory.CreateDirectory(Path.Combine(contentRoot, "strategic resources"));
+ContentLoader.Setup(builder);
 
-builder.Services.AddSingleton(new ContentLibrary(contentRoot));
+CertificateLoader.Setup(builder);
 
 var app = builder.Build();
 
 app.MapGet("/content/definitions/strategicResources", (ContentLibrary lib) => Results.Json(lib.StrategicResources.Values));
+
+CertificateLoader.NotifyInConsole();
 
 app.Run();
