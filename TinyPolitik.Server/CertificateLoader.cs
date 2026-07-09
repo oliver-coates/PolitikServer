@@ -10,7 +10,7 @@ public static class CertificateLoader
     public static void Setup(WebApplicationBuilder builder)
     {
         var certPath = Path.Combine(builder.Environment.ContentRootPath, "server.pfx");
-        _Cert = SelfSignedCertHelper.GetOrCreate(certPath, password: "bannana");
+        _Cert = SelfSignedCertHelper.GetOrCreate(certPath, password: "banana");
 
         builder.WebHost.ConfigureKestrel(options =>
         {
@@ -26,7 +26,7 @@ public static class CertificateLoader
         }
 
         // Print the fingerprint prominently on startup — the host needs this to share with friends.
-        var fingerprint = _Cert.GetCertHashString(HashAlgorithmName.SHA256);
+        var fingerprint = Convert.ToHexString(SHA256.HashData(_Cert.RawData)).ToLowerInvariant();
         Console.WriteLine($"\n!!! - Certificate: - !!!: {fingerprint}");
         Console.WriteLine($"\nServer certificate fingerprint: {fingerprint}");
         Console.WriteLine("Share this fingerprint with friends alongside the password so they can verify it on first connect.\n");

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace TinyPolitik.Core;
@@ -11,12 +12,20 @@ public class ContentLibrary
     private static readonly JsonSerializerOptions JsonOptions = new () { PropertyNameCaseInsensitive = true };
 
     public IReadOnlyDictionary<string, StrategicResourceDefinition> StrategicResources {get; private set; } = new Dictionary<string, StrategicResourceDefinition>();
+    public string VersionHash { get; set; }
 
     public ContentLibrary(string contentRootPath)
     {
         _contentRoot = contentRootPath;
         
         Reload();
+
+        VersionHash = GetVersionHash();
+    }
+
+    private string GetVersionHash()
+    {
+        return this.GetHashCode().ToString();
     }
 
     private void Reload()
