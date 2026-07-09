@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_aluminium",
+    "nameNonTechnical" : "Aluminium",
+    "nameTechnical" : "Aluminium",
+    "sellPriceBase" : 125
+}

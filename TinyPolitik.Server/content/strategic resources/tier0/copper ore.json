@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_rare_copper_ore",
+    "nameNonTechnical" : "Copper Ore",
+    "nameTechnical" : "Copper Ore",
+    "sellPriceBase" : 40
+}

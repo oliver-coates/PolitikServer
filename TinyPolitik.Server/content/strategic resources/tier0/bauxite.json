@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_bauxite",
+    "nameNonTechnical" : "Aluminium Ore",
+    "nameTechnical" : "Bauxite",
+    "sellPriceBase" : 40
+}

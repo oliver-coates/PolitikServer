@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_semiconductors",
+    "nameNonTechnical" : "Semiconductors",
+    "nameTechnical" : "Semiconductors",
+    "sellPriceBase" : 300
+}

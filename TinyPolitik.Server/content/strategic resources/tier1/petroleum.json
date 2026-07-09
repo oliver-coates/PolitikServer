@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_petroleum",
+    "nameNonTechnical" : "Petroleum",
+    "nameTechnical" : "Petroleum",
+    "sellPriceBase" : 80
+}

@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_plutonium",
+    "nameNonTechnical" : "Plutonium",
+    "nameTechnical" : "Plutonium",
+    "sellPriceBase" : 200
+}

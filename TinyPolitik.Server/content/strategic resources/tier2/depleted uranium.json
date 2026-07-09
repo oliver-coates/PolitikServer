@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_depleted_uranium",
+    "nameNonTechnical" : "Depleted Uranium",
+    "nameTechnical" : "Depleted Uranium",
+    "sellPriceBase" : 15
+}

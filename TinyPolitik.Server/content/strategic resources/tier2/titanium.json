@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_titanium",
+    "nameNonTechnical" : "Titanium Alloy",
+    "nameTechnical" : "Titanium Alloy",
+    "sellPriceBase" : 150
+}

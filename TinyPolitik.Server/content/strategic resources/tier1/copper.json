@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_copper",
+    "nameNonTechnical" : "Copper",
+    "nameTechnical" : "Copper",
+    "sellPriceBase" : 80
+}

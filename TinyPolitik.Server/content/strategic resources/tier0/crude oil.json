@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_rare_crude_oil",
+    "nameNonTechnical" : "Crude Oil",
+    "nameTechnical" : "Crude Oil",
+    "sellPriceBase" : 40
+}

@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_rare_earth_ore",
+    "nameNonTechnical" : "Rare Earth Ore",
+    "nameTechnical" : "Rare Earth Ore",
+    "sellPriceBase" : 40
+}

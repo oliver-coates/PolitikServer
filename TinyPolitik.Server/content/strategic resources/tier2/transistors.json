@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_transistors",
+    "nameNonTechnical" : "Transistors",
+    "nameTechnical" : "Transistors",
+    "sellPriceBase" : 125
+}

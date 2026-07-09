@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_enriched_uranium",
+    "nameNonTechnical" : "Enriched Uranium",
+    "nameTechnical" : "Enriched Uranium",
+    "sellPriceBase" : 175
+}

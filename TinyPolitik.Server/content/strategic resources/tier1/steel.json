@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_steel",
+    "nameNonTechnical" : "Steel",
+    "nameTechnical" : "Steel",
+    "sellPriceBase" : 75
+}

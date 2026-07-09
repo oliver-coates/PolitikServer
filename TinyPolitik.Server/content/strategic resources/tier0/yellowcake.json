@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_rare_uranium_ore",
+    "nameNonTechnical" : "Uranium Ore",
+    "nameTechnical" : "Yellowcake",
+    "sellPriceBase" : 35
+}

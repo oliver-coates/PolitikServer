@@ -1,0 +1,6 @@
+{
+    "id" : "strategic_resource_coal",
+    "nameNonTechnical" : "Coal",
+    "nameTechnical" : "Coal",
+    "sellPriceBase" : 35
+}
