@@ -8,7 +8,9 @@
       "applicationUrl": "http://0.0.0.0:2000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "checkForDevCert": "false"
+
     },
     "https": {
       "commandName": "Project",
@@ -17,7 +19,9 @@
       "applicationUrl": "https://0.0.0.0:2000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "checkForDevCert": "false"
+
     }
   }
 }

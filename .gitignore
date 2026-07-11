@@ -480,3 +480,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+
+# TINYPOLTIK:
+# Server configuration:
+TinyPolitik.Server/gamedata/config.json

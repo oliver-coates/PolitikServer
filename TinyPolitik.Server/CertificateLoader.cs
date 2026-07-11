@@ -7,14 +7,14 @@ public static class CertificateLoader
 {
     private static X509Certificate2? _Cert;
 
-    public static void Setup(WebApplicationBuilder builder)
+    public static void Setup(WebApplicationBuilder builder, GameConfig config)
     {
         var certPath = Path.Combine(builder.Environment.ContentRootPath, "server.pfx");
         _Cert = SelfSignedCertHelper.GetOrCreate(certPath, password: "banana");
 
         builder.WebHost.ConfigureKestrel(options =>
         {
-            options.ListenAnyIP(2000, listenOptions => listenOptions.UseHttps(_Cert));
+            options.ListenAnyIP(config.Port, listenOptions => listenOptions.UseHttps(_Cert));
         });
     }
 
