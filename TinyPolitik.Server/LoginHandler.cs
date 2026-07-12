@@ -1,7 +1,7 @@
 namespace TinyPolitik.Core;
 
-public record LoginRequest(string Password, string PlayerId, string PlayerName);
-public record LoginResponse(string Token, string PlayerId, string PlayerName, string ExistingNationId);
+public record LoginRequest(string Password, string PlayerId);
+public record LoginResponse(string Token, string PlayerId, string ExistingNationId);
 
 public static class LoginHandler
 {
@@ -31,12 +31,11 @@ public static class LoginHandler
 
         // var player = // Create player here and save into world state
         // For now create dummy player:
-        string playerName = "testificate";
         string playerId = "999";
         string? nationId = "not yet set";
 
-        var token = sessions.CreateSession(playerId, playerName);
+        var token = sessions.CreateSession(playerId);
 
-        return Results.Json(new LoginResponse(token, playerId, playerName, nationId));
+        return Results.Json(new LoginResponse(token, playerId, nationId));
     }
 }
