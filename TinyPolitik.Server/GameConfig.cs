@@ -121,7 +121,7 @@ public static class GameConfigLoader
         {
             throw new InvalidDataException("Maximum player count cannot be less than 1");
         }
-        else if (string.IsNullOrEmpty(config.Password) || config.Password == GameConfig.DEFAULT_PASSWORD)
+        else if ((string.IsNullOrEmpty(config.PasswordHash) && string.IsNullOrEmpty(config.PasswordSalt)) && (string.IsNullOrEmpty(config.Password) || config.Password == GameConfig.DEFAULT_PASSWORD))
         {
             throw new InvalidDataException("Not password has been configured - Set 'password' in the server config file and restart");
         }
