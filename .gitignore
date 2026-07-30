@@ -485,3 +485,6 @@ $RECYCLE.BIN/
 # TINYPOLTIK:
 # Server configuration:
 TinyPolitik.Server/gamedata/config.json
+
+# World Data:
+TinyPolitik.Server/gameworld

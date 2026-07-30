@@ -2,12 +2,12 @@
 
 public interface IGameDefintion
 {
-    public string Id {get; init; }
+    public string Uid { get; init; }
 }
 
 public record StrategicResourceDefinition : IGameDefintion
 {
-    public string Id {get; init; } = "";
+    public string Uid {get; init; } = "";
     public string NameNonTechnical { get; init; } = "";
     public string NameTechnical { get; init; } = "";
 

@@ -30,7 +30,7 @@ public class ContentLibrary
 
     private void Reload()
     {
-        StrategicResources = LoadContentOfType<StrategicResourceDefinition>("strategic resources");
+        // StrategicResources = LoadContentOfType<StrategicResourceDefinition>("strategic resources");
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class ContentLibrary
             }
 
             // Ensure the definition id is unique
-            string defintionId = definition.Id;
+            string defintionId = definition.Uid;
             if (dict.ContainsKey(defintionId))
             {
                 throw new Exception($"Definition Id '{defintionId}' is non-unique.");
