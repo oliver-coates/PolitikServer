@@ -2,28 +2,20 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Nodes;
 
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public class WorldDataLibrary
 {
     private readonly string _worldRoot;
-
-    public readonly Dictionary<string, string> ContentPathSchema = new Dictionary<string, string>()
-    {
-        {"World",                           ""},
-        {"Biome Types",                     Path.Join("world", "biome")},
-        {"Province Development Level",      Path.Join("world", "developmentLevel")},
-        {"Province Features",               Path.Join("world", "features")},
-        {"Province Modifiers",              Path.Join("world", "provinceModifiers")},
-        {"Provinces",                       Path.Join("world", "provinces")},
-        {"Strategic Resources",             Path.Join("world", "strategicResources")},
-        {"Terrain Types",                   Path.Join("world", "terrain")},
-    };
-
-
     public string VersionHash { get; private set; } = "";
 
-    public Dictionary<string, IReadOnlyDictionary<string, string>> ContentJson {get; private set; } = new Dictionary<string, IReadOnlyDictionary<string, string>>();
+    // Dictionary mapping json header strings to dictionaries of the objects file name and their content
+    public Dictionary<string, IReadOnlyDictionary<string, string>> ContentJson { get; private set; } = new Dictionary<string, IReadOnlyDictionary<string, string>>();
+    
+    // Dictionary mapping defintion types to their list of content 
+    public static Dictionary<Type, Dictionary<string, GameDefinition>> Content { get; private set; } = []; 
+
+    
 
     public WorldDataLibrary(string worldRoot)
     {
@@ -63,7 +55,7 @@ public class WorldDataLibrary
     {
         // Load all content
         ContentJson = new Dictionary<string, IReadOnlyDictionary<string, string>>();
-        foreach (KeyValuePair<string, string> contentPath in ContentPathSchema)
+        foreach (KeyValuePair<string, string> contentPath in DeserializationSchema.ContentPath)
         {
             string contentType = contentPath.Key;
             string folderPath = Path.Join(_worldRoot, contentPath.Value);
@@ -78,7 +70,6 @@ public class WorldDataLibrary
             {
                 Console.WriteLine($"Warning: Could not find path '{folderPath}' while loading world file.");
             }
-
         }
     }
 
@@ -111,5 +102,36 @@ public class WorldDataLibrary
         }
 
         return root.ToString();
+    }
+
+    public static T GetDefinition<T>(string uid) where T : GameDefinition
+    {
+        return (T) Content[typeof(T)][uid];
+    }
+
+    public static T[] GetAllDefinitionsOfType<T>() where T : GameDefinition
+    {
+        return (T[]) Content[typeof(T)].Values.ToArray();
+    }
+
+    public static Dictionary<string, GameDefinition> GetDefintionDict<T>() where T : GameDefinition
+    {
+        return Content[typeof(T)];
+    }
+
+    public void DeserializeWorld()
+    {
+        foreach (Type defintionType in DeserializationSchema.DeserializationLoadOrder)
+        {
+            string defName = DeserializationSchema.DefinitionTypeDict[defintionType];
+            IReadOnlyDictionary<string, string> jsonCollection = ContentJson[defName];
+        
+            foreach (KeyValuePair<string, string> obj in jsonCollection)
+            {
+                string json = obj.Value;
+
+                // Deserialize here to defintionType....
+            }
+        }
     }
 }

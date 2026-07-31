@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TinyPolitik.Core;
+using PolitikServer.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 

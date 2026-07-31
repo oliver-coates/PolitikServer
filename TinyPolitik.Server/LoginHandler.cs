@@ -1,4 +1,4 @@
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public record LoginRequest(string Password, string PlayerId);
 public record LoginResponse(string Token, string PlayerId, string ExistingNationId);

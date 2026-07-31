@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public static class PasswordHasher
 {

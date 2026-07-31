@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public class LoginRateLimiter
 {

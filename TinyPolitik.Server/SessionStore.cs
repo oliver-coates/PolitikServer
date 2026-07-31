@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
 
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public class SessionInfo
 {

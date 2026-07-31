@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public static class CertificateLoader
 {

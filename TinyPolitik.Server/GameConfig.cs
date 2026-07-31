@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public class GameConfig
 {
