@@ -10,6 +10,7 @@ public class WorldDataLibrary
 
     public readonly Dictionary<string, string> ContentPathSchema = new Dictionary<string, string>()
     {
+        {"World",                           ""},
         {"Biome Types",                     Path.Join("world", "biome")},
         {"Province Development Level",      Path.Join("world", "developmentLevel")},
         {"Province Features",               Path.Join("world", "features")},
@@ -21,7 +22,6 @@ public class WorldDataLibrary
 
 
     public string VersionHash { get; private set; } = "";
-    public string WorldJson {get; private set; } = "";
 
     public Dictionary<string, IReadOnlyDictionary<string, string>> ContentJson {get; private set; } = new Dictionary<string, IReadOnlyDictionary<string, string>>();
 
@@ -34,12 +34,10 @@ public class WorldDataLibrary
 
     private void Reload()
     {
-        // Get the world first:
-        WorldJson = File.ReadAllText(Path.Combine(_worldRoot, "World.json"));
-        
-        // Load all the definitions (except for the world)
+        // Load all the definitions
         LoadAllDefinitions();
-    
+        
+        // Finally get the hash
         VersionHash = ComputeHash();
     }
 
@@ -48,7 +46,6 @@ public class WorldDataLibrary
         var sb = new StringBuilder();
 
         // Concatenate all world data:
-        sb.Append(WorldJson);
         foreach (IReadOnlyDictionary<string, string> contentDict in ContentJson.Values)
         {
             foreach (KeyValuePair<string, string> pair in contentDict.OrderBy(k => k.Key))
@@ -104,11 +101,7 @@ public class WorldDataLibrary
 
     public string GetWorldDataAsString()
     {
-        var root = new JsonObject
-        {
-            ["worldVersion"] = VersionHash,
-            ["worldMeta"] = JsonNode.Parse(WorldJson)
-        };
+        var root = new JsonObject();
 
         foreach (KeyValuePair<string, IReadOnlyDictionary<string, string>> definitions in ContentJson)
         {
