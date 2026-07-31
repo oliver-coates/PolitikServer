@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Nodes;
 
 namespace TinyPolitik.Core;
 
@@ -99,5 +100,23 @@ public class WorldDataLibrary
         }
 
         return result;
+    }
+
+    public string GetWorldDataAsString()
+    {
+        var root = new JsonObject
+        {
+            ["worldVersion"] = VersionHash,
+            ["worldMeta"] = JsonNode.Parse(WorldJson)
+        };
+
+        foreach (KeyValuePair<string, IReadOnlyDictionary<string, string>> definitions in ContentJson)
+        {
+            string type = definitions.Key;
+            JsonArray jsonArray = new(definitions.Value.OrderBy(k => k.Key).Select(kv => JsonNode.Parse(kv.Value)).ToArray());
+            root.Add(type, jsonArray);
+        }
+
+        return root.ToString();
     }
 }

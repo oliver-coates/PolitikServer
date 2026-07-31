@@ -1,4 +1,3 @@
-using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
 using TinyPolitik.Core;
 
@@ -23,8 +22,6 @@ catch (Exception e)
     Environment.Exit(0);
 }
 
-
-
 builder.Services.AddSingleton(gameConfig);
 
 builder.Services.AddSingleton(new LoginRateLimiter());
@@ -37,6 +34,7 @@ CertificateLoader.Setup(builder, gameConfig);
 
 var app = builder.Build();
 
+// PUBLIC ROUTES:
 app.MapPost("/login", 
     (HttpContext context, 
     [FromBody] LoginRequest req, 
@@ -49,25 +47,17 @@ app.MapPost("/login",
 app.MapGet("/content/version", ([FromServices] ContentLibrary lib) => ServerInfo.Get(lib));
 // Getting the world version (Map/Balacing updates)
 app.MapGet("/world/version", ([FromServices] WorldDataLibrary lib) => Results.Json(new {worldVersion = lib.VersionHash}));
-// Getting the entire world:
-app.MapGet("/world/data", ([FromServices] WorldDataLibrary lib) =>
-{
-    var root = new JsonObject
-    {
-        ["worldVersion"] = lib.VersionHash,
-        ["worldMeta"] = JsonNode.Parse(lib.WorldJson)
-    };
-    
-    foreach (KeyValuePair<string, IReadOnlyDictionary<string, string>> definitions in lib.ContentJson)
-    {
-        string type = definitions.Key;
-        JsonArray jsonArray = new (definitions.Value.OrderBy(k => k.Key).Select(kv => JsonNode.Parse(kv.Value)).ToArray());
-        root.Add(type, jsonArray);
-    }
 
-    return Results.Text(root.ToJsonString(), "application/json");
-});
+// PRIVATE ROUTES:
+// These require an authentication token
+var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
+
+// Getting the entire world:
+authed.MapGet("/world/data", ([FromServices] WorldDataLibrary lib) => Results.Text(lib.GetWorldDataAsString(), "application/json"));
+
+// --- End routes
 
 CertificateLoader.NotifyInConsole();
 
 app.Run();
+
