@@ -1,18 +1,20 @@
-namespace PolitikServer.Core;
+namespace PolitikServer.Core.Serialization;
 
 public static class DeserializationSchema
 {
-    // Maps the JSON header to the content path it is pulled from
-    public static readonly Dictionary<string, string> ContentPath = new()
+    /// <summary>
+    /// Maps the serialized definition type, to where it is stored under the gamewrold directory.
+    /// </summary>
+    public static readonly Dictionary<Type, string> TypeAtPath = new()
     {
-        {"World",                           ""},
-        {"Biome Types",                     Path.Join("world", "biome")},
-        {"Province Development Level",      Path.Join("world", "developmentLevel")},
-        {"Province Features",               Path.Join("world", "features")},
-        {"Province Modifiers",              Path.Join("world", "provinceModifiers")},
-        {"Provinces",                       Path.Join("world", "provinces")},
-        {"Strategic Resources",             Path.Join("world", "strategicResources")},
-        {"Terrain Types",                   Path.Join("world", "terrain")},
+        {typeof(SerializedGameWorld),                           ""},
+        {typeof(SerializedProvince),           Path.Join("world", "provinces")},
+        // {"Biome Types",                     Path.Join("world", "biome")},
+        // {"Province Development Level",      Path.Join("world", "developmentLevel")},
+        // {"Province Features",               Path.Join("world", "features")},
+        // {"Province Modifiers",              Path.Join("world", "provinceModifiers")},
+        // {"Strategic Resources",             Path.Join("world", "strategicResources")},
+        // {"Terrain Types",                   Path.Join("world", "terrain")},
     };
 
     public static readonly Dictionary<Type, string> DefinitionTypeDict = new()

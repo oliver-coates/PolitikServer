@@ -9,9 +9,8 @@ public class Province : GameDefinition, IRequiresLateDeserialization
     private readonly string[] ConnectedUids;
     public Province[] ConnectedProvinces { get; private set; }
     
-    public Province(string uid, string name, ProvinceBorder[] borders, WorldPoint centre, string[] connectedProvinces)
+    public Province(string uid, string name, ProvinceBorder[] borders, WorldPoint centre, string[] connectedProvinces) : base(uid)
     {
-        UniqueIdentifier = uid;
         Name = name;
 
         Borders = borders;
@@ -27,7 +26,7 @@ public class Province : GameDefinition, IRequiresLateDeserialization
         List<Province> adjacent = [];
         foreach (string adjacentProvinceUid in ConnectedUids)
         {
-            adjacent.Add(WorldDataLibrary.GetDefinition<Province>(adjacentProvinceUid));
+            adjacent.Add(GameDefinitionLibrary.GetDefinition<Province>(adjacentProvinceUid));
         }
 
         ConnectedProvinces = [.. adjacent];

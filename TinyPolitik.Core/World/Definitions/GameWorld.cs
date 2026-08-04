@@ -7,9 +7,8 @@ public class GameWorld : GameDefinition
     public DateTime TimeLastChanged { get; private set; }
 
 
-    public GameWorld(string name, string author, long lastTimeChanged)
+    public GameWorld(string name, string author, long lastTimeChanged) : base("world")
     {
-        UniqueIdentifier = "world"; // Only one world can ever exist!
         Name = name;
         Author = author;
         TimeLastChanged = DateTime.FromBinary(lastTimeChanged);

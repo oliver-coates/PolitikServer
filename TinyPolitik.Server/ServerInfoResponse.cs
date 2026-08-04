@@ -5,12 +5,12 @@ public record ServerInfoResponse(string Game, int ApiVersion, string ContentVers
 
 public static class ServerInfo
 {
-    public static IResult Get(ContentLibrary lib, WorldDataLibrary worldLib)
+    public static IResult Get(ContentLibrary contentLib, GameDefinitionLibrary defLib)
     {
         return Results.Json(new ServerInfoResponse(
             Game: "TinyPolitik",
             ApiVersion: 1,
-            ContentVersion: worldLib.VersionHash,
+            ContentVersion: defLib.VersionHash,
             ServerName: "Unnamed Server"
         ));
     }
