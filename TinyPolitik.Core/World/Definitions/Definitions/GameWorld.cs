@@ -14,4 +14,8 @@ public class GameWorld : GameDefinition
         TimeLastChanged = timeChanged;
     }
 
+    public override string ToString()
+    {
+        return $"[{UniqueIdentifier}] '{Name}' by '{Author}'. Last Updated: {TimeLastChanged.ToString()}";
+    }
 }

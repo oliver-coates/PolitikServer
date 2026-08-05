@@ -88,8 +88,6 @@ public class GameDefinitionLibrary
 
                     JsonDefinitions[contentType].Add(uid, json);                
                 }
-
-                Console.WriteLine($"Loaded {content.Count} of {contentType.Name}");
             }
             else
             {
@@ -210,6 +208,18 @@ public class GameDefinitionLibrary
         return (T[]) Content[typeof(T)].Values.ToArray();
     }
 
+    public static List<T> GetDefinitonsByUid<T>(IEnumerable<string> uids) where T : GameDefinition
+    {
+        Dictionary<string, GameDefinition> dict = Content[typeof(T)];
+        
+        List<T> result = new();
+        foreach (string uid in uids)
+        {
+            result.Add((T) dict[uid]);
+        }
+
+        return result;
+    }
 
     #endregion
 }

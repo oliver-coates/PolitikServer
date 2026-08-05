@@ -7,26 +7,49 @@ public static class DeserializationSchema
     /// </summary>
     public static readonly Dictionary<Type, string> TypeAtPath = new()
     {
-        {typeof(SerializedGameWorld),                           ""},
-        {typeof(SerializedProvince),           Path.Join("world", "provinces")},
-        // {"Biome Types",                     Path.Join("world", "biome")},
-        // {"Province Development Level",      Path.Join("world", "developmentLevel")},
-        // {"Province Features",               Path.Join("world", "features")},
-        // {"Province Modifiers",              Path.Join("world", "provinceModifiers")},
-        // {"Strategic Resources",             Path.Join("world", "strategicResources")},
-        // {"Terrain Types",                   Path.Join("world", "terrain")},
+        {typeof(SerializedGameWorld),                       ""},
+        {typeof(SerializedProvince),                        Path.Join("world", "provinces")},
+        {typeof(SerializedBiome),                           Path.Join("world", "biome")},
+        {typeof(SerializedProvinceDevelopmentLevel),        Path.Join("world", "developmentLevel")},
+        {typeof(SerializedProvinceFeature),                 Path.Join("world", "features")},
+        {typeof(SerializedProvinceModifier),                Path.Join("world", "provinceModifiers")},
+        {typeof(SerializedStrategicResource),               Path.Join("world", "strategicResources")},
+        {typeof(SerializedTerrainType),                     Path.Join("world", "terrain")},
+        {typeof(SerializedBuildingType),                    Path.Join("world", "buildings")},
+        {typeof(SerializedProductionMode),                  Path.Join("world", "productionModes")},
     };
 
     // Order in which to deserialize our objects.
     public static readonly List<Type> DeserializationLoadOrder = new List<Type>()
     {
-        typeof(SerializedProvince),
-        typeof(SerializedGameWorld)
+        // Economy:
+        typeof(SerializedProvinceDevelopmentLevel),
+        typeof(SerializedStrategicResource),
+        typeof(SerializedProductionMode), // Depends on strategic resources
+        typeof(SerializedBuildingType), // Depends on production modes
+        
+        // Provinces:
+        typeof(SerializedProvinceModifier),
+        typeof(SerializedBiome),
+        typeof(SerializedTerrainType),
+        typeof(SerializedProvinceFeature),
+        typeof(SerializedProvince), // Depends on biomes, terrains and features
+
+        // Finish with the world:
+        typeof(SerializedGameWorld)  // Depends on literally everything
     };
 
     public static readonly Dictionary<Type, Type> Deserialization = new Dictionary<Type, Type>()
     {
-        {typeof(SerializedGameWorld),           typeof(GameWorld)},
-        {typeof(SerializedProvince),            typeof(Province)}
+        {typeof(SerializedGameWorld),                       typeof(GameWorld)},
+        {typeof(SerializedProvince),                        typeof(Province)},
+        {typeof(SerializedBiome),                           typeof(BiomeType)},
+        {typeof(SerializedProvinceDevelopmentLevel),        typeof(ProvinceDevelopmentLevel)},
+        {typeof(SerializedProvinceFeature),                 typeof(ProvinceFeature)},
+        {typeof(SerializedProvinceModifier),                typeof(ProvinceModifier)},
+        {typeof(SerializedStrategicResource),               typeof(StrategicResource)},
+        {typeof(SerializedTerrainType),                     typeof(TerrainType)},
+        {typeof(SerializedBuildingType),                    typeof(BuildingType)},
+        {typeof(SerializedProductionMode),                  typeof(ProductionMode)},
     };
 }
