@@ -8,9 +8,6 @@ public abstract class GameDefinition
     {
         this.UniqueIdentifier = UniqueIdentifier;
     }
-}
-
-public interface IRequiresLateDeserialization
-{
-    public void LateDeserialize();
+   
+    public virtual void LateDeserialize() {}
 }

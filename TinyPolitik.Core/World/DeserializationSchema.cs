@@ -17,16 +17,16 @@ public static class DeserializationSchema
         // {"Terrain Types",                   Path.Join("world", "terrain")},
     };
 
-    public static readonly Dictionary<Type, string> DefinitionTypeDict = new()
-    {
-        {typeof(GameWorld), "World"},
-        {typeof(Province), "Provinces"},
-    };
-
     // Order in which to deserialize our objects.
     public static readonly List<Type> DeserializationLoadOrder = new List<Type>()
     {
-        typeof(Province),
-        typeof(GameWorld)
+        typeof(SerializedProvince),
+        typeof(SerializedGameWorld)
+    };
+
+    public static readonly Dictionary<Type, Type> Deserialization = new Dictionary<Type, Type>()
+    {
+        {typeof(SerializedGameWorld),           typeof(GameWorld)},
+        {typeof(SerializedProvince),            typeof(Province)}
     };
 }

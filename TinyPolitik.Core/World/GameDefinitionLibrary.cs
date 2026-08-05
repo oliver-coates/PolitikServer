@@ -1,7 +1,10 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using PolitikServer.Core.Serialization;
+using Newtonsoft.Json;
+
 
 namespace PolitikServer.Core;
 
@@ -34,8 +37,9 @@ public class GameDefinitionLibrary
         // Load all the definitions
         LoadAllDefinitions();
         
-        // Finally get the hash
         VersionHash = ComputeHash();
+    
+        DeserializeAll();
     }
 
     private string ComputeHash()
@@ -125,71 +129,48 @@ public class GameDefinitionLibrary
 
 
     #region Deserialization
-    public static Dictionary<string, GameDefinition> GetDefintionDict<T>() where T : GameDefinition
+    public void DeserializeAll()
     {
-        return Content[typeof(T)];
-    }
-
-    public void DeserializeWorld()
-    {
-        foreach (Type defintionType in DeserializationSchema.DeserializationLoadOrder)
+        foreach (Type serializedDefinitionType in DeserializationSchema.DeserializationLoadOrder)
         {
-            string defName = DeserializationSchema.DefinitionTypeDict[defintionType];
-            Dictionary<string, string> jsonDict = JsonDefinitions[defintionType];
-        
+            // Get the defintion type we are deserializing to
+            Type definitionType = DeserializationSchema.Deserialization[serializedDefinitionType];
+
+            // Dictionary mapping UIDs to Json text:
+            Dictionary<string, string> jsonDict = JsonDefinitions[serializedDefinitionType];
+            
+            // List to keep track of what has been deserialized.
+            List<GameDefinition> definitions = new();
+
+            // 1st pass deserialization
+            Content.Add(definitionType, new());
             foreach (KeyValuePair<string, string> jsonDefinition in jsonDict)
             {
-                DeserializeDefinition(defintionType, jsonDefinition.Value);
+                var def = DeserializeDefinition(serializedDefinitionType, definitionType, jsonDefinition.Value);
+                definitions.Add(def);
+            }
+
+            // 2nd pass
+            foreach (GameDefinition definition in definitions)
+            {
+                definition.LateDeserialize();
             }
         }
     }
 
-    public void DeserializeDefinition(Type definitionType, string json)
-    {
-        GameDefinition def;
-        JsonNode j = JsonNode.Parse(json) ?? throw new Exception($"Could not parse json node: {json}");
-        
-        switch (definitionType)
-        {
-            case Type _ when definitionType == typeof(GameWorld):
-                // def = DeserializeGameWorld(j);
-                break;
+    public GameDefinition DeserializeDefinition(Type serializedType, Type definitionType, string json)
+    {        
+        // Deserialize the JSON into the serialized type
+        SerializedGameDefinition serializedDefinition = ((SerializedGameDefinition?) JsonConvert.DeserializeObject(json, serializedType)) ?? throw new Exception($"Could not deserialize json into provided definition type '{serializedType.Name}'. Json: {json}");
 
-            case Type _ when definitionType == typeof(Province):
-                // def = DeserializeProvince(j);        
-                break; 
+        // Get the serializedDefinition to deserialize itself into a game definition
+        GameDefinition definition = serializedDefinition.Deserialize();
 
+        // Finally register this deserialized definition into the content library
+        Content[definitionType].Add(definition.UniqueIdentifier, definition);
 
-            default:
-                throw new Exception($"Could not deserialize object of type '{definitionType.Name}'");
-        }
-
-        // Content[definitionType].Add(def.UniqueIdentifier, def);
+        return definition;
     }
-
-    // private GameWorld DeserializeGameWorld(JsonNode j)
-    // {
-    //     string name = ((string?) j["worldName"]) ?? "";
-    //     string author = ((string?) j["worldAuthor"]) ?? "";
-    //     long dateTimeChanged = ((long?) j["timeLastUpdated"]) ?? 0;
-        
-    //     return new GameWorld(name, author, dateTimeChanged);
-    // }
-
-    // private Province DeserializeProvince(JsonNode j)
-    // {
-    //     string uid = ((string?) j["_uniqueIdentifier"])  ?? "";
-    //     string name = ((string?) j["name"]) ?? "";
-        
-    //     JsonNode n = j["adjacentProvinceUIDs"] ?? throw new Exception();
-    //     JsonArray arr = JsonArray.Parse(n);
-
-
-    //         string[] connectedProvicnes = ((string[]?) j["adjacentProvinceUIDs"]) ?? [];
-
-    //     return new Province(uid, name, )
-        
-    // }
 
     #endregion
 

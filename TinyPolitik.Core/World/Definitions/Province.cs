@@ -1,26 +1,24 @@
 namespace PolitikServer.Core;
 
-public class Province : GameDefinition, IRequiresLateDeserialization
+public class Province : GameDefinition
 {
     public string Name { get; private set; }
-    public ProvinceBorder[] Borders { get; private set; }
     public WorldPoint Centre { get; private set; }
 
     private readonly string[] ConnectedUids;
     public Province[] ConnectedProvinces { get; private set; }
     
-    public Province(string uid, string name, ProvinceBorder[] borders, WorldPoint centre, string[] connectedProvinces) : base(uid)
+    public Province(string uid, string name, WorldPoint centre, string[] connectedProvinces) : base(uid)
     {
         Name = name;
 
-        Borders = borders;
         Centre = centre;
     
         ConnectedUids = connectedProvinces;
         ConnectedProvinces = []; // Will be gathered in LateDeserialize
     }
 
-    public void LateDeserialize()
+    public override void LateDeserialize()
     {
         // Conver the strings into UIDs
         List<Province> adjacent = [];
@@ -31,13 +29,18 @@ public class Province : GameDefinition, IRequiresLateDeserialization
 
         ConnectedProvinces = [.. adjacent];
     }
+
+    public override string ToString()
+    {
+        return $"[{UniqueIdentifier}] Province '{Name}', center {Centre}, Connected to: {String.Join(',', ConnectedProvinces.Select(p => p.UniqueIdentifier))}";
+    }
 }
 
-public class ProvinceBorder
-{
-    public WorldPoint[] points = [];
-}
 
+/// <summary>
+/// Point in the world (X, Y).
+/// Do note that this struct is serializable, and so is used across SerializedDefinitions and normal definitions.
+/// </summary>
 public struct WorldPoint
 {
     public float x = 0.0f;
@@ -47,5 +50,10 @@ public struct WorldPoint
     {
         this.x = x;
         this.y = y;
+    }
+
+    public override string ToString()
+    {
+        return $"World Point ({x:0.000},{y:0.000})";
     }
 }
