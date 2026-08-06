@@ -26,7 +26,7 @@ builder.Services.AddSingleton(gameConfig);
 
 builder.Services.AddSingleton(new LoginRateLimiter());
 builder.Services.AddSingleton(new SessionStore());
-builder.Services.AddSingleton(new ContentLibrary(contentRoot));
+builder.Services.AddSingleton(new EntityLibrary());
 builder.Services.AddSingleton(new GameDefinitionLibrary(contentRoot));
 
 ContentLoader.Setup(builder);
@@ -43,8 +43,10 @@ app.MapPost("/login",
     [FromServices] GameConfig config ) => LoginHandler.Login(context, req, sessions, limiter, config));
 
 
+// Temporarily removing this because it might not be necessary:
 // Getting content version (I.e Game Version)
-app.MapGet("/content/version", ([FromServices] ContentLibrary contentLib, [FromServices] GameDefinitionLibrary defLib) => ServerInfo.Get(contentLib, defLib));
+// app.MapGet("/content/version", ([FromServices] EntityLibrary contentLib, [FromServices] GameDefinitionLibrary defLib) => ServerInfo.Get(contentLib, defLib));
+
 // Getting the world version (Map/Balacing updates)
 app.MapGet("/world/version", ([FromServices] GameDefinitionLibrary lib) => Results.Json(new {worldVersion = lib.VersionHash}));
 
@@ -52,8 +54,9 @@ app.MapGet("/world/version", ([FromServices] GameDefinitionLibrary lib) => Resul
 // These require an authentication token
 var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
 
-// Getting the entire world:
+// Getting game data:
 authed.MapGet("/world/data", ([FromServices] GameDefinitionLibrary lib) => Results.Text(lib.GetAllGameDefinitionsAsJson(), "application/json"));
+authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.Text(lib.GetAllEntitiesAsJson(), "application/json"));
 
 // --- End routes
 
