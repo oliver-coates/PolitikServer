@@ -5,7 +5,7 @@ public record ServerInfoResponse(string Game, int ApiVersion, string ContentVers
 
 public static class ServerInfo
 {
-    public static IResult Get(EntityLibrary contentLib, GameDefinitionLibrary defLib)
+    public static IResult Get(EntityLibrary contentLib, DefinitionLibrary defLib)
     {
         return Results.Json(new ServerInfoResponse(
             Game: "TinyPolitik",

@@ -8,7 +8,7 @@ public static class ContentLoader
         var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "content");
         Directory.CreateDirectory(Path.Combine(contentRoot, "strategic resources"));
         
-        var lib = new EntityLibrary(contentRoot);
+        var lib = new EntityLibrary();
         builder.Services.AddSingleton(lib);
         
         return lib;

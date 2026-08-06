@@ -11,7 +11,7 @@ namespace PolitikServer.Core;
 /// <summary>
 /// Deserialize and store all game definitions.
 /// </summary>
-public class GameDefinitionLibrary
+public class DefinitionLibrary
 {
     private readonly string _worldRoot;
     public string VersionHash { get; private set; } = "";
@@ -20,12 +20,12 @@ public class GameDefinitionLibrary
     private static Dictionary<Type, Dictionary<string, string>> JsonDefinitions = [];
     
     // Dictionary mapping defintion types to their uid and definition
-    public static Dictionary<Type, Dictionary<string, GameDefinition>> Content { get; private set; } = []; 
+    private static Dictionary<Type, Dictionary<string, GameDefinition>> Content { get; set; } = []; 
 
     
     #region Initialisation
 
-    public GameDefinitionLibrary(string worldRoot)
+    public DefinitionLibrary(string worldRoot)
     {
         _worldRoot = worldRoot;
         
@@ -205,7 +205,7 @@ public class GameDefinitionLibrary
     /// <returns> A list of all game definitions of the provided type</returns>
     public static T[] GetAllDefinitionsOfType<T>() where T : GameDefinition
     {
-        return (T[]) Content[typeof(T)].Values.ToArray();
+        return Content[typeof(T)].Values.Select(c => (T) c).ToArray();
     }
 
     public static List<T> GetDefinitonsByUid<T>(IEnumerable<string> uids) where T : GameDefinition

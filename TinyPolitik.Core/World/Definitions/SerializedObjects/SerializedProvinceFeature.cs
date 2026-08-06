@@ -6,7 +6,7 @@ public class SerializedProvinceFeature : SerializedGameDefinition
 
     public override GameDefinition Deserialize()
     {
-        StrategicResource[] resources = GameDefinitionLibrary.GetDefinitonsByUid<StrategicResource>(strategicResources).ToArray();
+        StrategicResource[] resources = DefinitionLibrary.GetDefinitonsByUid<StrategicResource>(strategicResources).ToArray();
 
         return new ProvinceFeature(_uniqueIdentifier, resources);
     }

@@ -24,7 +24,7 @@ public class ProvinceModifier : GameDefinition
         }
         else
         {
-            followOnModifier = GameDefinitionLibrary.GetDefinition<ProvinceModifier>(_followOnModifierUid);
+            followOnModifier = DefinitionLibrary.GetDefinition<ProvinceModifier>(_followOnModifierUid);
         }
     }
 

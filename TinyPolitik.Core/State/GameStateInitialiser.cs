@@ -5,5 +5,35 @@ namespace PolitikServer.Core;
 /// </summary>
 public class GameStateInitialiser
 {
-     
+    public GameStateInitialiser()
+    {
+        SetupProvinces();
+
+        SetupNations();
+    }
+
+    private void SetupProvinces()
+    {
+        Province[] provinces = DefinitionLibrary.GetAllDefinitionsOfType<Province>();
+
+        foreach (Province p in provinces)
+        {
+            ProvinceEntity province = new()
+            {
+                UniqueIdentifier = $"province_{p.UniqueIdentifier}",
+                province = p,
+                population = 20_000,
+                buildings = [],
+                ownerNation = null,
+                occupierNation = null
+            };
+
+            EntityLibrary.AddEntity(province);
+        }
+    }
+
+    private void SetupNations()
+    {
+        
+    }
 }

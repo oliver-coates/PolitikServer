@@ -24,7 +24,7 @@ public class Province : GameDefinition
         List<Province> adjacent = [];
         foreach (string adjacentProvinceUid in ConnectedUids)
         {
-            adjacent.Add(GameDefinitionLibrary.GetDefinition<Province>(adjacentProvinceUid));
+            adjacent.Add(DefinitionLibrary.GetDefinition<Province>(adjacentProvinceUid));
         }
 
         ConnectedProvinces = [.. adjacent];

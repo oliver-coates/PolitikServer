@@ -8,7 +8,7 @@ namespace PolitikServer.Core;
 public class EntityLibrary
 {
 
-    private Dictionary<Type, Dictionary<string, GameEntity>> ContentLib = []; 
+    private static Dictionary<Type, Dictionary<string, GameEntity>> ContentLib = []; 
     
     public string VersionHash { get; private set; }
 
@@ -31,17 +31,23 @@ public class EntityLibrary
 
     #region Public Methods
         
-    public void AddEntity(GameEntity entity)
+    public static void AddEntity(GameEntity entity)
     {
+        if (!ContentLib.ContainsKey(entity.GetType()))
+        {
+            ContentLib.Add(entity.GetType(), new());
+        }
+
         if (ContentLib[entity.GetType()].ContainsKey(entity.UniqueIdentifier))
         {
             throw new Exception($"Attempting to add entity '' of type '', but an entity of this type and UID already exists.");
         }
 
         ContentLib[entity.GetType()].Add(entity.UniqueIdentifier, entity);
+        Console.WriteLine($"Added game entity:   {entity}");
     }
 
-    public void RemoveEntity<T>(string uid) where T : GameEntity
+    public static void RemoveEntity<T>(string uid) where T : GameEntity
     {
         if (!ContentLib[typeof(T)].Remove(uid))
         {
@@ -52,17 +58,17 @@ public class EntityLibrary
     /// <summary>
     /// Gets a game definition of the passed type, at the provided unique identifier.
     /// </summary>
-    public T GetEntity<T>(string uid) where T : GameEntity
+    public static T GetEntity<T>(string uid) where T : GameEntity
     {
         return (T) ContentLib[typeof(T)][uid];
     }
 
-    public T[] GetAllEntitiesOfType<T>() where T : GameEntity
+    public static T[] GetAllEntitiesOfType<T>() where T : GameEntity
     {
         return (T[]) ContentLib[typeof(T)].Values.ToArray();
     }
 
-    public List<T> GetAllEntitiesByUids<T>(IEnumerable<string> uids) where T : GameEntity
+    public static List<T> GetAllEntitiesByUids<T>(IEnumerable<string> uids) where T : GameEntity
     {
         Dictionary<string, GameEntity> dict = ContentLib[typeof(T)];
         
