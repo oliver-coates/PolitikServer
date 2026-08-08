@@ -33,6 +33,7 @@ CertificateLoader.Setup(builder, gameConfig);
 builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
 builder.Services.AddSingleton(new EntityLibrary());
 builder.Services.AddSingleton(new GameStateInitialiser());
+builder.Services.AddSingleton(new TurnManager(gameConfig));
 
 var app = builder.Build();
 
