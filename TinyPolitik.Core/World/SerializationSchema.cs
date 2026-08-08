@@ -8,6 +8,7 @@ public static class SerializationSchema
     public static readonly Dictionary<Type, string> TypeAtPath = new()
     {
         {typeof(SerializedGameWorld),                       ""},
+        {typeof(SerializedWorldConfig),                     "config"},
         {typeof(SerializedProvince),                        Path.Join("world", "provinces")},
         {typeof(SerializedBiome),                           Path.Join("world", "biome")},
         {typeof(SerializedProvinceDevelopmentLevel),        Path.Join("world", "developmentLevel")},
@@ -22,6 +23,9 @@ public static class SerializationSchema
     // Order in which to deserialize our objects.
     public static readonly List<Type> DeserializationLoadOrder = new List<Type>()
     {
+        // Always config first:
+        typeof(SerializedWorldConfig),
+
         // Economy:
         typeof(SerializedProvinceDevelopmentLevel),
         typeof(SerializedStrategicResource),
@@ -39,9 +43,11 @@ public static class SerializationSchema
         typeof(SerializedGameWorld)  // Depends on literally everything
     };
 
+    // Maps serialized types to deserialized types
     public static readonly Dictionary<Type, Type> Deserialization = new Dictionary<Type, Type>()
     {
         {typeof(SerializedGameWorld),                       typeof(GameWorld)},
+        {typeof(SerializedWorldConfig),                     typeof(WorldConfig)},
         {typeof(SerializedProvince),                        typeof(Province)},
         {typeof(SerializedBiome),                           typeof(BiomeType)},
         {typeof(SerializedProvinceDevelopmentLevel),        typeof(ProvinceDevelopmentLevel)},
