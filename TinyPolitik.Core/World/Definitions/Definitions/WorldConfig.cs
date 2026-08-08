@@ -18,6 +18,16 @@ public class WorldConfig : GameDefinition
     {
         return Values[name].value;
     }
+
+    public static int GetInt(string name)
+    {
+        return int.Parse(Values[name].value);
+    }
+
+    public static float GetFloat(string name)
+    {
+        return float.Parse(Values[name].value);
+    }
 }
 
 public class ConfigValue

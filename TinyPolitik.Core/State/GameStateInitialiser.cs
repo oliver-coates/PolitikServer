@@ -22,7 +22,7 @@ public class GameStateInitialiser
             {
                 UniqueIdentifier = $"province_{p.UniqueIdentifier}",
                 province = p,
-                population = 20_000,
+                population = WorldConfig.GetInt("province_starting_population"),
                 buildings = [],
                 ownerNation = null,
                 occupierNation = null
