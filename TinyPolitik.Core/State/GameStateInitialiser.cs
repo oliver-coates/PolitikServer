@@ -44,7 +44,7 @@ public class GameStateInitialiser
 
         return new ProvinceEntity()
         {
-            UniqueIdentifier = $"province_{definition.UniqueIdentifier}",
+            UniqueIdentifier = Guid.NewGuid().ToString(),
             province = definition,
             population = pop,
             buildings = [],
@@ -178,6 +178,7 @@ public class GameStateInitialiser
 
         Nation newNation = new()
         {
+            UniqueIdentifier = Guid.NewGuid().ToString(),
             nameShort = randomName.shortName,
             nameLong = randomName.longName,
             colorPrimary = "not implemented",
