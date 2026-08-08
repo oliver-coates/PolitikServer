@@ -2,13 +2,6 @@ namespace PolitikServer.Core;
 
 public static class RandomCountryNameGenerator
 {
-    private static readonly Random Random;
-    static RandomCountryNameGenerator()
-    {
-        Random = new Random();
-    }
-
-
     private static List<string> NationPrefixes = new()
     {
         "Kingdom of",
@@ -47,7 +40,7 @@ public static class RandomCountryNameGenerator
         "Burg"
     };
 
-    public static Dictionary<string,string> NameEnd = new()
+    private static Dictionary<string,string> NameEnd = new()
     {
         {"avia", "avian"},
         {"erica", "erican"},
@@ -65,10 +58,10 @@ public static class RandomCountryNameGenerator
 
     public static RandomlyGeneratedName Generate()
     {
-        string start = NameStart[Random.Next(0, NameStart.Count)];
+        string start = NameStart[RandomUtil.Range(0, NameStart.Count)];
         
         List<KeyValuePair<string, string>> ends = NameEnd.ToList();
-        string end = ends[Random.Next(0, ends.Count)].Key;
+        string end = ends[RandomUtil.Range(0, ends.Count)].Key;
         
         string verbEnd = NameEnd[end];
 
@@ -76,14 +69,14 @@ public static class RandomCountryNameGenerator
         string shortName = $"{start}{end}";
         string longName;
 
-        if (Random.Next(0, 2) == 1)
+        if (RandomUtil.Range(0, 1) == 1)
         {
-            string prefix = NationPrefixes[Random.Next(0, NationPrefixes.Count)];
+            string prefix = NationPrefixes[RandomUtil.Range(0, NationPrefixes.Count)];
             longName = $"{prefix} {shortName}";
         }
         else
         {
-            string postfix = NationPostfixes[Random.Next(0, NationPostfixes.Count)];
+            string postfix = NationPostfixes[RandomUtil.Range(0, NationPostfixes.Count)];
             longName = $"{shortName} {postfix}";
         }
 
@@ -91,7 +84,7 @@ public static class RandomCountryNameGenerator
         {
             shortName = shortName,
             longName = longName,
-            verb = verb
+            noun = verb
         };
     }
 
@@ -101,10 +94,10 @@ public struct RandomlyGeneratedName()
 {
     public required string longName;
     public required string shortName;
-    public required string verb;
+    public required string noun;
 
     public override string ToString()
     {
-        return $"Long: '{longName}', Shortened: '{shortName}', Verb: '{verb}'";
+        return $"Long: '{longName}', Shortened: '{shortName}', Verb: '{noun}'";
     }
 }
