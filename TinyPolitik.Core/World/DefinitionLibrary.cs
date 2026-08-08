@@ -72,7 +72,7 @@ public class DefinitionLibrary
     {
         // Load all content
         JsonDefinitions = new Dictionary<Type, Dictionary<string, string>>();
-        foreach (KeyValuePair<Type, string> contentPath in DeserializationSchema.TypeAtPath)
+        foreach (KeyValuePair<Type, string> contentPath in SerializationSchema.TypeAtPath)
         {
             Type contentType = contentPath.Key;
             string folderPath = Path.Join(_worldRoot, contentPath.Value);
@@ -129,10 +129,10 @@ public class DefinitionLibrary
     #region Deserialization
     public void DeserializeAll()
     {
-        foreach (Type serializedDefinitionType in DeserializationSchema.DeserializationLoadOrder)
+        foreach (Type serializedDefinitionType in SerializationSchema.DeserializationLoadOrder)
         {
             // Get the defintion type we are deserializing to
-            Type definitionType = DeserializationSchema.Deserialization[serializedDefinitionType];
+            Type definitionType = SerializationSchema.Deserialization[serializedDefinitionType];
 
             // Dictionary mapping UIDs to Json text:
             Dictionary<string, string> jsonDict = JsonDefinitions[serializedDefinitionType];

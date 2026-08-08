@@ -1,6 +1,6 @@
 namespace PolitikServer.Core.Serialization;
 
-public static class DeserializationSchema
+public static class SerializationSchema
 {
     /// <summary>
     /// Maps the serialized definition type, to where it is stored under the gamewrold directory.
