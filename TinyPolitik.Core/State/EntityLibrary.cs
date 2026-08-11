@@ -44,7 +44,6 @@ public class EntityLibrary
         }
 
         ContentLib[entity.GetType()].Add(entity.UniqueIdentifier, entity);
-        Console.WriteLine($"Added game entity:   {entity}");
     }
 
     public static void RemoveEntity<T>(string uid) where T : GameEntity

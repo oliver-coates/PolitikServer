@@ -10,11 +10,11 @@ public interface ISerializableObject
 
     public static string GetTypeName<T>()
     {
-        if (typeof(T).IsAssignableTo(typeof(GameDefinition)))
+        if (typeof(T).IsSubclassOf(typeof(GameDefinition)))
         {
-            return "GameDefintion";
+            return "GameDefinition";
         }
-        else if (typeof(T).IsAssignableTo(typeof(GameEntity)))
+        else if (typeof(T).IsSubclassOf(typeof(GameEntity)))
         {
             return "GameEntity";
         }
