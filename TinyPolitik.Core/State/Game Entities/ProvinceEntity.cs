@@ -11,6 +11,6 @@ public class ProvinceEntity : GameEntity
 
     public override string ToString()
     {
-        return $"[{UniqueIdentifier}], Pop: {population}, Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation?.nameShort) ?? "None"}/{(occupierNation?.nameShort) ?? "None"}";
+        return $"Province [{UniqueIdentifier}], Pop: {population}, Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation?.nameShort) ?? "None"}/{(occupierNation?.nameShort) ?? "None"}";
     }
 }

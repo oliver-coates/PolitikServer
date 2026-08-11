@@ -65,7 +65,7 @@ public class EntityLibrary
 
     public static T[] GetAllEntitiesOfType<T>() where T : GameEntity
     {
-        return (T[]) ContentLib[typeof(T)].Values.ToArray();
+        return ContentLib[typeof(T)].Values.Select(e => (T) e).ToArray();
     }
 
     public static List<T> GetAllEntitiesByUids<T>(IEnumerable<string> uids) where T : GameEntity

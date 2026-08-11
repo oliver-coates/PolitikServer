@@ -10,4 +10,9 @@ public class Nation : GameEntity
 
     public List<ProvinceEntity> provincesControlled = [];
     public required ProvinceEntity captiolProvince;
+
+    public override string ToString()
+    {
+        return $"Nation [{UniqueIdentifier}], {nameLong}, Captiol: [{captiolProvince.province.UniqueIdentifier}]";
+    }
 }

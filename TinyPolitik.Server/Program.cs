@@ -46,12 +46,8 @@ app.MapPost("/login",
     [FromServices] GameConfig config ) => LoginHandler.Login(context, req, sessions, limiter, config));
 
 
-// Temporarily removing this because it might not be necessary:
-// Getting content version (I.e Game Version)
-// app.MapGet("/content/version", ([FromServices] EntityLibrary contentLib, [FromServices] GameDefinitionLibrary defLib) => ServerInfo.Get(contentLib, defLib));
-
-// Getting the world version (Changes as the Map/defintions change)
-app.MapGet("/world/version", ([FromServices] DefinitionLibrary lib) => Results.Json(new {worldVersion = lib.VersionHash}));
+// Getting content version (Game Version, Game Definition Version, etc)
+app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary) => ServerInfo.Get(definitionLibrary));
 
 // PRIVATE ROUTES:
 // These require an authentication token
@@ -64,11 +60,6 @@ authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.T
 // --- End routes
 
 CertificateLoader.NotifyInConsole();
-
-for (int i = 0; i < 50; i++)
-{
-    Console.WriteLine(RandomCountryNameGenerator.Generate());
-}
 
 app.Run();
 
