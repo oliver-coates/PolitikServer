@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Newtonsoft.Json;
 
 namespace PolitikServer.Core;
 
@@ -85,24 +86,13 @@ public class EntityLibrary
     /// </summary>
     public string GetAllEntitiesAsJson()
     {
-        // This solution will work, but the alterative solution below might work - and is WAY easier for us. Give it a go:
-        #if false
-        var root = new JsonObject();
-
-        foreach (KeyValuePair<Type, Dictionary<string, GameEntity>> gameEntityBundle in ContentLib)
+        var settings = new JsonSerializerSettings()
         {
-            Type type = gameEntityBundle.Key;
-            GameEntity[] content = gameEntityBundle.Value.Values.ToArray();
-
-            string allJson = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.None);
-            root.Add(type.Name, allJson);
-        }
-
-        return root.ToString();
-        #endif
-        
-        // Test this!:
-        return Newtonsoft.Json.JsonConvert.SerializeObject(ContentLib, Newtonsoft.Json.Formatting.None);
+            Formatting = Formatting.None,
+            ReferenceLoopHandling = ReferenceLoopHandling.Error
+        };
+    
+        return JsonConvert.SerializeObject(ContentLib, settings);
     }
     #endregion
 

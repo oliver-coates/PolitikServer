@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Text.Json.Serialization;
 using PolitikServer.Core;
+using Newtonsoft.Json;
 
 namespace PolitikServer;
 
@@ -28,10 +28,10 @@ public interface ISerializableObject
 
 public class SerializedField<T> where T : ISerializableObject
 {
-    public T Value { get; private set; }
-    private string SerializedValue;
-    private string TypeName;
-    private string Type;
+    [JsonIgnore] public T Value { get; private set; }
+    [JsonProperty] private string SerializedValue;
+    [JsonProperty] private string TypeName;
+    [JsonProperty] private string Type;
 
     public SerializedField(T value)
     {
@@ -55,10 +55,10 @@ public class SerializedField<T> where T : ISerializableObject
 
 public class SerializedNullableField<T> where T : ISerializableObject?
 {
-    public T? Value { get; private set; }
-    private string? SerializedValue;
-    private string TypeName;
-    private string Type;
+    [JsonIgnore] public T? Value { get; private set; }
+    [JsonProperty] private string? SerializedValue;
+    [JsonProperty] private string TypeName;
+    [JsonProperty] private string Type;
 
     public SerializedNullableField(T? value)
     {
@@ -88,12 +88,12 @@ public class SerializedNullableField<T> where T : ISerializableObject?
     }
 }
 
-public class SerializedList<T> : IEnumerable<T> where T : ISerializableObject 
+public class SerializedList<T>  where T : ISerializableObject 
 {
-    public List<T> Values {get; private set; }
-    private List<string> SerializedValues;
-    private string TypeName;
-    private string Type;
+    [JsonIgnore] public List<T> Values {get; private set; }
+    [JsonProperty] private List<string> SerializedValues;
+    [JsonProperty] private string TypeName;
+    [JsonProperty] private string Type;
 
     public SerializedList(IList<T> values)
     {
@@ -130,15 +130,8 @@ public class SerializedList<T> : IEnumerable<T> where T : ISerializableObject
         return Values.Select(e => e.UniqueIdentifier).ToList();
     }
 
-    #region Implementation of IEnumerable
     public IEnumerator<T> GetEnumerator()
     {
         return Values.GetEnumerator();
     }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-    #endregion
 }

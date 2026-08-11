@@ -61,5 +61,8 @@ authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.T
 
 CertificateLoader.NotifyInConsole();
 
+var test = app.Services.GetService<EntityLibrary>()?.GetAllEntitiesAsJson();
+
+
 app.Run();
 
