@@ -2,15 +2,15 @@ namespace PolitikServer.Core;
 
 public class ProvinceEntity : GameEntity
 {
-    public required Province province { get; init; }
-    public List<ProvinceEntity> connectedProvinces = [];
+    public required SerializedField<Province> province { get; init; }
+    public SerializedList<ProvinceEntity> connectedProvinces = new();
     public required int population;
     public required List<string> buildings;
-    public required Nation? ownerNation;
-    public required Nation? occupierNation;
+    public required SerializedNullableField<Nation?> ownerNation;
+    public required SerializedNullableField<Nation?> occupierNation;
 
     public override string ToString()
     {
-        return $"Province [{UniqueIdentifier}], Pop: {population}, Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation?.nameShort) ?? "None"}/{(occupierNation?.nameShort) ?? "None"}";
+        return $"Province [{UniqueIdentifier}], Pop: {population}, Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation.Get()?.nameShort) ?? "None"}/{(occupierNation.Get()?.nameShort) ?? "None"}";
     }
 }

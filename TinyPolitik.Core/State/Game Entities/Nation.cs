@@ -8,11 +8,11 @@ public class Nation : GameEntity
     public required string colorTertiary;
     public required string noun;
 
-    public List<ProvinceEntity> provincesControlled = [];
-    public required ProvinceEntity captiolProvince;
+    public required SerializedList<ProvinceEntity> provincesControlled;
+    public required SerializedField<ProvinceEntity> captiolProvince;
 
     public override string ToString()
     {
-        return $"Nation [{UniqueIdentifier}], {nameLong}, Captiol: [{captiolProvince.province.UniqueIdentifier}]";
+        return $"Nation [{UniqueIdentifier}], {nameLong}, Captiol: '{captiolProvince.Get().province.Get().UniqueIdentifier}'";
     }
 }

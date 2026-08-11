@@ -32,7 +32,7 @@ public class GameStateInitialiser
             {
                 connectedProvinces.Add(provinceDict[bordered]);
             }
-            pair.Value.connectedProvinces = connectedProvinces;
+            pair.Value.connectedProvinces = new SerializedList<ProvinceEntity>(connectedProvinces);
         }
     }
 
@@ -45,11 +45,11 @@ public class GameStateInitialiser
         return new ProvinceEntity()
         {
             UniqueIdentifier = Guid.NewGuid().ToString(),
-            province = definition,
+            province = new SerializedField<Province>(definition),
             population = pop,
             buildings = [],
-            ownerNation = null,
-            occupierNation = null
+            ownerNation = new SerializedNullableField<Nation?>(),
+            occupierNation = new SerializedNullableField<Nation?>()
         };
     }
 
@@ -184,15 +184,15 @@ public class GameStateInitialiser
             colorPrimary = "not implemented",
             colorTertiary = "not implemented",
             noun = randomName.noun,
-            captiolProvince = capitol,
-            provincesControlled = [.. provinces],
+            captiolProvince = new SerializedField<ProvinceEntity>(capitol),
+            provincesControlled = new SerializedList<ProvinceEntity>(provinces),
         };  
 
         // Register the new nation with all of its controlled provinces
         foreach (ProvinceEntity controlledProvince in provinces)
         {
-            controlledProvince.occupierNation = newNation;
-            controlledProvince.ownerNation = newNation;
+            controlledProvince.occupierNation.Set(newNation);
+            controlledProvince.ownerNation.Set(newNation);
         }
 
         return newNation;
