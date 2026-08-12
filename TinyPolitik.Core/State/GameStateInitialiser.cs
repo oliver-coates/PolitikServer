@@ -185,7 +185,7 @@ public class GameStateInitialiser
             colorPrimary = "not implemented",
             colorTertiary = "not implemented",
             noun = randomName.noun,
-            captiolProvince = new SerializedField<ProvinceEntity>(capitol),
+            capitolProvince = new SerializedField<ProvinceEntity>(capitol),
             provincesControlled = new SerializedList<ProvinceEntity>(provinces),
         };  
 

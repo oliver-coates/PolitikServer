@@ -9,10 +9,10 @@ public class Nation : GameEntity
     public required string noun;
 
     public required SerializedList<ProvinceEntity> provincesControlled;
-    public required SerializedField<ProvinceEntity> captiolProvince;
+    public required SerializedField<ProvinceEntity> capitolProvince;
 
     public override string ToString()
     {
-        return $"Nation [{UniqueIdentifier}], {nameLong}, Captiol: '{captiolProvince.Get().province.Get().UniqueIdentifier}'";
+        return $"Nation [{UniqueIdentifier}], {nameLong}, Capitol: '{capitolProvince.Get().province.Get().UniqueIdentifier}'";
     }
 }
