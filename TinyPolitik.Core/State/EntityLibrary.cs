@@ -86,13 +86,19 @@ public class EntityLibrary
     /// </summary>
     public string GetAllEntitiesAsJson()
     {
-        var settings = new JsonSerializerSettings()
+        var root = new JsonObject();
+
+        foreach (KeyValuePair<Type, Dictionary<string, GameEntity>> entityBundle in ContentLib)
         {
-            Formatting = Formatting.None,
-            ReferenceLoopHandling = ReferenceLoopHandling.Error
-        };
-    
-        return JsonConvert.SerializeObject(ContentLib, settings);
+            string typeName = entityBundle.Key.Name;
+            List<GameEntity> entities = entityBundle.Value.Values.ToList();
+            List<string> entitiesJson = entities.Select(JsonConvert.SerializeObject).ToList();
+
+            JsonArray jsonArray = new(entitiesJson.Select(e => JsonNode.Parse(e)).ToArray());
+            root.Add(typeName, jsonArray);
+        }
+
+        return root.ToString();
     }
     #endregion
 

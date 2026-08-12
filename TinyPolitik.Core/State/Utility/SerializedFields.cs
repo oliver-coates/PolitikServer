@@ -31,14 +31,14 @@ public class SerializedField<T> where T : ISerializableObject
     [JsonIgnore] public T Value { get; private set; }
     [JsonProperty] private string SerializedValue;
     [JsonProperty] private string TypeName;
-    [JsonProperty] private string Type;
+    [JsonProperty] private string TypeIdentifier;
 
     public SerializedField(T value)
     {
         Value = value;
         SerializedValue = value.UniqueIdentifier;
         TypeName = typeof(T).Name;
-        Type = ISerializableObject.GetTypeName<T>();
+        TypeIdentifier = ISerializableObject.GetTypeName<T>();
     }
 
     public T Get()
@@ -58,14 +58,14 @@ public class SerializedNullableField<T> where T : ISerializableObject?
     [JsonIgnore] public T? Value { get; private set; }
     [JsonProperty] private string? SerializedValue;
     [JsonProperty] private string TypeName;
-    [JsonProperty] private string Type;
+    [JsonProperty] private string TypeIdentifier;
 
     public SerializedNullableField(T? value)
     {
         Value = value;
         SerializedValue = value?.UniqueIdentifier ?? "";
         TypeName = typeof(T).Name;
-        Type = ISerializableObject.GetTypeName<T>();
+        TypeIdentifier = ISerializableObject.GetTypeName<T>();
     }
 
     public SerializedNullableField()
@@ -73,7 +73,7 @@ public class SerializedNullableField<T> where T : ISerializableObject?
         Value = default(T);
         SerializedValue = "";
         TypeName = typeof(T).Name;
-        Type = ISerializableObject.GetTypeName<T>();
+        TypeIdentifier = ISerializableObject.GetTypeName<T>();
     }
 
     public T? Get()
@@ -93,14 +93,14 @@ public class SerializedList<T>  where T : ISerializableObject
     [JsonIgnore] public List<T> Values {get; private set; }
     [JsonProperty] private List<string> SerializedValues;
     [JsonProperty] private string TypeName;
-    [JsonProperty] private string Type;
+    [JsonProperty] private string TypeIdentifier;
 
     public SerializedList(IList<T> values)
     {
         Values = new List<T>(values);
         SerializedValues = GetSerialized();
         TypeName = typeof(T).Name;
-        Type = ISerializableObject.GetTypeName<T>();
+        TypeIdentifier = ISerializableObject.GetTypeName<T>();
     }
 
     public SerializedList()
@@ -108,7 +108,7 @@ public class SerializedList<T>  where T : ISerializableObject
         Values = new List<T>();
         SerializedValues = [];
         TypeName = typeof(T).Name;
-        Type = ISerializableObject.GetTypeName<T>();
+        TypeIdentifier = ISerializableObject.GetTypeName<T>();
     }
 
    

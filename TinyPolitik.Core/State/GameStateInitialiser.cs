@@ -75,6 +75,7 @@ public class GameStateInitialiser
             {
                 // We couldn't get a starting province for this nation.
                 // TODO: Log some kind of warning here.
+                Console.WriteLine("Warning: Could not find a starting province when creating nations");
                 break;
             }
             
@@ -97,7 +98,7 @@ public class GameStateInitialiser
                     ProvinceEntity prov = allProvinces[index];
                 
                     // Ensure it isn't occupied
-                    if (prov.ownerNation != null) { continue; }
+                    if (prov.ownerNation.Get() != null) { continue; }
 
                     return prov;
                 }
@@ -111,13 +112,13 @@ public class GameStateInitialiser
                     ProvinceEntity prov = allProvinces[index];
                     
                     // Ensure that this province isn't owned
-                    if (prov.ownerNation != null) { continue; }
+                    if (prov.ownerNation.Get() != null) { continue; }
 
                     // Ensure none of the adjacent provinces are occupied
                     bool areConnectedOccupied = false;
                     foreach (var connectedProv in prov.connectedProvinces)
                     {
-                        if (connectedProv.ownerNation != null) 
+                        if (connectedProv.ownerNation.Get() != null) 
                         { 
                             areConnectedOccupied = true;
                             break;
@@ -139,14 +140,14 @@ public class GameStateInitialiser
                     ProvinceEntity prov = allProvinces[index];
                     
                     // Ensure that this province isn't owned
-                    if (prov.ownerNation != null) { continue; }
+                    if (prov.ownerNation.Get() != null) { continue; }
                     unownedProvince = prov; // < Save any unoccupied provinces incase we have to fallback to them
 
                     // Ensure none of the adjacent provinces are occupied
                     bool areConnectedOccupied = false;
                     foreach (var connectedProv in prov.connectedProvinces)
                     {
-                        if (connectedProv.ownerNation != null) 
+                        if (connectedProv.ownerNation.Get() != null) 
                         { 
                             areConnectedOccupied = true;
                             break;
