@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PolitikServer.Core;
+using TinyPolitik.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,11 @@ builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
 builder.Services.AddSingleton(new EntityLibrary());
 builder.Services.AddSingleton(new GameStateInitialiser());
 builder.Services.AddSingleton(new TurnManager(gameConfig));
+
+// Setup turn management
+builder.Services.AddSingleton(new TurnResolver());
+builder.Services.AddSingleton(new TurnBackup());
+builder.Services.AddHostedService<TurnSchedulerService>(); // Turn scheduler
 
 var app = builder.Build();
 

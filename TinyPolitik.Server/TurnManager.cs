@@ -4,7 +4,19 @@ namespace PolitikServer.Core;
 
 public class TurnManager
 {
+    private int turnNumber;
+    /// <summary>
+    /// UTC turn times, in the format [Hour : Minute].
+    /// </summary>
     private Tuple<int, int>[] turnTimes;
+    /// <summary>
+    /// The UTC time when the next turn is scheduled.
+    /// </summary>
+    public DateTime NextTurnTime { get; private set; }
+    /// <summary>
+    /// Metadata for the current turn.
+    /// </summary>
+    public TurnMetaData TurnMetaData { get; private set; }
 
     public TurnManager(GameConfig config)
     {
@@ -29,9 +41,14 @@ public class TurnManager
             index++;
         }
 
+        // Initialise with a blank turn meta data
+        TurnMetaData = new();
     }
 
-    public DateTime GetNextScheduledTurnTime()
+    /// <summary>
+    /// Gets the next scheduled turn time - updates the NextTurnTime field. 
+    /// </summary>
+    public void DetermineNextScheduledTurnTime()
     {
         // Try for today
         foreach (Tuple<int, int> time in turnTimes)
@@ -44,7 +61,8 @@ public class TurnManager
             // If the proposed time is after now, it is good for our turn time
             if (proposedTime > DateTime.UtcNow)
             {
-                return proposedTime;
+                NextTurnTime = proposedTime;
+                return;
             }
         }
     
@@ -60,7 +78,8 @@ public class TurnManager
             // If the proposed time is after now, it is good for our turn time
             if (proposedTime > DateTime.UtcNow)
             {
-                return proposedTime;
+                NextTurnTime = proposedTime;
+                return;
             }
         }
 
@@ -70,17 +89,37 @@ public class TurnManager
     /// <summary>
     /// Generates the metadata for turn 0 - the inital turn that is called when a server is started for the first time.
     /// </summary>
-    public TurnMetaData GetStartingTurnMetaData()
+    public void InitialiseForStartingTurn()
     {
-        DateTime nextTurn = GetNextScheduledTurnTime();
+        turnNumber = 0;
         
+        DetermineNextScheduledTurnTime();
+        
+        TurnMetaData = GenerateMetaData();
+    }
+
+    /// <summary>
+    /// Advances the next turn.
+    /// Called at the end of the turn resolution process.
+    /// </summary>
+    public void AdvanceToNextTurn()
+    {
+        turnNumber += 1;
+
+        DetermineNextScheduledTurnTime();
+     
+        TurnMetaData = GenerateMetaData();
+    }
+
+    private TurnMetaData GenerateMetaData()
+    {
         return new TurnMetaData()
         {
-            turnNumber = 0,
+            turnNumber = turnNumber,
             timeOccuredUtc = DateTime.UtcNow,
             timeOccuredUtcBinary = DateTime.UtcNow.ToBinary(),
-            nextTurnTimeScheduled = nextTurn,
-            nextTurnTimeScheduledBinary = nextTurn.ToBinary(),
+            nextTurnTimeScheduled = NextTurnTime,
+            nextTurnTimeScheduledBinary = NextTurnTime.ToBinary(),
         };
     }
 }
