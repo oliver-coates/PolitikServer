@@ -1,0 +1,934 @@
+{
+  "ProvinceEntity": [
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "8a09e980-d90a-4ab6-970d-22688a3c6706",
+          "636457b2-2940-46c7-afca-b9a6b621fb5a",
+          "7489ff93-0a7f-4e4f-b731-bc4874265cf9",
+          "5b477a5d-4528-4286-be8d-4b5065984840"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 19579,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "1",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "bab8e54f-fbc2-42b1-a52b-578fb6fb4105"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "5bd4650b-c4da-4e22-bbf6-a50e079058da",
+          "75bd53c0-0119-4b60-ad63-a263ca8f0ea4"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22039,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "10",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "b02de260-588f-401e-95db-20e3e9ed8bb8"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "9f1c6776-f089-4d6c-9342-b081f8e28d5f",
+          "5bd4650b-c4da-4e22-bbf6-a50e079058da",
+          "75bd53c0-0119-4b60-ad63-a263ca8f0ea4",
+          "f4e2b77b-0090-4fbf-accc-a2f3d0c1eb8f",
+          "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1",
+          "d3fad9dd-dc90-4716-95fd-51273880f73b"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 19856,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "11",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "67315d80-01f5-41f0-9dba-c50b693c90b2"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "d3fad9dd-dc90-4716-95fd-51273880f73b",
+          "67315d80-01f5-41f0-9dba-c50b693c90b2",
+          "f4e2b77b-0090-4fbf-accc-a2f3d0c1eb8f",
+          "8f9f0ded-e0ac-4306-9563-381d4f39fbbe",
+          "fa092636-27cf-46e9-b344-824265a7706e",
+          "c736d619-619f-43d9-a93d-d7802b136085"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 17432,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "12",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1",
+          "8f9f0ded-e0ac-4306-9563-381d4f39fbbe"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 19345,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "13",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "fa092636-27cf-46e9-b344-824265a7706e"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1",
+          "f4e2b77b-0090-4fbf-accc-a2f3d0c1eb8f",
+          "fa092636-27cf-46e9-b344-824265a7706e"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 20187,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "59f06715-0d84-409e-80cd-83ee1f23c63e",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "59f06715-0d84-409e-80cd-83ee1f23c63e",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "14",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "8f9f0ded-e0ac-4306-9563-381d4f39fbbe"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "67315d80-01f5-41f0-9dba-c50b693c90b2",
+          "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1",
+          "8f9f0ded-e0ac-4306-9563-381d4f39fbbe",
+          "cd348778-0ca5-40a6-bbab-8635d49b8fde",
+          "75bd53c0-0119-4b60-ad63-a263ca8f0ea4"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 21667,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "15",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "f4e2b77b-0090-4fbf-accc-a2f3d0c1eb8f"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "f4e2b77b-0090-4fbf-accc-a2f3d0c1eb8f",
+          "bf7a2570-642c-44d9-b49c-6beda6027a9f",
+          "75bd53c0-0119-4b60-ad63-a263ca8f0ea4"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22122,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "40faaa51-e86d-4e04-87cd-ab9252be61ad",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "40faaa51-e86d-4e04-87cd-ab9252be61ad",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "16",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "cd348778-0ca5-40a6-bbab-8635d49b8fde"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "67315d80-01f5-41f0-9dba-c50b693c90b2",
+          "5bd4650b-c4da-4e22-bbf6-a50e079058da",
+          "b02de260-588f-401e-95db-20e3e9ed8bb8",
+          "cd348778-0ca5-40a6-bbab-8635d49b8fde",
+          "f4e2b77b-0090-4fbf-accc-a2f3d0c1eb8f"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 18954,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "17",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "75bd53c0-0119-4b60-ad63-a263ca8f0ea4"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "cd348778-0ca5-40a6-bbab-8635d49b8fde"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 18140,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "18",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "bf7a2570-642c-44d9-b49c-6beda6027a9f"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "bab8e54f-fbc2-42b1-a52b-578fb6fb4105",
+          "7489ff93-0a7f-4e4f-b731-bc4874265cf9",
+          "4214ead2-43c8-48a1-8fd9-932bc7c777bc",
+          "8a09e980-d90a-4ab6-970d-22688a3c6706"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 21688,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "560f4415-a74b-4dcf-a645-b4e98bd3ec94",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "560f4415-a74b-4dcf-a645-b4e98bd3ec94",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "19",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "636457b2-2940-46c7-afca-b9a6b621fb5a"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "bab8e54f-fbc2-42b1-a52b-578fb6fb4105",
+          "5b477a5d-4528-4286-be8d-4b5065984840",
+          "d3fad9dd-dc90-4716-95fd-51273880f73b",
+          "9f1c6776-f089-4d6c-9342-b081f8e28d5f",
+          "e075b128-ffd0-4cc5-9ec0-69725fa69ae9",
+          "636457b2-2940-46c7-afca-b9a6b621fb5a"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22363,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "2",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "7489ff93-0a7f-4e4f-b731-bc4874265cf9"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "636457b2-2940-46c7-afca-b9a6b621fb5a",
+          "bab8e54f-fbc2-42b1-a52b-578fb6fb4105",
+          "4214ead2-43c8-48a1-8fd9-932bc7c777bc"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 17858,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "20",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "8a09e980-d90a-4ab6-970d-22688a3c6706"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "7ac72da2-5e35-4608-ba13-9a67913f42fb",
+          "74e5515a-0f3a-4ebc-a67a-5376cb176225",
+          "636457b2-2940-46c7-afca-b9a6b621fb5a",
+          "8a09e980-d90a-4ab6-970d-22688a3c6706"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 18002,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "21",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "4214ead2-43c8-48a1-8fd9-932bc7c777bc"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "4214ead2-43c8-48a1-8fd9-932bc7c777bc",
+          "6dae5cb1-db81-4c99-a22e-1c0f4d88c428",
+          "94466439-11d5-4718-921e-866019904e1a",
+          "74e5515a-0f3a-4ebc-a67a-5376cb176225"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 19008,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "22",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "7ac72da2-5e35-4608-ba13-9a67913f42fb"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "94466439-11d5-4718-921e-866019904e1a",
+          "7ac72da2-5e35-4608-ba13-9a67913f42fb"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 21760,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "23",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "6dae5cb1-db81-4c99-a22e-1c0f4d88c428"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "94466439-11d5-4718-921e-866019904e1a"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22817,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "189f560b-677a-4dda-8cfe-5fa4b83dc42d",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "189f560b-677a-4dda-8cfe-5fa4b83dc42d",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "24",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "a0bb84e9-27c9-4258-aedd-59c870e109c4"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "6dae5cb1-db81-4c99-a22e-1c0f4d88c428",
+          "7ac72da2-5e35-4608-ba13-9a67913f42fb",
+          "74e5515a-0f3a-4ebc-a67a-5376cb176225",
+          "a0bb84e9-27c9-4258-aedd-59c870e109c4"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 19132,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "25",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "94466439-11d5-4718-921e-866019904e1a"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "4214ead2-43c8-48a1-8fd9-932bc7c777bc",
+          "7ac72da2-5e35-4608-ba13-9a67913f42fb",
+          "94466439-11d5-4718-921e-866019904e1a"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 18677,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "c4e5971e-9640-4de2-b1fa-2156b9380e78",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "c4e5971e-9640-4de2-b1fa-2156b9380e78",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "26",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "74e5515a-0f3a-4ebc-a67a-5376cb176225"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "bab8e54f-fbc2-42b1-a52b-578fb6fb4105",
+          "758d22a7-85f1-4cbf-93e4-91f97478bf34",
+          "c736d619-619f-43d9-a93d-d7802b136085",
+          "d3fad9dd-dc90-4716-95fd-51273880f73b",
+          "7489ff93-0a7f-4e4f-b731-bc4874265cf9"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 17306,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "62851096-b973-47a4-9d1d-587b48789831",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "62851096-b973-47a4-9d1d-587b48789831",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "3",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "5b477a5d-4528-4286-be8d-4b5065984840"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "5b477a5d-4528-4286-be8d-4b5065984840"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22357,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "4",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "758d22a7-85f1-4cbf-93e4-91f97478bf34"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "5b477a5d-4528-4286-be8d-4b5065984840",
+          "d3fad9dd-dc90-4716-95fd-51273880f73b",
+          "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 19458,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "5",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "c736d619-619f-43d9-a93d-d7802b136085"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "c736d619-619f-43d9-a93d-d7802b136085",
+          "5b477a5d-4528-4286-be8d-4b5065984840",
+          "7489ff93-0a7f-4e4f-b731-bc4874265cf9",
+          "9f1c6776-f089-4d6c-9342-b081f8e28d5f",
+          "67315d80-01f5-41f0-9dba-c50b693c90b2",
+          "6626f2c6-8ee6-4d27-86fa-e251ada1e5b1"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 21888,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "6",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "d3fad9dd-dc90-4716-95fd-51273880f73b"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "7489ff93-0a7f-4e4f-b731-bc4874265cf9"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22085,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "ba946398-8565-4e4c-a6f1-869b49071e52",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "ba946398-8565-4e4c-a6f1-869b49071e52",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "7",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "e075b128-ffd0-4cc5-9ec0-69725fa69ae9"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "5bd4650b-c4da-4e22-bbf6-a50e079058da",
+          "67315d80-01f5-41f0-9dba-c50b693c90b2",
+          "d3fad9dd-dc90-4716-95fd-51273880f73b",
+          "7489ff93-0a7f-4e4f-b731-bc4874265cf9"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 22422,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "8",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "9f1c6776-f089-4d6c-9342-b081f8e28d5f"
+    },
+    {
+      "connectedProvinces": {
+        "SerializedValues": [
+          "9f1c6776-f089-4d6c-9342-b081f8e28d5f",
+          "67315d80-01f5-41f0-9dba-c50b693c90b2",
+          "75bd53c0-0119-4b60-ad63-a263ca8f0ea4",
+          "b02de260-588f-401e-95db-20e3e9ed8bb8"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "population": 20981,
+      "buildings": [],
+      "ownerNation": {
+        "SerializedValue": "542094a4-e15f-4dcd-afc1-75edc68a6065",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "occupierNation": {
+        "SerializedValue": "542094a4-e15f-4dcd-afc1-75edc68a6065",
+        "TypeName": "Nation",
+        "TypeIdentifier": "GameEntity"
+      },
+      "province": {
+        "SerializedValue": "9",
+        "TypeName": "Province",
+        "TypeIdentifier": "GameDefinition"
+      },
+      "UniqueIdentifier": "5bd4650b-c4da-4e22-bbf6-a50e079058da"
+    }
+  ],
+  "Nation": [
+    {
+      "nameLong": "Belugal Confederacy",
+      "nameShort": "Belugal",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Belugese",
+      "provincesControlled": {
+        "SerializedValues": [
+          "5bd4650b-c4da-4e22-bbf6-a50e079058da"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "5bd4650b-c4da-4e22-bbf6-a50e079058da",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "542094a4-e15f-4dcd-afc1-75edc68a6065"
+    },
+    {
+      "nameLong": "Belundy Confederacy",
+      "nameShort": "Belundy",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Belundian",
+      "provincesControlled": {
+        "SerializedValues": [
+          "636457b2-2940-46c7-afca-b9a6b621fb5a"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "636457b2-2940-46c7-afca-b9a6b621fb5a",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "560f4415-a74b-4dcf-a645-b4e98bd3ec94"
+    },
+    {
+      "nameLong": "Baverica Union",
+      "nameShort": "Baverica",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Baverican",
+      "provincesControlled": {
+        "SerializedValues": [
+          "5b477a5d-4528-4286-be8d-4b5065984840"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "5b477a5d-4528-4286-be8d-4b5065984840",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "62851096-b973-47a4-9d1d-587b48789831"
+    },
+    {
+      "nameLong": "Bavugal Republic",
+      "nameShort": "Bavugal",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Bavugese",
+      "provincesControlled": {
+        "SerializedValues": [
+          "74e5515a-0f3a-4ebc-a67a-5376cb176225"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "74e5515a-0f3a-4ebc-a67a-5376cb176225",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "c4e5971e-9640-4de2-b1fa-2156b9380e78"
+    },
+    {
+      "nameLong": "Bavuguay Republic",
+      "nameShort": "Bavuguay",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Bavuguayan",
+      "provincesControlled": {
+        "SerializedValues": [
+          "e075b128-ffd0-4cc5-9ec0-69725fa69ae9"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "e075b128-ffd0-4cc5-9ec0-69725fa69ae9",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "ba946398-8565-4e4c-a6f1-869b49071e52"
+    },
+    {
+      "nameLong": "Amundy Republic",
+      "nameShort": "Amundy",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Amundian",
+      "provincesControlled": {
+        "SerializedValues": [
+          "8f9f0ded-e0ac-4306-9563-381d4f39fbbe"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "8f9f0ded-e0ac-4306-9563-381d4f39fbbe",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "59f06715-0d84-409e-80cd-83ee1f23c63e"
+    },
+    {
+      "nameLong": "Russburg Commune",
+      "nameShort": "Russburg",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Russburgian",
+      "provincesControlled": {
+        "SerializedValues": [
+          "cd348778-0ca5-40a6-bbab-8635d49b8fde"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "cd348778-0ca5-40a6-bbab-8635d49b8fde",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "40faaa51-e86d-4e04-87cd-ab9252be61ad"
+    },
+    {
+      "nameLong": "Germia State",
+      "nameShort": "Germia",
+      "colorPrimary": "not implemented",
+      "colorTertiary": "not implemented",
+      "noun": "Germian",
+      "provincesControlled": {
+        "SerializedValues": [
+          "a0bb84e9-27c9-4258-aedd-59c870e109c4"
+        ],
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "capitolProvince": {
+        "SerializedValue": "a0bb84e9-27c9-4258-aedd-59c870e109c4",
+        "TypeName": "ProvinceEntity",
+        "TypeIdentifier": "GameEntity"
+      },
+      "UniqueIdentifier": "189f560b-677a-4dda-8cfe-5fa4b83dc42d"
+    }
+  ]
+}

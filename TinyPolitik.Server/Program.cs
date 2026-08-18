@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var logsRoot = Path.Combine(builder.Environment.ContentRootPath, "logs");
 var dataRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata");
 var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "gameworld");
+var backupsRoot = Path.Combine(builder.Environment.ContentRootPath, "snapshots");
 
 // Initialising Directories:
 Directory.CreateDirectory(contentRoot);
@@ -40,11 +41,11 @@ builder.Services.AddSingleton<SessionStore>();
 builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
-builder.Services.AddSingleton(new TurnManager(gameConfig));
+builder.Services.AddSingleton<TurnManager>();
 
 // Setup turn management
 builder.Services.AddSingleton<TurnResolver>();
-builder.Services.AddSingleton<TurnBackup>();
+builder.Services.AddSingleton<TurnBackupManager>();
 builder.Services.AddHostedService<TurnSchedulerService>();
 
 CertificateLoader.Setup(builder, gameConfig); // Make not static
@@ -52,13 +53,19 @@ CertificateLoader.Setup(builder, gameConfig); // Make not static
 var app = builder.Build();
 
 // Initialise everything:
+app.Services.GetRequiredService<TurnBackupManager>().Initialise(backupsRoot);
 
 bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save, for now always initialise as though a new server
 if (doInitialiseGame)
 { 
     app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
     app.Services.GetRequiredService<TurnManager>().Initialise();   
+
+    // Make a backup of the world (this will move somewhere else eventually)
+    string worldJson = app.Services.GetRequiredService<DefinitionLibrary>().GetAllGameDefinitionsAsJson();
+    app.Services.GetRequiredService<TurnBackupManager>().MakeWorldBackup(worldJson);
 }
+
 
 // PUBLIC ROUTES:
 app.MapPost("/login", 

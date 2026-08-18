@@ -1,9 +1,8 @@
-
 namespace PolitikServer.Core;
 
 public class TurnManager
 {
-    private int turnNumber;
+    public int turnNumber { get; private set; }
     /// <summary>
     /// UTC turn times, in the format [Hour : Minute].
     /// </summary>
