@@ -1,5 +1,3 @@
-using TinyPolitik.Core;
-
 namespace PolitikServer.Core;
 
 public class TurnSchedulerService : BackgroundService
@@ -30,6 +28,7 @@ public class TurnSchedulerService : BackgroundService
         var manager = scope.ServiceProvider.GetRequiredService<TurnManager>();
         var resolver = scope.ServiceProvider.GetRequiredService<TurnResolver>();
         var backup = scope.ServiceProvider.GetRequiredService<TurnBackup>();
+        var logWriter = scope.ServiceProvider.GetRequiredService<LogWriter>();
 
         if (DateTime.UtcNow < manager.NextTurnTime)
         {
@@ -38,6 +37,8 @@ public class TurnSchedulerService : BackgroundService
         }
 
         _logger.LogInformation("Turn boundary reached ({Time:u}) -- Advancing turn.", manager.NextTurnTime);
+
+        // TODO: Shutoff request handling here.
 
         // Calculate next turn:
         try
@@ -58,9 +59,16 @@ public class TurnSchedulerService : BackgroundService
         {
             _logger.LogError(ex, "Turn backup failed at {Time:u}.", manager.NextTurnTime);
         }
-
+        
+        // File all the logging info into its own decidated log file (e.g. turn-log-12 for turn 12) - 
+        // all new events will now be saved under 'current.log' until we process the next turn 
+        logWriter.SaveTurn(manager.TurnMetaData.turnNumber);
+        
+        // Tick the turn manager over to the next turn - all events have been processed and logged!
         manager.AdvanceToNextTurn();
-        _logger.LogInformation("Next turn scheduled for {Time:u}", manager.NextTurnTime);
+        _logger.LogInformation("Next turn scheduled for {Time:u}", manager.NextTurnTime);        
+    
+        // TODO: Reopen requests here
     }
     
 }

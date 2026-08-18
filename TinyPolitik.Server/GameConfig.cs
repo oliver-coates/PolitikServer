@@ -12,8 +12,7 @@ public class GameConfig
 
 
     // -- Turn Times:
-    public string[] TurnTimesLocal { get; set; } // Local turn times, consumed and converted into UTC at startup  
-    public string[] TurnTimesUtc { get; set; }
+    public string[] TurnTimesLocal { get; set; } // Local turn times  
 
 
     // -- Password:
@@ -33,7 +32,6 @@ public class GameConfig
         MaxPlayers = 32;
 
         TurnTimesLocal = ["06:00", "12:00", "18:00"];
-        TurnTimesUtc = [];
 
         Port = 2000;
 
@@ -68,7 +66,7 @@ public static class GameConfigLoader
         ?? throw new InvalidDataException($"Failed to parse config file '{path}'.");
         
         Validate(config);
-        
+
         bool passwordHashAndSaltExists = !string.IsNullOrEmpty(config.PasswordHash) && !string.IsNullOrEmpty(config.PasswordSalt);
         bool passwordExists = !string.IsNullOrEmpty(config.Password);
 

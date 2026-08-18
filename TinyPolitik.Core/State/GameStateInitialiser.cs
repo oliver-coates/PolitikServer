@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace PolitikServer.Core;
 
 /// <summary>
@@ -5,7 +7,14 @@ namespace PolitikServer.Core;
 /// </summary>
 public class GameStateInitialiser
 {
-    public GameStateInitialiser()
+    private readonly ILogger<GameStateInitialiser> _logger;
+
+    public GameStateInitialiser(ILogger<GameStateInitialiser> logger)
+    {
+        _logger = logger;
+    }
+
+    public void Initialise()
     {
         SetupProvinces();
 
@@ -42,7 +51,7 @@ public class GameStateInitialiser
         int popBase = WorldConfig.GetInt("province_starting_population");
         int pop = (int) RandomUtil.ApplyVariance(popBase, popVariance, RandomUtil.VarianceMethod.Multiplicative);
 
-        return new ProvinceEntity()
+        var newProvince = new ProvinceEntity()
         {
             UniqueIdentifier = Guid.NewGuid().ToString(),
             province = new SerializedField<Province>(definition),
@@ -51,6 +60,10 @@ public class GameStateInitialiser
             ownerNation = new SerializedNullableField<Nation?>(),
             occupierNation = new SerializedNullableField<Nation?>()
         };
+
+        _logger.LogInformation("Initialised: {newProvince}", newProvince);
+
+        return newProvince;
     }
 
     /// <summary>
@@ -82,6 +95,7 @@ public class GameStateInitialiser
             Nation newNation = GenerateNation([startingProvince]);
             EntityLibrary.AddEntity(newNation);
         }
+        
     }
 
     private ProvinceEntity? GetRandomNationStartingProvince()
@@ -196,6 +210,11 @@ public class GameStateInitialiser
             controlledProvince.ownerNation.Set(newNation);
         }
 
+        _logger.LogInformation("Initialised: {newNation}", newNation);
+
         return newNation;
     }
+
+
 }
+

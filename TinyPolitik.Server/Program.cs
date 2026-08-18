@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using PolitikServer.Core;
-using TinyPolitik.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Paths:
+var logsRoot = Path.Combine(builder.Environment.ContentRootPath, "logs");
 var dataRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata");
-Directory.CreateDirectory(dataRoot);
-
 var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "gameworld");
+
+// Initialising Directories:
 Directory.CreateDirectory(contentRoot);
+Directory.CreateDirectory(dataRoot);
+Directory.CreateDirectory(logsRoot);
 
 GameConfig gameConfig = new();
 try
@@ -23,25 +26,39 @@ catch (Exception e)
     Environment.Exit(0);
 }
 
+// Setup logging:
+var logWriter = new LogWriter(logsRoot);
+builder.Services.AddSingleton(logWriter);
+builder.Logging.AddProvider(new TurnFileLoggerProvider(logWriter));
+
 // Setup networking:
 builder.Services.AddSingleton(gameConfig);
-builder.Services.AddSingleton(new LoginRateLimiter());
-builder.Services.AddSingleton(new SessionStore());
-ContentLoader.Setup(builder);
-CertificateLoader.Setup(builder, gameConfig);
+builder.Services.AddSingleton<LoginRateLimiter>();
+builder.Services.AddSingleton<SessionStore>();
 
 // Setup world:
 builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
-builder.Services.AddSingleton(new EntityLibrary());
-builder.Services.AddSingleton(new GameStateInitialiser());
+builder.Services.AddSingleton<EntityLibrary>();
+builder.Services.AddSingleton<GameStateInitialiser>();
 builder.Services.AddSingleton(new TurnManager(gameConfig));
 
 // Setup turn management
-builder.Services.AddSingleton(new TurnResolver());
-builder.Services.AddSingleton(new TurnBackup());
-builder.Services.AddHostedService<TurnSchedulerService>(); // Turn scheduler
+builder.Services.AddSingleton<TurnResolver>();
+builder.Services.AddSingleton<TurnBackup>();
+builder.Services.AddHostedService<TurnSchedulerService>();
+
+CertificateLoader.Setup(builder, gameConfig); // Make not static
 
 var app = builder.Build();
+
+// Initialise everything:
+
+bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save, for now always initialise as though a new server
+if (doInitialiseGame)
+{ 
+    app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
+    app.Services.GetRequiredService<TurnManager>().Initialise();   
+}
 
 // PUBLIC ROUTES:
 app.MapPost("/login", 

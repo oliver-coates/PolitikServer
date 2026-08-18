@@ -1,4 +1,4 @@
-namespace TinyPolitik.Core;
+namespace PolitikServer.Core;
 
 public class TurnResolver
 {

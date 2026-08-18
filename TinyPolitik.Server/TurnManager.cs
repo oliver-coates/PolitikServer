@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.Marshalling;
 
 namespace PolitikServer.Core;
 
@@ -21,10 +20,10 @@ public class TurnManager
     public TurnManager(GameConfig config)
     {
         // Convert turn times from string format e.g. "12:30" into int tuples of hour/minute
-        turnTimes = new Tuple<int, int>[config.TurnTimesUtc.Length];
+        turnTimes = new Tuple<int, int>[config.TurnTimesLocal.Length];
         
         int index = 0;
-        foreach (string timeCode in config.TurnTimesUtc)
+        foreach (string timeCode in config.TurnTimesLocal)
         {
             string[] split = timeCode.Split(':');
             try
@@ -41,8 +40,13 @@ public class TurnManager
             index++;
         }
 
-        // Initialise with a blank turn meta data
-        TurnMetaData = new();
+        TurnMetaData = new(); // This will be overwritten by either the Initialise method or by loading the saved turn metadata
+    }
+
+    public void Initialise()
+    {
+        // Initialise with turn meta data
+        TurnMetaData = GenerateMetaData();
     }
 
     /// <summary>
@@ -59,7 +63,7 @@ public class TurnManager
             proposedTime = proposedTime.AddMinutes(time.Item2);
 
             // If the proposed time is after now, it is good for our turn time
-            if (proposedTime > DateTime.UtcNow)
+            if (proposedTime > DateTime.Now)
             {
                 NextTurnTime = proposedTime;
                 return;
@@ -76,7 +80,7 @@ public class TurnManager
             proposedTime = proposedTime.AddMinutes(time.Item2);
 
             // If the proposed time is after now, it is good for our turn time
-            if (proposedTime > DateTime.UtcNow)
+            if (proposedTime > DateTime.Now)
             {
                 NextTurnTime = proposedTime;
                 return;
