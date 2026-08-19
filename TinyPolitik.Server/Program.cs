@@ -44,9 +44,13 @@ builder.Services.AddSingleton<GameStateInitialiser>();
 builder.Services.AddSingleton<TurnManager>();
 
 // Setup turn management
+builder.Services.AddSingleton<TurnProcessor>();
 builder.Services.AddSingleton<TurnResolver>();
 builder.Services.AddSingleton<TurnBackupManager>();
 builder.Services.AddHostedService<TurnSchedulerService>();
+
+// Setup commands:
+builder.Services.AddHostedService<ServerCommandService>();
 
 CertificateLoader.Setup(builder, gameConfig); // Make not static
 

@@ -491,3 +491,6 @@ TinyPolitik.Server/gameworld
 
 #Logs
 TinyPolitik.Server/logs
+
+#Snapshots:
+TinyPolitik.Server/snapshots
