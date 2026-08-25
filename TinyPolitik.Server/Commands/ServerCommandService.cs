@@ -18,15 +18,32 @@ public class ServerCommandService : BackgroundService
         Register("turn", "listTimes", _ =>
         {
             var config = _services.GetRequiredService<GameConfig>();
-            Console.WriteLine($"Turns are scheduled for {string.Join(',', config.TurnTimesLocal)} daily (local time).");   
+            if (config.AllowRealTimePlay)
+            {
+                Console.WriteLine($"Real Time Play is enabled. A turn will occur once all players are ready.");   
+            }
+            else
+            {
+                Console.WriteLine($"Turns are scheduled for {string.Join(',', config.TurnTimesLocal)} daily (local time).");   
+            }
             return Task.CompletedTask;
         });
 
         Register("turn", "getNext", _ =>
         {
-           var turnManager = _services.GetRequiredService<TurnManager>();
-           Console.WriteLine($"The next turn is scheduled for: {turnManager.NextTurnTime}"); 
-           return Task.CompletedTask;
+            var turnManager = _services.GetRequiredService<TurnManager>();
+            var config = _services.GetRequiredService<GameConfig>();
+           
+            if (config.AllowRealTimePlay)
+            {
+                Console.WriteLine($"Real Time Play is enabled. A turn will occur once all players are ready.");   
+            }
+            else
+            {
+                Console.WriteLine($"The next turn is scheduled for: {turnManager.NextTurnTime}"); 
+            }
+            
+            return Task.CompletedTask;
         });
 
         Register("turn", "forceAdvance", async _ =>
