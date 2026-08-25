@@ -90,7 +90,7 @@ app.MapPost("/login",
 
 
 // Getting content version (Game Version, Game Definition Version, etc)
-app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary) => ServerInfo.Get(definitionLibrary));
+app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary, [FromServices] GameConfig config) => ServerInfo.Get(definitionLibrary, config));
 
 // PRIVATE ROUTES:
 // These require an authentication token
