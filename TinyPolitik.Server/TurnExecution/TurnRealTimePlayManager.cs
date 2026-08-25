@@ -32,13 +32,25 @@ public class TurnRealTimePlayManager()
 
     private bool AreAllNationsReady(EntityLibrary entities)
     {
+        int playerNationCount = 0;
+
         foreach (Nation nation in EntityLibrary.GetAllEntitiesOfType<Nation>())
         {
             // Ensure all player run countries are ready
-            if (nation.playerId != null && !nation.isReady)
+            if (nation.playerId != null)
             {
-                return false;
+                playerNationCount++;
+                if (!nation.isReady)
+                {
+                    return false;
+                }
             }
+        }
+
+        // If there aren't any nations which have players, don't allow a turn advance - we should be waiting for players to join and ready up.
+        if (playerNationCount == 0)
+        {
+            return false;
         }
 
         return true;
