@@ -194,6 +194,7 @@ public class GameStateInitialiser
         Nation newNation = new()
         {
             UniqueIdentifier = Guid.NewGuid().ToString(),
+            playerId = null,
             nameShort = randomName.shortName,
             nameLong = randomName.longName,
             colorPrimary = "not implemented",

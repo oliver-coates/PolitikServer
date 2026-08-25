@@ -9,13 +9,15 @@ public class TurnProcessor
     private readonly IServiceProvider _services;
     private readonly ILogger<TurnProcessor> _logger;
     private readonly LogWriter _writer;
+    private readonly GameConfig _config;
     private readonly SemaphoreSlim _lock = new(1, 1);
 
-    public TurnProcessor(IServiceProvider services, ILogger<TurnProcessor> logger, LogWriter writer)
+    public TurnProcessor(IServiceProvider services, ILogger<TurnProcessor> logger, LogWriter writer, GameConfig config)
     {
         _services = services;
         _logger = logger;
         _writer = writer;
+        _config = config;
     }
 
     public async Task ProcessTurnAsync()
@@ -64,8 +66,21 @@ public class TurnProcessor
         // Tick the turn manager over to the next turn - all events have been processed and logged!
         manager.AdvanceToNextTurn();
 
+        if (_config.AllowRealTimePlay)
+        {
+            ResetNationReadiness(entities);
+        }
+
         // TODO: Reopen requests here
 
         _lock.Release();
+    }
+
+    private void ResetNationReadiness(EntityLibrary entities)
+    {
+        foreach (Nation nation in EntityLibrary.GetAllEntitiesOfType<Nation>())
+        {
+            nation.isReady = false;
+        }
     }
 }

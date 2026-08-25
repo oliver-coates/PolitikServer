@@ -6,7 +6,7 @@ public class TurnSchedulerService : BackgroundService
     private readonly ILogger<TurnSchedulerService> _logger;
     private static readonly TimeSpan PollInterval = TimeSpan.FromSeconds(15);
         
-    public TurnSchedulerService(IServiceProvider services, ILogger<TurnSchedulerService> logger)
+    public TurnSchedulerService(IServiceProvider services, ILogger<TurnSchedulerService> logger, GameConfig config)
     {
         _services = services;
         _logger = logger;

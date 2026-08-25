@@ -14,6 +14,9 @@ public class GameConfig
     // -- Turn Times:
     public string[] TurnTimesLocal { get; set; } // Local turn times  
 
+    // -- Real Time Play
+    public bool AllowRealTimePlay { get; set; }
+
 
     // -- Password:
     public string? Password { get; set;}
@@ -32,6 +35,7 @@ public class GameConfig
         MaxPlayers = 32;
 
         TurnTimesLocal = ["06:00", "12:00", "18:00"];
+        AllowRealTimePlay = false;
 
         Port = 2000;
 

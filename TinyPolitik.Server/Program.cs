@@ -47,7 +47,16 @@ builder.Services.AddSingleton<TurnManager>();
 builder.Services.AddSingleton<TurnProcessor>();
 builder.Services.AddSingleton<TurnResolver>();
 builder.Services.AddSingleton<TurnBackupManager>();
-builder.Services.AddHostedService<TurnSchedulerService>();
+if (gameConfig.AllowRealTimePlay)
+{
+    // Real time play
+    builder.Services.AddSingleton<TurnRealTimePlayManager>();
+}
+else
+{
+    // Standard turn-based play
+    builder.Services.AddHostedService<TurnSchedulerService>();
+}
 
 // Setup commands:
 builder.Services.AddHostedService<ServerCommandService>();
@@ -91,12 +100,25 @@ var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
 authed.MapGet("/world/data", ([FromServices] DefinitionLibrary lib) => Results.Text(lib.GetAllGameDefinitionsAsJson(), "application/json"));
 authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.Text(lib.GetAllEntitiesAsJson(), "application/json"));
 
+// Readying your nation - only allowed in real-time-play
+if (gameConfig.AllowRealTimePlay)
+{
+    authed.MapPost("/turn/ready", async (HttpContext context,
+                                    [FromServices] TurnRealTimePlayManager rtpManager,
+                                    [FromServices] EntityLibrary entityLibrary,
+                                    [FromServices] GameConfig config,
+                                    [FromServices] TurnProcessor turnProcessor) => await rtpManager.ReadyNation(context, entityLibrary, config, turnProcessor));
+
+    authed.MapGet("/turn/readiness", ([FromServices] EntityLibrary entities, [FromServices] TurnRealTimePlayManager rtpManager)
+                                        => rtpManager.GetReadiness(entities) );
+}
+
+
 // --- End routes
 
 CertificateLoader.NotifyInConsole();
 
 var test = app.Services.GetService<EntityLibrary>()?.GetAllEntitiesAsJson();
-
 
 app.Run();
 

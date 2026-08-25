@@ -63,6 +63,19 @@ public class EntityLibrary
         return (T) ContentLib[typeof(T)][uid];
     }
 
+    public T? TryGetEntity<T>(string uid) where T : GameEntity
+    {
+        if (ContentLib.TryGetValue(typeof(T), out var subLib))
+        {
+            if (subLib.TryGetValue(uid, out GameEntity? value))
+            {
+                return (T)value;
+            }             
+        }
+
+        return null;
+    }
+
     public static T[] GetAllEntitiesOfType<T>() where T : GameEntity
     {
         return ContentLib[typeof(T)].Values.Select(e => (T) e).ToArray();
