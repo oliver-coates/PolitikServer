@@ -42,6 +42,7 @@ builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
 builder.Services.AddSingleton<TurnManager>();
+builder.Services.AddSingleton<NationClaimManager>();
 
 // Setup turn management
 builder.Services.AddSingleton<TurnProcessor>();
@@ -112,6 +113,12 @@ if (gameConfig.AllowRealTimePlay)
     authed.MapGet("/turn/readiness", ([FromServices] EntityLibrary entities, [FromServices] TurnRealTimePlayManager rtpManager)
                                         => rtpManager.GetReadiness(entities) );
 }
+
+authed.MapGet("/nations/unclaimed", ([FromServices] NationClaimManager claimManager) => 
+                                        Results.Json(new 
+                                        { 
+                                            unclaimedNations = claimManager.GetAllUnclaimedNationIds() 
+                                        }));
 
 
 // --- End routes
