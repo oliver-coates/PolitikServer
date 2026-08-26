@@ -78,7 +78,7 @@ public class TurnRealTimePlayManager()
         {
             totalCount = numNations,
             readyCount = numNationsReady,
-            nations = nations.Select(n => new {id = n.UniqueIdentifier, name = n.nameShort, ready = n.isReady})
+            nations = nations.Where(n => n.playerId != null).Select(n => new {id = n.UniqueIdentifier, name = n.nameShort, ready = n.isReady})
         });
     }
 }
