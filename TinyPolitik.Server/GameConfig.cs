@@ -19,9 +19,9 @@ public class GameConfig
 
 
     // -- Password:
-    public string? Password { get; set;}
-    public string? PasswordHash { get; set; }
-    public string? PasswordSalt { get; set; }
+    public string? InvitePassword { get; set;}
+    public string? InvitePasswordHash { get; set; }
+    public string? InvitePasswordSalt { get; set; }
 
     // -- Port:
     public int Port { get; set; }
@@ -71,16 +71,16 @@ public static class GameConfigLoader
         
         Validate(config);
 
-        bool passwordHashAndSaltExists = !string.IsNullOrEmpty(config.PasswordHash) && !string.IsNullOrEmpty(config.PasswordSalt);
-        bool passwordExists = !string.IsNullOrEmpty(config.Password);
+        bool passwordHashAndSaltExists = !string.IsNullOrEmpty(config.InvitePasswordHash) && !string.IsNullOrEmpty(config.InvitePasswordSalt);
+        bool passwordExists = !string.IsNullOrEmpty(config.InvitePassword);
 
         if (!passwordHashAndSaltExists && passwordExists)
         {
-            var (hash, salt) = PasswordHasher.Hash(config.Password ?? "");
+            var (hash, salt) = PasswordHasher.Hash(config.InvitePassword ?? "");
 
-            config.PasswordHash = hash;
-            config.PasswordSalt = salt;
-            config.Password = null;
+            config.InvitePasswordHash = hash;
+            config.InvitePasswordSalt = salt;
+            config.InvitePassword = null;
 
             SaveConfigFile(path, config);
             return config;
@@ -111,7 +111,7 @@ public static class GameConfigLoader
     {
         GameConfig config = new GameConfig()
         {
-            Password = GameConfig.DEFAULT_PASSWORD
+            InvitePassword = GameConfig.DEFAULT_PASSWORD
         };
 
         File.WriteAllText(path, JsonSerializer.Serialize(config, jsonOptions));
@@ -123,7 +123,7 @@ public static class GameConfigLoader
         {
             throw new InvalidDataException("Maximum player count cannot be less than 1");
         }
-        else if ((string.IsNullOrEmpty(config.PasswordHash) && string.IsNullOrEmpty(config.PasswordSalt)) && (string.IsNullOrEmpty(config.Password) || config.Password == GameConfig.DEFAULT_PASSWORD))
+        else if ((string.IsNullOrEmpty(config.InvitePasswordHash) && string.IsNullOrEmpty(config.InvitePasswordSalt)) && (string.IsNullOrEmpty(config.InvitePassword) || config.InvitePassword == GameConfig.DEFAULT_PASSWORD))
         {
             throw new InvalidDataException("Not password has been configured - Set 'password' in the server config file and restart");
         }

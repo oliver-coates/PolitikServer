@@ -4,10 +4,11 @@ using PolitikServer.Core;
 var builder = WebApplication.CreateBuilder(args);
 
 // Paths:
-var logsRoot = Path.Combine(builder.Environment.ContentRootPath, "logs");
+var logsRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "logs");
 var dataRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata");
-var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "gameworld");
-var backupsRoot = Path.Combine(builder.Environment.ContentRootPath, "snapshots");
+var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "gameworld");
+var backupsRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "snapshots");
+var accountsPath = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "accounts");
 
 // Initialising Directories:
 Directory.CreateDirectory(contentRoot);
@@ -36,6 +37,8 @@ builder.Logging.AddProvider(new TurnFileLoggerProvider(logWriter));
 builder.Services.AddSingleton(gameConfig);
 builder.Services.AddSingleton<LoginRateLimiter>();
 builder.Services.AddSingleton<SessionStore>();
+builder.Services.AddSingleton(new AccountStore(accountsPath));
+builder.Services.AddSingleton<AccountManager>();
 
 // Setup world:
 builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
@@ -82,12 +85,11 @@ if (doInitialiseGame)
 
 
 // PUBLIC ROUTES:
-app.MapPost("/login", 
-    (HttpContext context, 
-    [FromBody] LoginRequest req, 
-    [FromServices] SessionStore sessions,
-    [FromServices] LoginRateLimiter limiter,
-    [FromServices] GameConfig config ) => LoginHandler.Login(context, req, sessions, limiter, config));
+app.MapPost("/account/register", 
+    (HttpContext ctx, AccountRegisterRequest request, [FromServices] AccountManager accountManager) => accountManager.RegisterAccount(ctx, request));
+
+app.MapPost("/account/login", 
+    (HttpContext ctx, AccountLoginRequest request, [FromServices] AccountManager accountManager) => accountManager.Login(ctx, request));
 
 
 // Getting content version (Game Version, Game Definition Version, etc)
