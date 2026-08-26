@@ -120,6 +120,30 @@ authed.MapGet("/nations/unclaimed", ([FromServices] NationClaimManager claimMana
                                             unclaimedNations = claimManager.GetAllUnclaimedNationIds() 
                                         }));
 
+authed.MapPost("/nations/{nationId}/claim", 
+    (HttpContext ctx, string nationId, [FromServices] NationClaimManager claimManager) =>
+    {
+        var session = ctx.GetSession();
+        var result = claimManager.TryClaimNation(session.PlayerId, nationId);
+
+        switch (result)
+        {
+            case NationClaimManager.ClaimAttemptResult.NotFound:
+                return Results.NotFound($"Nation '{nationId}' does not exist.");
+            
+            case NationClaimManager.ClaimAttemptResult.AlreadyClaimed:
+                return Results.Conflict($"This nation has already been claimed :(");
+            
+            case NationClaimManager.ClaimAttemptResult.ThisPlayerAlreadyHasNation:
+                return Results.BadRequest($"You already control a nation.");
+            
+            case NationClaimManager.ClaimAttemptResult.Success:
+                return Results.Accepted($"Welcome, {claimManager.GetRandomCountryLeaderTitle()}.");
+
+            default:
+                throw new Exception($"Unhanded Claim Request!");
+        }
+    });
 
 // --- End routes
 
