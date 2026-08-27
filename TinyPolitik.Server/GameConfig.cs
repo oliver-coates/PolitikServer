@@ -20,8 +20,8 @@ public class GameConfig
 
     // -- Password:
     public string? InvitePassword { get; set;}
-    public string? InvitePasswordHash { get; set; }
-    public string? InvitePasswordSalt { get; set; }
+    public string? ServerPasswordHash { get; set; }
+    public string? ServerPasswordSalt { get; set; }
 
     // -- Port:
     public int Port { get; set; }
@@ -71,15 +71,15 @@ public static class GameConfigLoader
         
         Validate(config);
 
-        bool passwordHashAndSaltExists = !string.IsNullOrEmpty(config.InvitePasswordHash) && !string.IsNullOrEmpty(config.InvitePasswordSalt);
+        bool passwordHashAndSaltExists = !string.IsNullOrEmpty(config.ServerPasswordHash) && !string.IsNullOrEmpty(config.ServerPasswordSalt);
         bool passwordExists = !string.IsNullOrEmpty(config.InvitePassword);
 
         if (!passwordHashAndSaltExists && passwordExists)
         {
             var (hash, salt) = PasswordHasher.Hash(config.InvitePassword ?? "");
 
-            config.InvitePasswordHash = hash;
-            config.InvitePasswordSalt = salt;
+            config.ServerPasswordHash = hash;
+            config.ServerPasswordSalt = salt;
             config.InvitePassword = null;
 
             SaveConfigFile(path, config);
@@ -123,7 +123,7 @@ public static class GameConfigLoader
         {
             throw new InvalidDataException("Maximum player count cannot be less than 1");
         }
-        else if ((string.IsNullOrEmpty(config.InvitePasswordHash) && string.IsNullOrEmpty(config.InvitePasswordSalt)) && (string.IsNullOrEmpty(config.InvitePassword) || config.InvitePassword == GameConfig.DEFAULT_PASSWORD))
+        else if ((string.IsNullOrEmpty(config.ServerPasswordHash) && string.IsNullOrEmpty(config.ServerPasswordSalt)) && (string.IsNullOrEmpty(config.InvitePassword) || config.InvitePassword == GameConfig.DEFAULT_PASSWORD))
         {
             throw new InvalidDataException("Not password has been configured - Set 'password' in the server config file and restart");
         }

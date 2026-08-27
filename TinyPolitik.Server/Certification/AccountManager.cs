@@ -32,7 +32,7 @@ public class AccountManager
         } 
 
         // Verify password
-        if (string.IsNullOrWhiteSpace(request.InvitePassword) || !PasswordHasher.Verify(request.InvitePassword, _config.InvitePasswordHash!, _config.InvitePasswordSalt!))
+        if (string.IsNullOrWhiteSpace(request.InvitePassword) || !PasswordHasher.Verify(request.InvitePassword, _config.ServerPasswordHash!, _config.ServerPasswordSalt!))
         {
             _loginLimiter.RecordFailure(ip);
             return Results.Unauthorized();

@@ -85,12 +85,13 @@ if (doInitialiseGame)
 
 
 // PUBLIC ROUTES:
-app.MapPost("/account/register", 
-    (HttpContext ctx, AccountRegisterRequest request, [FromServices] AccountManager accountManager) => accountManager.RegisterAccount(ctx, request));
 
-app.MapPost("/account/login", 
-    (HttpContext ctx, AccountLoginRequest request, [FromServices] AccountManager accountManager) => accountManager.Login(ctx, request));
-
+app.MapPost("/server/login", 
+    (HttpContext context, 
+    [FromBody] LoginRequest req, 
+    [FromServices] SessionStore sessions,
+    [FromServices] LoginRateLimiter limiter,
+    [FromServices] GameConfig config ) => LoginHandler.Login(context, req, sessions, limiter, config));
 
 // Getting content version (Game Version, Game Definition Version, etc)
 app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary, [FromServices] GameConfig config) => ServerInfo.Get(definitionLibrary, config));
@@ -98,6 +99,14 @@ app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrar
 // PRIVATE ROUTES:
 // These require an authentication token
 var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
+
+// Account creation:
+authed.MapPost("/account/register", 
+    (HttpContext ctx, AccountRegisterRequest request, [FromServices] AccountManager accountManager) => accountManager.RegisterAccount(ctx, request));
+
+authed.MapPost("/account/login", 
+    (HttpContext ctx, AccountLoginRequest request, [FromServices] AccountManager accountManager) => accountManager.Login(ctx, request));
+
 
 // Getting game data:
 authed.MapGet("/world/data", ([FromServices] DefinitionLibrary lib) => Results.Text(lib.GetAllGameDefinitionsAsJson(), "application/json"));
