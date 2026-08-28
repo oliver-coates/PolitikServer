@@ -47,10 +47,15 @@ builder.Services.AddSingleton<GameStateInitialiser>();
 builder.Services.AddSingleton<TurnManager>();
 builder.Services.AddSingleton<NationClaimManager>();
 
+// Setup turn resolution:
+builder.Services.AddSingleton<ProvinceTurnResolver>();
+builder.Services.AddSingleton<TurnResolver>();
+
 // Setup turn management
 builder.Services.AddSingleton<TurnProcessor>();
-builder.Services.AddSingleton<TurnResolver>();
 builder.Services.AddSingleton<TurnBackupManager>();
+
+// Turn Scheduling:
 if (gameConfig.AllowRealTimePlay)
 {
     // Real time play

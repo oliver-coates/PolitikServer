@@ -8,6 +8,7 @@ public class ProvinceEntity : GameEntity
     public required List<string> buildings;
     public required SerializedNullableField<Nation?> ownerNation;
     public required SerializedNullableField<Nation?> occupierNation;
+    public required SerializedField<ProvinceDevelopmentLevel> developmentLevel;
 
     public override string ToString()
     {

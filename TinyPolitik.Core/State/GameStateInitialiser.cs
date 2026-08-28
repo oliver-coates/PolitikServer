@@ -50,6 +50,7 @@ public class GameStateInitialiser
         float popVariance = WorldConfig.GetFloat("province_starting_population_variance");
         int popBase = WorldConfig.GetInt("province_starting_population");
         int pop = (int) RandomUtil.ApplyVariance(popBase, popVariance, RandomUtil.VarianceMethod.Multiplicative);
+        var level = ProvinceDevelopmentLevel.Evaluate(DefinitionLibrary.GetAllDefinitionsOfType<ProvinceDevelopmentLevel>(), pop);
 
         var newProvince = new ProvinceEntity()
         {
@@ -58,7 +59,8 @@ public class GameStateInitialiser
             population = pop,
             buildings = [],
             ownerNation = new SerializedNullableField<Nation?>(),
-            occupierNation = new SerializedNullableField<Nation?>()
+            occupierNation = new SerializedNullableField<Nation?>(),
+            developmentLevel = new SerializedField<ProvinceDevelopmentLevel>(level)
         };
 
         _logger.LogInformation("Initialised: {newProvince}", newProvince);
