@@ -40,15 +40,22 @@ public class AccountManager
 
         var result = _accounts.TryCreateAccount(request.Username, request.Password, out var account);
 
-        if (result == AccountStore.CreationResult.InvalidUsername)
+        // Handle failure resutls:
+        switch (result)
         {
-            return Results.BadRequest("Invalid Username");
+            case AccountStore.CreationResult.InvalidUsername:
+                return Results.BadRequest("Invalid Username");
+            
+            case AccountStore.CreationResult.InvalidPassword:
+                return Results.BadRequest("Invalid Password");
+            
+            case AccountStore.CreationResult.UsernameTaken:
+                return Results.Conflict("This username has been taken.");
+
+            default:
+                break;
         }
-        if (result == AccountStore.CreationResult.UsernameTaken)
-        {
-            return Results.Conflict("This username has been taken.");
-        }
-        
+        // Else we create an account:
         _loginLimiter.RecordSuccess(ip);
         var token = _sessionStore.CreateSession(account!.PlayerId);
 
@@ -74,18 +81,11 @@ public class AccountManager
             return Results.StatusCode(StatusCodes.Status429TooManyRequests);  
         }
 
-        string? playerId = _accounts.GetId(request.Username);
-        if (playerId == null)
-        {
-            _loginLimiter.RecordFailure(ip);
-            return Results.NotFound($"No record of a player with name {request.Username} exists.");
-        }
-
-        Account? account =  _accounts.FindById(playerId);
+        Account? account =  _accounts.FindByUsername(request.Username);
         if (account is null)
         {
             _loginLimiter.RecordFailure(ip);
-            return Results.NotFound();
+            return Results.NotFound($"No record of a player with name {request.Username} exists.");
         }
         
         if (!PasswordHasher.Verify(request.Password, account.PasswordHash, account.PasswordSalt))
