@@ -23,7 +23,7 @@ public class ProvinceTurnResolver
     public void TickPopulation()
     {
         ProvinceEntity[] provinces = EntityLibrary.GetAllEntitiesOfType<ProvinceEntity>();
-        float baseGrowth = WorldConfig.GetFloat("province_growth_base");
+        float baseGrowth = WorldConfig.GetFloat("province_population_growth_base");
         int minPop = WorldConfig.GetInt("province_min_population");
         int maxPop = WorldConfig.GetInt("province_max_population");
 
