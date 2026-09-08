@@ -3,6 +3,8 @@ using System.Text.Json;
 
 namespace PolitikServer.Core;
 
+
+
 public class Account
 {
     public string PlayerId { get; init; } = Guid.NewGuid().ToString();
@@ -16,17 +18,22 @@ public class Account
 
 public class AccountStore
 {
+    public const int USERNAME_MIN_CHARS = 3;
+    public const int USERNAME_MAX_CHARS = 18;
+    public const int PASSWORD_MIN_CHARS = 3;
+    public const int PASSWORD_MAX_CHARS = 30;
+
     public enum CreationResult
     {
         Success = 0,
         UsernameTaken = 1,
         InvalidUsername = 2,
+        InvalidPassword = 3,
     }
 
     private readonly string _path;
     private readonly object _lock = new();
-    private Dictionary<string, Account> _byId = new();
-    private Dictionary<string, string> _usernameToId = new();
+    private Dictionary<string, Account> _accountDictionary = new();
 
     public AccountStore(string path)
     {
@@ -35,25 +42,19 @@ public class AccountStore
         if (File.Exists(path))
         {
             var accounts = JsonSerializer.Deserialize<List<Account>>(File.ReadAllText(path)) ?? new();
-            _byId = accounts.ToDictionary(a => a.PlayerId);
-
-            foreach (KeyValuePair<string, Account> pair in _byId)
-            {
-                _usernameToId.Add(pair.Key, pair.Value.Username.ToLowerInvariant());
-            }
+            _accountDictionary = accounts.ToDictionary(a => a.PlayerId);
         }
-    }
-
-    public string? GetId(string username)
-    {
-        _usernameToId.TryGetValue(username.Trim().ToLowerInvariant(), out string? s);
-        return s;
     }
 
     public Account? FindById(string playerId)
     {
-        _byId.TryGetValue(playerId.Trim(), out Account? acc);
+        _accountDictionary.TryGetValue(playerId.Trim(), out Account? acc);
         return acc;
+    }
+
+    public Account? FindByUsername(string username)
+    {
+        return _accountDictionary.Values.FirstOrDefault(a => a.Username == username);
     }
 
 
@@ -64,11 +65,15 @@ public class AccountStore
             account = null;
             username = username.Trim();
 
-            if (username.Length > 3)
+            if (!ValidateUsername(username))
             {
                 return CreationResult.InvalidUsername;
             }
-            if (_byId.ContainsKey(username.ToLowerInvariant()))
+            if (!ValidatePassword(password))
+            {
+                return CreationResult.InvalidPassword;
+            }
+            if (_accountDictionary.Values.FirstOrDefault(a => a.Username == username) != null)
             {
                 return CreationResult.UsernameTaken;
             }
@@ -83,7 +88,7 @@ public class AccountStore
                 CreatedAtUtcBinary = DateTime.UtcNow.ToBinary(),
             };
 
-            _byId.Add(account.PlayerId, account);
+            _accountDictionary.Add(account.PlayerId, account);
             
             Save();
 
@@ -95,9 +100,34 @@ public class AccountStore
     {
         var tempPath = _path + ".tmp";
         File.WriteAllText(tempPath, 
-            JsonSerializer.Serialize(_byId.Values.ToList(), 
+            JsonSerializer.Serialize(_accountDictionary.Values.ToList(), 
             new JsonSerializerOptions {WriteIndented = true}));
 
         File.Move(tempPath, _path, overwrite:true);
+    }
+
+    private bool ValidateUsername(string username)
+    {
+        if (username.Length < USERNAME_MIN_CHARS || username.Length > USERNAME_MAX_CHARS)
+        {
+            return false;
+        }
+
+        if (username.Any(ch => !char.IsLetterOrDigit(ch)))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool ValidatePassword(string password)
+    {
+        if (password.Length < PASSWORD_MIN_CHARS || password.Length > PASSWORD_MAX_CHARS)
+        {
+            return false;
+        }       
+
+        return true;
     }
 }

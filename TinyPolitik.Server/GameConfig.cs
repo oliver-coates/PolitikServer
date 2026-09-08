@@ -125,7 +125,7 @@ public static class GameConfigLoader
         }
         else if ((string.IsNullOrEmpty(config.ServerPasswordHash) && string.IsNullOrEmpty(config.ServerPasswordSalt)) && (string.IsNullOrEmpty(config.InvitePassword) || config.InvitePassword == GameConfig.DEFAULT_PASSWORD))
         {
-            throw new InvalidDataException("Not password has been configured - Set 'password' in the server config file and restart");
+            throw new InvalidDataException("No password has been configured - Set 'password' in the server config file and restart");
         }
         else if (config.TurnTimesLocal is null || config.TurnTimesLocal.Length == 0)
         {

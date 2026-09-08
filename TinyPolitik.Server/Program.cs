@@ -8,7 +8,7 @@ var logsRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "lo
 var dataRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata");
 var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "gameworld");
 var backupsRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "snapshots");
-var accountsPath = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "accounts");
+var accountsPath = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "accounts.json");
 
 // Initialising Directories:
 Directory.CreateDirectory(contentRoot);
@@ -90,27 +90,21 @@ if (doInitialiseGame)
 
 
 // PUBLIC ROUTES:
-
-app.MapPost("/server/login", 
-    (HttpContext context, 
-    [FromBody] LoginRequest req, 
-    [FromServices] SessionStore sessions,
-    [FromServices] LoginRateLimiter limiter,
-    [FromServices] GameConfig config ) => LoginHandler.Login(context, req, sessions, limiter, config));
-
 // Getting content version (Game Version, Game Definition Version, etc)
 app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary, [FromServices] GameConfig config) => ServerInfo.Get(definitionLibrary, config));
+
+app.MapPost("/account/login", 
+    (HttpContext ctx, AccountLoginRequest request, [FromServices] AccountManager accountManager) => accountManager.Login(ctx, request));
+
+app.MapPost("/account/register", 
+    (HttpContext ctx, AccountRegisterRequest request, [FromServices] AccountManager accountManager) => accountManager.RegisterAccount(ctx, request));
+
 
 // PRIVATE ROUTES:
 // These require an authentication token
 var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
 
 // Account creation:
-authed.MapPost("/account/register", 
-    (HttpContext ctx, AccountRegisterRequest request, [FromServices] AccountManager accountManager) => accountManager.RegisterAccount(ctx, request));
-
-authed.MapPost("/account/login", 
-    (HttpContext ctx, AccountLoginRequest request, [FromServices] AccountManager accountManager) => accountManager.Login(ctx, request));
 
 
 // Getting game data:
