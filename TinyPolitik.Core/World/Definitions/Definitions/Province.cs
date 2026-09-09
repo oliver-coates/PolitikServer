@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class Province : GameDefinition
+public class Province : GameDefinitionOld
 {
     public string Name { get; private set; }
     public WorldPoint Centre { get; private set; }

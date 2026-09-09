@@ -1,10 +1,10 @@
 namespace PolitikServer.Core;
 
-public abstract class GameDefinition : ISerializableObject
+public abstract class GameDefinitionOld : ISerializableObject
 {
     public string UniqueIdentifier { get; private set; }
 
-    public GameDefinition(string UniqueIdentifier)
+    public GameDefinitionOld(string UniqueIdentifier)
     {
         this.UniqueIdentifier = UniqueIdentifier;
     }

@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class BiomeType : GameDefinition
+public class BiomeType : GameDefinitionOld
 {
     public BiomeType(string UniqueIdentifier) : base(UniqueIdentifier)
     {

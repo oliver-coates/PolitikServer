@@ -11,7 +11,7 @@ public class SerializedProvince : SerializedGameDefinition
     public string[] features = [];
 
 
-    public override GameDefinition Deserialize()
+    public override GameDefinitionOld Deserialize()
     {
         return new Province(_uniqueIdentifier, name, centre, adjacentProvinceUIDs);
     }

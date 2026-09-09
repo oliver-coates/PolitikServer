@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class ProvinceModifier : GameDefinition
+public class ProvinceModifier : GameDefinitionOld
 {
     public readonly int baseDuration;
     public readonly ProvinceModifierEffect[] effects;

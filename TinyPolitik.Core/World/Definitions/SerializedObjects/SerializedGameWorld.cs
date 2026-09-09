@@ -6,7 +6,7 @@ public class SerializedGameWorld : SerializedGameDefinition
     public string worldAuthor = "";
     public long lastUpdated = 0;
 
-    public override GameDefinition Deserialize()
+    public override GameDefinitionOld Deserialize()
     {
         return new GameWorld(
             worldName,

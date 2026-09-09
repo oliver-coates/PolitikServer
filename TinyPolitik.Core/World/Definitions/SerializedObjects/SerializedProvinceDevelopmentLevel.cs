@@ -8,7 +8,7 @@ public class SerializedProvinceDevelopmentLevel : SerializedGameDefinition
     public int powerProduced;
     public float populationGrowthMultiplier;
 
-    public override GameDefinition Deserialize()
+    public override GameDefinitionOld Deserialize()
     {
         return new ProvinceDevelopmentLevel(_uniqueIdentifier, populationThreshold, resourcesProduced, buildingSlots, powerProduced, populationGrowthMultiplier);
     }

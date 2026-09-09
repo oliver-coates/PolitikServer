@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class StrategicResource : GameDefinition
+public class StrategicResource : GameDefinitionOld
 {
     public StrategicResource(string UniqueIdentifier) : base(UniqueIdentifier)
     {

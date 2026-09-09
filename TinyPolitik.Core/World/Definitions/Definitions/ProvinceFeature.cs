@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class ProvinceFeature : GameDefinition
+public class ProvinceFeature : GameDefinitionOld
 {
     public readonly StrategicResource[] resources;
 

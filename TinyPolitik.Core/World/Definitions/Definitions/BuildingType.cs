@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class BuildingType : GameDefinition
+public class BuildingType : GameDefinitionOld
 {
     public readonly int baseBuildCost;
     public readonly int upkeepCost;

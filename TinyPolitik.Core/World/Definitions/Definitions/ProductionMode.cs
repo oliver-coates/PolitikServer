@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class ProductionMode : GameDefinition
+public class ProductionMode : GameDefinitionOld
 {
     public readonly StrategicResource[] consumed;
     public readonly StrategicResource[] produced;

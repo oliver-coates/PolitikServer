@@ -8,7 +8,7 @@ public class SerializedBuildingType : SerializedGameDefinition
     public int maxLevelBase;
     public string[] productionModes = [];
 
-    public override GameDefinition Deserialize()
+    public override GameDefinitionOld Deserialize()
     {
         ProductionMode[] modes = DefinitionLibrary.GetDefinitonsByUid<ProductionMode>(productionModes).ToArray();
 

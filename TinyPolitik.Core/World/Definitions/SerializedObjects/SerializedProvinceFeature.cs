@@ -4,7 +4,7 @@ public class SerializedProvinceFeature : SerializedGameDefinition
 {
     public string[] strategicResources = [];
 
-    public override GameDefinition Deserialize()
+    public override GameDefinitionOld Deserialize()
     {
         StrategicResource[] resources = DefinitionLibrary.GetDefinitonsByUid<StrategicResource>(strategicResources).ToArray();
 

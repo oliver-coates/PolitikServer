@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class WorldConfig : GameDefinition
+public class WorldConfig : GameDefinitionOld
 {
     private static Dictionary<string, ConfigValue> Values = [];
 

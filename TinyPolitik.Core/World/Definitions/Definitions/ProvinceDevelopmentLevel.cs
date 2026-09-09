@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class ProvinceDevelopmentLevel : GameDefinition
+public class ProvinceDevelopmentLevel : GameDefinitionOld
 {
     public readonly int populationThreshold;   
     public readonly int resourcesProvided;
