@@ -2,7 +2,7 @@ namespace PolitikServer.Core.Serialization;
 
 public class SerializedBiome : SerializedGameDefinition
 {
-    public override GameDefinitionOld Deserialize()
+    public override GameDefinition Deserialize()
     {
         return new BiomeType(_uniqueIdentifier);
     }

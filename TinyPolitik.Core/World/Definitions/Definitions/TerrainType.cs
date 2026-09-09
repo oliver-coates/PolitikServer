@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class TerrainType : GameDefinitionOld
+public class TerrainType : GameDefinition
 {
     public TerrainType(string UniqueIdentifier) : base(UniqueIdentifier)
     {

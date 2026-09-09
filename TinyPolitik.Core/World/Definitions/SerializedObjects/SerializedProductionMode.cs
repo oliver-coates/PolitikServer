@@ -7,7 +7,7 @@ public class SerializedProductionMode : SerializedGameDefinition
     public int powerDraw;
     public int powerGain;
 
-    public override GameDefinitionOld Deserialize()
+    public override GameDefinition Deserialize()
     {
         StrategicResource[] resourcesConsumed = DefinitionLibrary.GetDefinitonsByUid<StrategicResource>(consumed).ToArray();
         StrategicResource[] resourcesProduced = DefinitionLibrary.GetDefinitonsByUid<StrategicResource>(produced).ToArray();

@@ -1,12 +1,21 @@
 namespace PolitikServer.Core;
 
-public class WorldConfig : GameDefinitionOld
+public class WorldConfig : GameDefinition
 {
-    private static Dictionary<string, ConfigValue> Values = [];
+    private static WorldConfig? _Instance;
+    private Dictionary<string, ConfigValue> ValuesDict = [];
+    private List<ConfigValue> Values;
 
-    public WorldConfig(Dictionary<string, ConfigValue> values) : base("worldConfig")
+    public WorldConfig(List<ConfigValue> Values) : base("WorldConfig")
     {
-        Values = values;
+        _Instance = this;
+        this.Values = Values;
+
+        ValuesDict = new();
+        foreach (ConfigValue configValue in Values)
+        {
+            ValuesDict.Add(configValue.name, configValue);   
+        }
     }
 
     public override string ToString()
@@ -16,17 +25,21 @@ public class WorldConfig : GameDefinitionOld
     
     public static string Get(string name)
     {
-        return Values[name].value;
+        return _Instance?.ValuesDict[name].value ?? throw new Exception("World Config has not been initialised");
     }
 
     public static int GetInt(string name)
     {
-        return int.Parse(Values[name].value);
+        return int.Parse(_Instance?.ValuesDict[name].value ?? throw new Exception("World Config has not been initialised"));
     }
 
     public static float GetFloat(string name)
     {
-        return float.Parse(Values[name].value);
+        return float.Parse(_Instance?.ValuesDict[name].value ?? throw new Exception("World Config has not been initialised"));
+    }
+
+    internal override void Deserialize()
+    {
     }
 }
 

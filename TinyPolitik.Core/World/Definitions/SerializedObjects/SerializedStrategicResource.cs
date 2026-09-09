@@ -2,7 +2,7 @@ namespace PolitikServer.Core.Serialization;
 
 public class SerializedStrategicResource : SerializedGameDefinition
 {
-    public override GameDefinitionOld Deserialize()
+    public override GameDefinition Deserialize()
     {
         return new StrategicResource(_uniqueIdentifier);
     }

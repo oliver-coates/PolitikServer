@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public class GameWorld : GameDefinitionOld
+public class GameWorld : GameDefinition
 {
 
     public string Name { get; private set; }

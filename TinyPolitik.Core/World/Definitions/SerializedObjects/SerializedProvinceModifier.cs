@@ -6,7 +6,7 @@ public class SerializedProvinceModifier : SerializedGameDefinition
     public SerializedPair[] effects = [];
     public string followOnModifier = "";
 
-    public override GameDefinitionOld Deserialize()
+    public override GameDefinition Deserialize()
     {
         ProvinceModifierEffect[] deserializedEffects = effects.Select(e => new ProvinceModifierEffect(e.key, e.value)).ToArray();
 

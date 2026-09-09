@@ -4,7 +4,7 @@ public class SerializedWorldConfig : SerializedGameDefinition
 {
     public List<ConfigValue> configValues = [];
 
-    public override GameDefinitionOld Deserialize()
+    public override GameDefinition Deserialize()
     {
         Dictionary<string, ConfigValue> dictMap = [];
 

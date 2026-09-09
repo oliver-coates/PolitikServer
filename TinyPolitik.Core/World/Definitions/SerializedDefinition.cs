@@ -4,5 +4,5 @@ public abstract class SerializedGameDefinition
 {
     public string _uniqueIdentifier = "";
 
-    public abstract GameDefinitionOld Deserialize();
+    public abstract GameDefinition Deserialize();
 }

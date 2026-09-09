@@ -54,7 +54,7 @@ public class GameStateInitialiser
         float popVariance = WorldConfig.GetFloat("province_starting_population_variance");
         int popBase = WorldConfig.GetInt("province_starting_population");
         int pop = (int) RandomUtil.ApplyVariance(popBase, popVariance, RandomUtil.VarianceMethod.Multiplicative);
-        var level = ProvinceDevelopmentLevel.Evaluate(DefinitionLibrary.GetAllDefinitionsOfType<ProvinceDevelopmentLevel>(), pop);
+        var level = ProvinceDevelopmentLevel.Evaluate(_definitions.GetAll<ProvinceDevelopmentLevel>(), pop);
 
         var newProvince = new ProvinceEntity()
         {
@@ -77,7 +77,7 @@ public class GameStateInitialiser
     /// </summary>
     private void SetupNations()
     {
-        ProvinceEntity[] provinces = EntityLibrary.GetAllEntitiesOfType<ProvinceEntity>();  
+        ProvinceEntity[] provinces = _entities.GetAll<ProvinceEntity>();  
 
         // How many nations to spawn?
         int numProvinces = provinces.Length;
@@ -99,7 +99,7 @@ public class GameStateInitialiser
             }
             
             Nation newNation = GenerateNation([startingProvince]);
-            EntityLibrary.AddEntity(newNation);
+            _entities.Add<Nation>(newNation);
         }
         
     }
@@ -107,7 +107,7 @@ public class GameStateInitialiser
     private ProvinceEntity? GetRandomNationStartingProvince()
     {
         string doAllowBorderSpawns = WorldConfig.Get("do_allow_ai_nation_spawn_at_border");
-        ProvinceEntity[] allProvinces = [.. EntityLibrary.GetAllEntitiesOfType<ProvinceEntity>().Shuffle()];
+        ProvinceEntity[] allProvinces = [.. _entities.GetAll<ProvinceEntity>().Shuffle()];
 
         switch (doAllowBorderSpawns)
         {
