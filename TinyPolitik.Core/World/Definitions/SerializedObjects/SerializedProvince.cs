@@ -13,7 +13,7 @@ public class SerializedProvince : SerializedGameDefinition
 
     public override GameDefinitionOld Deserialize()
     {
-        return new Province(_uniqueIdentifier, name, centre, adjacentProvinceUIDs);
+        return new ProvinceDefinition(_uniqueIdentifier, name, centre, adjacentProvinceUIDs);
     }
 }
 

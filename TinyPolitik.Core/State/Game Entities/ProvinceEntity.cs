@@ -2,7 +2,7 @@ namespace PolitikServer.Core;
 
 public class ProvinceEntity : GameEntity
 {
-    public required SerializedField<Province> province { get; init; }
+    public required SerializedField<ProvinceDefinition> province { get; init; }
     public SerializedList<ProvinceEntity> connectedProvinces = new();
     public required int population;
     public required List<string> buildings;

@@ -9,7 +9,7 @@ namespace PolitikServer.Core;
 public class SerializedField<T> where T : GameRecord
 {
     [JsonIgnore] public T Value { get; private set; }
-    [JsonProperty] private string SerializedValue;
+    [JsonRequired] private string SerializedValue;
 
     public SerializedField(T value)
     {
@@ -26,6 +26,28 @@ public class SerializedField<T> where T : GameRecord
     {
         Value = newValue;
         SerializedValue = newValue.UniqueIdentifier;
+    }
+
+    public void Load()
+    {
+        if (string.IsNullOrEmpty(SerializedValue))
+        {
+            throw new Exception("No serialized value found for SerializedField. Consider using the NullableSerializedField class");
+        }
+        else if (typeof(T).IsSubclassOf(typeof(GameDefinition)))
+        {
+            GameRecord definition = DefinitionLibrary.Get(SerializedValue);
+            Value = (T) definition;
+        }
+        else if (typeof(T).IsSubclassOf(typeof(GameEntity)))
+        {
+            GameRecord entity = EntityLibrary.Get(SerializedValue); 
+            Value = (T) entity;
+        }
+        else
+        {
+            throw new NullReferenceException($"Could not deserialize field of type {typeof(T)}.");
+        }
     }
 }
 
@@ -56,6 +78,28 @@ public class SerializedNullableField<T> where T : GameRecord?
         Value = newValue;
         SerializedValue = newValue?.UniqueIdentifier ?? "null";
     }
+
+    public void Load()
+    {
+        if (string.IsNullOrEmpty(SerializedValue) || SerializedValue == "null")
+        {
+            Value = null;
+        }
+        else if (typeof(T).IsSubclassOf(typeof(GameDefinition)))
+        {
+            GameRecord definition = DefinitionLibrary.Get(SerializedValue);
+            Value = (T) definition;
+        }
+        else if (typeof(T).IsSubclassOf(typeof(GameEntity)))
+        {
+            GameRecord entity = EntityLibrary.Get(SerializedValue); 
+            Value = (T) entity;
+        }
+        else
+        {
+            throw new NullReferenceException($"Could not deserialize field of type {typeof(T)}.");
+        }
+    }
 }
 
 public class SerializedList<T>  where T : GameRecord 
@@ -75,6 +119,10 @@ public class SerializedList<T>  where T : GameRecord
         SerializedValues = [];
     }
 
+    public List<T> Get()
+    {
+        return Values;
+    }
    
     public T this[int i]
     {
@@ -92,5 +140,27 @@ public class SerializedList<T>  where T : GameRecord
     public IEnumerator<T> GetEnumerator()
     {
         return Values.GetEnumerator();
+    }
+
+    public void Load()
+    {
+        if (SerializedValues == null || SerializedValues.Count == 0)
+        {
+            Values = new List<T>();
+        }
+        else if (typeof(T).IsSubclassOf(typeof(GameDefinition)))
+        {
+            GameRecord[] definitions = DefinitionLibrary.Get(SerializedValues);
+            Values = definitions.Select(e => (T) e).ToList();
+        }
+        else if (typeof(T).IsSubclassOf(typeof(GameEntity)))
+        {
+            GameRecord[] entities = EntityLibrary.Get(SerializedValues); 
+            Values = entities.Select(e => (T) e).ToList();
+        }
+        else
+        {
+            throw new NullReferenceException($"Could not deserialize list of type '{typeof(T)}'.");
+        }
     }
 }

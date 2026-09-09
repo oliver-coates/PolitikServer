@@ -48,7 +48,7 @@ public static class SerializationSchema
     {
         {typeof(SerializedGameWorld),                       typeof(GameWorld)},
         {typeof(SerializedWorldConfig),                     typeof(WorldConfig)},
-        {typeof(SerializedProvince),                        typeof(Province)},
+        {typeof(SerializedProvince),                        typeof(ProvinceDefinition)},
         {typeof(SerializedBiome),                           typeof(BiomeType)},
         {typeof(SerializedProvinceDevelopmentLevel),        typeof(ProvinceDevelopmentLevel)},
         {typeof(SerializedProvinceFeature),                 typeof(ProvinceFeature)},

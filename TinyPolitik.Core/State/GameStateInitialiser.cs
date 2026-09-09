@@ -8,10 +8,14 @@ namespace PolitikServer.Core;
 public class GameStateInitialiser
 {
     private readonly ILogger<GameStateInitialiser> _logger;
+    private readonly DefinitionLibrary _definitions;
+    private readonly EntityLibrary _entities;
 
-    public GameStateInitialiser(ILogger<GameStateInitialiser> logger)
+    public GameStateInitialiser(ILogger<GameStateInitialiser> logger, DefinitionLibrary definitions, EntityLibrary entities)
     {
         _logger = logger;
+        _definitions = definitions;
+        _entities = entities;
     }
 
     public void Initialise()
@@ -23,21 +27,21 @@ public class GameStateInitialiser
 
     private void SetupProvinces()
     {
-        Province[] provinceDefinitions = DefinitionLibrary.GetAllDefinitionsOfType<Province>();
-        Dictionary<Province, ProvinceEntity> provinceDict = new(); 
+        ProvinceDefinition[] provinceDefinitions = _definitions.GetAll<ProvinceDefinition>();
+        Dictionary<ProvinceDefinition, ProvinceEntity> provinceDict = new(); 
 
-        foreach (Province pDef in provinceDefinitions)
+        foreach (ProvinceDefinition pDef in provinceDefinitions)
         {
             ProvinceEntity newProvince = CreateNewProvince(pDef);
-            EntityLibrary.AddEntity(newProvince);
+            _entities.Add<ProvinceEntity>(newProvince);
             provinceDict.Add(pDef, newProvince);
         }
 
         // Iterate back across each newly created province entity and set up their connected provinces
-        foreach (KeyValuePair<Province, ProvinceEntity> pair in provinceDict)
+        foreach (KeyValuePair<ProvinceDefinition, ProvinceEntity> pair in provinceDict)
         {
             List<ProvinceEntity> connectedProvinces = new();
-            foreach (Province bordered in pair.Key.ConnectedProvinces)
+            foreach (ProvinceDefinition bordered in pair.Key.ConnectedProvinces)
             {
                 connectedProvinces.Add(provinceDict[bordered]);
             }
@@ -45,7 +49,7 @@ public class GameStateInitialiser
         }
     }
 
-    private ProvinceEntity CreateNewProvince(Province definition)
+    private ProvinceEntity CreateNewProvince(ProvinceDefinition definition)
     {
         float popVariance = WorldConfig.GetFloat("province_starting_population_variance");
         int popBase = WorldConfig.GetInt("province_starting_population");
@@ -55,7 +59,7 @@ public class GameStateInitialiser
         var newProvince = new ProvinceEntity()
         {
             UniqueIdentifier = Guid.NewGuid().ToString(),
-            province = new SerializedField<Province>(definition),
+            province = new SerializedField<ProvinceDefinition>(definition),
             population = pop,
             buildings = [],
             ownerNation = new SerializedNullableField<Nation?>(),

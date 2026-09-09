@@ -28,60 +28,15 @@ public class DefinitionLibrary : GameLibrary<GameDefinition>, IGameRecordLibrary
         return Convert.ToHexString(hash).ToLowerInvariant();
     }
 
-    // public static new GameDefinition Get(string uniqueIdentifier)
-    // {
-    //     return Instance.Get(uniqueIdentifier);
-    // }
+    // These methods are used by SerializedFields when loading in,
+    // They should not be called by regular classes, who should be relying on DI
+    public static new GameDefinition[] Get(IReadOnlyList<string> uids)
+    {
+        return Instance?.Get(uids) ?? throw new Exception("Defintion library is null.");
+    }
 
-    // public static new T Get<T>(string uniqueIdentifier) where T : GameDefinition
-    // {
-    //     return Instance.Get<T>(uniqueIdentifier);
-    // }
-
-    // public static T Get<T>() where T : GameDefinition
-    // {
-    //     return Instance.GetAll<T>()[0];
-    // }
-
-    
-    // public static new T[] Get<T>(IReadOnlyList<string> uids) where T : GameDefinition
-    // {
-    //     return Instance.Get<T>(uids);
-    // }
-
-    // public static new GameDefinition[] Get(IReadOnlyList<string> uids)
-    // {
-    //     return Instance.Get(uids);
-    // }
-
-
-    // public static new T[] GetAll<T>() where T : GameDefinition
-    // {
-    //     return Instance.GetAll<T>();
-    // }          
-
-    // public static new GameDefinition[] GetAll(Type requestedType)
-    // {
-    //     return Instance.GetAll(requestedType);
-    // }
-
-    // public static void Add<T>(T record) where T : GameDefinition
-    // {
-    //     Instance.Add<T>(record);
-    // }
-
-    // public static new void Add(GameDefinition record, Type t)
-    // {
-    //     Instance.Add(record, t);
-    // }
-
-    // public static void Remove<T>(T record) where T : GameDefinition
-    // {
-    //     Instance.Remove<T>(record);
-    // }
-
-    // public static new void Remove(GameDefinition record, Type t)
-    // {
-    //     Instance.Remove(record, t);
-    // }
+    public static new GameDefinition Get(string uid)
+    {
+        return Instance?.Get(uid) ?? throw new Exception("Defintion library is null.");
+    } 
 }
