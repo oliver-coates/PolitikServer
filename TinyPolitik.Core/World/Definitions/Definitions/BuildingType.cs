@@ -20,9 +20,14 @@ public class BuildingType : GameDefinition
         productionModes = modes;
     }
 
-    public override string ToString()
+    public override string GetReadableName()
     {
-        return $"[{UniqueIdentifier}] Building Type. Build Cost: {baseBuildCost}, Upkeep: {upkeepCost}, Powerdraw: {powerDrawBase}, Max Level (before tech) {maxLevelBase}, Production Modes: {string.Join(',',productionModes.Get().Select(p => p.UniqueIdentifier))} ";
+        return $"Building Type";
+    }
+
+    protected override string GetFullName()
+    {
+        return $"Building Type. Build Cost: {baseBuildCost}, Upkeep: {upkeepCost}, Powerdraw: {powerDrawBase}, Max Level (before tech) {maxLevelBase}, Production Modes: {string.Join(',',productionModes.Get().Select(p => p.UniqueIdentifier))} ";
     }
 
     internal override void Deserialize()

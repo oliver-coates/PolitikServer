@@ -2,12 +2,22 @@ namespace PolitikServer.Core;
 
 public class StrategicResource : GameDefinition
 {
+
     public StrategicResource(string UniqueIdentifier) : base(UniqueIdentifier)
     {
     }
 
-    public override string ToString()
+    public override string GetReadableName()
     {
-        return $"[{UniqueIdentifier}] Strategic Resource.";
+        return "Strategic Resource.";
+    }
+
+    protected override string GetFullName()
+    {
+        return "Strategic Resource.";
+    }
+
+    internal override void Deserialize()
+    {
     }
 }

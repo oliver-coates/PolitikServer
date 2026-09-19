@@ -37,7 +37,7 @@ public class ProvinceTurnResolver
             float growthRateFinal;
             if (growthRateBase > 0)
             {
-                growthRateFinal = growthRateBase * developmentLevel.popGrowthMulitplier;
+                growthRateFinal = growthRateBase * developmentLevel.PopulationGrowthMultiplier;
             } 
             else
             {

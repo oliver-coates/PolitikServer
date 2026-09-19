@@ -14,14 +14,20 @@ public class ProvinceDefinition : GameDefinition
         this.ConnectedProvinces = ConnectedProvinces;
     }
 
-    public override string ToString()
-    {
-        return $"[{UniqueIdentifier}] Province '{Name}', center {Centre}, Connected to: {String.Join(',', ConnectedProvinces.Get().Select(p => p.UniqueIdentifier))}";
-    }
 
     internal override void Deserialize()
     {
         ConnectedProvinces.Load();
+    }
+
+    protected override string GetFullName()
+    {
+        return $"Province '{Name}', center {Centre}, Connected to: {String.Join(',', ConnectedProvinces.Get().Select(p => p.UniqueIdentifier))}";
+    }
+
+    public override string GetReadableName()
+    {
+        return "Province.";
     }
 }
 

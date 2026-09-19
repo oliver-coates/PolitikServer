@@ -2,13 +2,11 @@ namespace PolitikServer.Core;
 
 public class WorldConfig : GameDefinition
 {
-    private static WorldConfig? _Instance;
-    private Dictionary<string, ConfigValue> ValuesDict = [];
-    private List<ConfigValue> Values;
+    [Newtonsoft.Json.JsonIgnore] private static Dictionary<string, ConfigValue> ValuesDict = [];
+    [Newtonsoft.Json.JsonRequired] private List<ConfigValue> Values;
 
     public WorldConfig(List<ConfigValue> Values) : base("WorldConfig")
     {
-        _Instance = this;
         this.Values = Values;
 
         ValuesDict = new();
@@ -18,29 +16,67 @@ public class WorldConfig : GameDefinition
         }
     }
 
-    public override string ToString()
+    internal override void Deserialize()
     {
-        return "$[World Config]";
     }
-    
+
+    protected override string GetFullName()
+    {
+        return "";
+    }
+
+    public override string GetReadableName()
+    {
+        return "";
+    }
+
+
     public static string Get(string name)
     {
-        return _Instance?.ValuesDict[name].value ?? throw new Exception("World Config has not been initialised");
+        try
+        {
+            return ValuesDict[name].value;
+        }
+        catch (KeyNotFoundException)
+        {
+            throw new Exception($"Could not find string value of '{name}' in world config.");
+        }
     }
 
     public static int GetInt(string name)
     {
-        return int.Parse(_Instance?.ValuesDict[name].value ?? throw new Exception("World Config has not been initialised"));
+        try
+        {
+            return int.Parse(ValuesDict[name].value);
+        }
+        catch (KeyNotFoundException)
+        {
+            throw new Exception($"Could not find '{name}' in world config.");
+        }
+        catch (FormatException)
+        {
+            throw new Exception($"Could not parse '{ValuesDict[name]}' to integer in world config.");
+        }
+        
     }
 
     public static float GetFloat(string name)
     {
-        return float.Parse(_Instance?.ValuesDict[name].value ?? throw new Exception("World Config has not been initialised"));
+        try
+        {
+            return float.Parse(ValuesDict[name].value);
+        }
+        catch (KeyNotFoundException)
+        {
+            throw new Exception($"Could not find value'{name}' in world config.");
+        }
+        catch (FormatException)
+        {
+            throw new Exception($"Could not parse '{ValuesDict[name]}' to float in world config.");
+        }
     }
 
-    internal override void Deserialize()
-    {
-    }
+    
 }
 
 public class ConfigValue

@@ -3,19 +3,27 @@ namespace PolitikServer.Core;
 public class GameWorld : GameDefinition
 {
 
-    public string Name { get; private set; }
-    public string Author {get; private set; }
-    public DateTime TimeLastChanged { get; private set; }
+    public string WorldName { get; private set; }
+    public string WorldAuthor {get; private set; }
+    public DateTime LastUpdated { get; private set; }
 
-    public GameWorld(string name, string author, DateTime timeChanged) : base("world")
+    public GameWorld(string WorldName, string WorldAuthor, DateTime LastUpated) : base("world")
     {
-        Name = name;
-        Author = author;
-        TimeLastChanged = timeChanged;
+        this.WorldName = WorldName;
+        this.WorldAuthor = WorldAuthor;
+        this.LastUpdated = LastUpated;
     }
 
-    public override string ToString()
+    internal override void Deserialize() {}
+
+
+    protected override string GetFullName()
     {
-        return $"[{UniqueIdentifier}] '{Name}' by '{Author}'. Last Updated: {TimeLastChanged.ToString()}";
+        return $"World '{WorldName}' by '{WorldAuthor}'. Last Updated: {LastUpdated}";
+    }
+
+    public override string GetReadableName()
+    {
+        return "Game World";
     }
 }

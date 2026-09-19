@@ -6,8 +6,17 @@ public class TerrainType : GameDefinition
     {
     }
 
-    public override string ToString()
+    public override string GetReadableName()
     {
-        return $"[{UniqueIdentifier}] Terrain Type.";
+        return $"Terrain Type.";
+    }
+
+    protected override string GetFullName()
+    {
+        return $"Terrain Type.";
+    }
+
+    internal override void Deserialize()
+    {
     }
 }

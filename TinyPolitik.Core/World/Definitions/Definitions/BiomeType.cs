@@ -6,8 +6,17 @@ public class BiomeType : GameDefinition
     {
     }
 
-    public override string ToString()
+    protected override string GetFullName()
     {
-        return $"[{UniqueIdentifier}] Biome Type";
+        return "Biome Type";
+    }
+
+    public override string GetReadableName()
+    {
+        return $"Biome Type";
+    }
+
+    internal override void Deserialize()
+    {
     }
 }

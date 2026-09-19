@@ -2,21 +2,32 @@ namespace PolitikServer.Core;
 
 public class ProductionMode : GameDefinition
 {
-    public readonly StrategicResource[] consumed;
-    public readonly StrategicResource[] produced;
-    public readonly int powerDraw;
-    public readonly int powerGain;
+    public readonly SerializedList<StrategicResource> ResourcesConsumed;
+    public readonly SerializedList<StrategicResource> ResourcesProduced;
+    public readonly int PowerDraw;
+    public readonly int PowerGenerated;
 
-    public ProductionMode(string UniqueIdentifier, StrategicResource[] consumed, StrategicResource[] produced, int draw, int gain) : base(UniqueIdentifier)
+    public ProductionMode(string UniqueIdentifier, SerializedList<StrategicResource> ResourcesConsumed, SerializedList<StrategicResource> ResourcesProduced, int PowerDraw, int PowerGenerated) : base(UniqueIdentifier)
     {
-        this.consumed = consumed;
-        this.produced = produced;
-        powerDraw = draw;
-        powerGain = gain;
+        this.ResourcesConsumed = ResourcesConsumed;
+        this.ResourcesProduced = ResourcesProduced;
+        this.PowerDraw = PowerDraw;
+        this.PowerGenerated = PowerGenerated;
     }
 
-    public override string ToString()
+    public override string GetReadableName()
     {
-        return $"[{UniqueIdentifier}] Production Mode. Inputs: [{string.Join(',', consumed.Select(o => o.UniqueIdentifier))}], Outputs: [{string.Join(',', produced.Select(o => o.UniqueIdentifier))}]. Power: -{powerDraw}/+{powerGain}";
+        return "Production Mode";
+    }
+
+    protected override string GetFullName()
+    {
+        return $"Production Mode. Inputs: [{string.Join(',', ResourcesConsumed.Get().Select(o => o.UniqueIdentifier))}], Outputs: [{string.Join(',', ResourcesProduced.Get().Select(o => o.UniqueIdentifier))}]. Power: -{PowerGenerated - PowerDraw}";
+    }
+
+    internal override void Deserialize()
+    {
+        ResourcesConsumed.Load();
+        ResourcesProduced.Load();
     }
 }

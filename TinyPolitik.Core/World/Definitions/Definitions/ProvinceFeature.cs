@@ -2,15 +2,24 @@ namespace PolitikServer.Core;
 
 public class ProvinceFeature : GameDefinition
 {
-    public readonly StrategicResource[] resources;
+    public readonly SerializedList<StrategicResource> StrategicResources;
 
-    public ProvinceFeature(string UniqueIdentifier, StrategicResource[] resources) : base(UniqueIdentifier)
+    public ProvinceFeature(string UniqueIdentifier, SerializedList<StrategicResource> StrategicResources) : base(UniqueIdentifier)
     {
-        this.resources = resources;
+        this.StrategicResources = StrategicResources;
     }
 
-    public override string ToString()
+    public override string GetReadableName()
     {
-        return $"[{UniqueIdentifier}] Province Feature.";
+        return $"Province Feature";
+    }
+
+    protected override string GetFullName()
+    {
+        return $"Province Feature. Provides resources: [{string.Join(',', StrategicResources.Get().Select(x => x.GetReadableName()))}]";
+    }
+
+    internal override void Deserialize()
+    {
     }
 }

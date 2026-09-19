@@ -11,4 +11,11 @@ public abstract class GameRecord
     {
         this.UniqueIdentifier = UniqueIdentifier;
     }
+
+    public sealed override string ToString()
+    {
+        return $"({UniqueIdentifier}) {GetReadableName()}";
+    }
+
+    public abstract string GetReadableName();
 }   

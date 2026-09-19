@@ -2,36 +2,33 @@ namespace PolitikServer.Core;
 
 public class ProvinceModifier : GameDefinition
 {
-    public readonly int baseDuration;
-    public readonly ProvinceModifierEffect[] effects;
+    public readonly int DurationBase;
+    public readonly ProvinceModifierEffect[] Effects;
     
-    private string _followOnModifierUid = "";
-    public ProvinceModifier? followOnModifier;
+    public SerializedNullableField<ProvinceModifier> FollowOnModifier;
 
-    public ProvinceModifier(string UniqueIdentifier, int duration, ProvinceModifierEffect[] effects, string followOn) : base(UniqueIdentifier)
+    public ProvinceModifier(string UniqueIdentifier, int DurationBase, ProvinceModifierEffect[] Effects, SerializedNullableField<ProvinceModifier> FollowOnModifier) : base(UniqueIdentifier)
     {
-        baseDuration = duration;
-        this.effects = effects;
-        _followOnModifierUid = followOn;
+        this.DurationBase = DurationBase;
+        this.Effects = Effects;
+        this.FollowOnModifier = FollowOnModifier;
     }
 
-    public override void LateDeserialize()
+    protected override string GetFullName()
     {
-        if (_followOnModifierUid == "null" || string.IsNullOrEmpty(_followOnModifierUid))
-        {
-            followOnModifier = null;
-            return;
-        }
-        else
-        {
-            followOnModifier = DefinitionLibrary.GetDefinition<ProvinceModifier>(_followOnModifierUid);
-        }
+        return $"Province Modifier. Duration: {DurationBase}, Follows on: {((FollowOnModifier != null) ? FollowOnModifier : "None")}, Effects: [{string.Join(",", Effects.Select(o => $"{o.type}:{o.value}"))}]";
+    }
+    
+    public override string GetReadableName()
+    {
+        return "Province Modifier.";
     }
 
-    public override string ToString()
+    internal override void Deserialize()
     {
-        return $"[{UniqueIdentifier}] Province Modifier. Duration: {baseDuration}, Follows on: {((followOnModifier != null) ? followOnModifier : "None")}, Effects: [{string.Join(",", effects.Select(o => $"{o.type}:{o.value}"))}]";
+        FollowOnModifier.Load();
     }
+
 }
 
 public class ProvinceModifierEffect
