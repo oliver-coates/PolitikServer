@@ -178,7 +178,7 @@ public abstract class GameLibrary<LibType> : IGameRecordLibrary where LibType : 
     /// Converts all records within this dictionary into JSON,
     /// Returns a Dictionary mapping the name of the type, to an array of values. 
     /// </summary>
-    public virtual Dictionary<string, string[]> ToJson()
+    public virtual Dictionary<string, string[]> ToJsonDict()
     {
         Dictionary<string, string[]> jsonDict = new();
 
@@ -197,6 +197,13 @@ public abstract class GameLibrary<LibType> : IGameRecordLibrary where LibType : 
         }
 
         return jsonDict;   
+    }
+
+    public virtual string ToJson()
+    {
+        var dict = ToJsonDict();
+
+        return Newtonsoft.Json.JsonConvert.SerializeObject(dict);
     }
 }
 

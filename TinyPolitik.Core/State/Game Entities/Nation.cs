@@ -3,8 +3,9 @@ namespace PolitikServer.Core;
 public class Nation : GameEntity
 {
     public required string? playerId;
+    
     // Utilised in real-time-play to determine if this player controlled nation is ready to advance the turn
-    public bool isReady = false; 
+    [Newtonsoft.Json.JsonIgnore] public bool isReady = false; 
 
 
     public required string nameLong;
@@ -15,11 +16,30 @@ public class Nation : GameEntity
 
 
     public required SerializedList<ProvinceEntity> provincesControlled;
-    public required SerializedField<ProvinceEntity> capitolProvince;
+    public required SerializedField<ProvinceEntity> captialProvince;
 
-
-    public override string ToString()
+    public Nation(string UniqueIdentifier, string? playerId, string nameLong, string nameShort, string colorPrimary, string colorTertiary, string noun, SerializedList<ProvinceEntity> provincesControlled, SerializedField<ProvinceEntity> captialProvince) : base(UniqueIdentifier)
     {
-        return $"Nation [{UniqueIdentifier}], {nameLong}, Capitol: '{capitolProvince.Get().province.Get().UniqueIdentifier}'";
+        this.playerId = playerId;
+        this.nameLong = nameLong;
+        this.nameShort = nameShort;
+        this.colorPrimary = colorPrimary;
+        this.colorTertiary = colorTertiary;
+        this.noun = noun;
+    
+        this.provincesControlled = provincesControlled;
+        this.captialProvince = captialProvince;
+    }
+
+    public override string GetReadableName()
+    {
+        return $"Nation {nameLong}, Capitol: '{captialProvince.Get().province.Get().UniqueIdentifier}";
+    }
+
+
+    internal override void Deserialize()
+    {
+        provincesControlled.Load();
+        captialProvince.Load();
     }
 }

@@ -41,7 +41,7 @@ builder.Services.AddSingleton(new AccountStore(accountsPath));
 builder.Services.AddSingleton<AccountManager>();
 
 // Setup world:
-builder.Services.AddSingleton(new DefinitionLibrary(contentRoot));
+builder.Services.AddSingleton(new DefinitionLibrary());
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
 builder.Services.AddSingleton<TurnManager>();
@@ -77,14 +77,14 @@ var app = builder.Build();
 // Initialise everything:
 app.Services.GetRequiredService<TurnBackupManager>().Initialise(backupsRoot);
 
-bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save, for now always initialise as though a new server
+bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
 if (doInitialiseGame)
 { 
     app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
     app.Services.GetRequiredService<TurnManager>().Initialise();   
 
     // Make a backup of the world (this will move somewhere else eventually)
-    string worldJson = app.Services.GetRequiredService<DefinitionLibrary>().GetAllGameDefinitionsAsJson();
+    string worldJson = app.Services.GetRequiredService<DefinitionLibrary>().ToJson();
     app.Services.GetRequiredService<TurnBackupManager>().MakeWorldBackup(worldJson);
 }
 
@@ -108,8 +108,9 @@ var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
 
 
 // Getting game data:
-authed.MapGet("/world/data", ([FromServices] DefinitionLibrary lib) => Results.Text(lib.GetAllGameDefinitionsAsJson(), "application/json"));
-authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.Text(lib.GetAllEntitiesAsJson(), "application/json"));
+// If we want to speed this up we could cache the below data - to prevent having to serialize every endpoint call.
+authed.MapGet("/world/data", ([FromServices] DefinitionLibrary lib) => Results.Text(lib.ToJson(), "application/json"));
+authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.Text(lib.ToJson(), "application/json"));
 
 // Readying your nation - only allowed in real-time-play
 if (gameConfig.AllowRealTimePlay)
@@ -159,7 +160,9 @@ authed.MapPost("/nations/{nationId}/claim",
 
 CertificateLoader.NotifyInConsole();
 
-var test = app.Services.GetService<EntityLibrary>()?.GetAllEntitiesAsJson();
+
+var testEntities = app.Services.GetService<EntityLibrary>()?.ToJson();
+var testDefinitions = app.Services.GetService<DefinitionLibrary>()?.ToJson();
 
 app.Run();
 

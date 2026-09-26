@@ -12,7 +12,7 @@ public class DefinitionLibrary : GameLibrary<GameDefinition>, IGameRecordLibrary
     public string ComputeHash()
     {
         var sb = new StringBuilder();
-        Dictionary<string, string[]> allAsjson = ToJson();
+        Dictionary<string, string[]> allAsjson = ToJsonDict();
 
         // Concatenate all world data:
         foreach (KeyValuePair<string, string[]> contentDict in allAsjson)
