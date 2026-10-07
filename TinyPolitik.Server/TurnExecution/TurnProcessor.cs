@@ -51,7 +51,7 @@ public class TurnProcessor
         // Make backup:
         try
         {
-            string json = entities.GetAllEntitiesAsJson();
+            string json = entities.ToJson();
             backup.MakeTurnBackup(manager.turnNumber, json);
         }
         catch (Exception ex)
@@ -78,7 +78,7 @@ public class TurnProcessor
 
     private void ResetNationReadiness(EntityLibrary entities)
     {
-        foreach (Nation nation in EntityLibrary.GetAllEntitiesOfType<Nation>())
+        foreach (Nation nation in entities.GetAll<Nation>())
         {
             nation.isReady = false;
         }

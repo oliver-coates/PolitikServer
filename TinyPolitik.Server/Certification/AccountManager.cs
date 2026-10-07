@@ -97,7 +97,7 @@ public class AccountManager
         _loginLimiter.RecordSuccess(ip);
 
         var token = _sessionStore.CreateSession(account.PlayerId);
-        string? existingNationId = EntityLibrary.GetAllEntitiesOfType<Nation>().FirstOrDefault(n => n.playerId == account.PlayerId)?.playerId;
+        string? existingNationId = _entityLib.GetAll<Nation>().FirstOrDefault(n => n.playerId == account.PlayerId)?.playerId;
         
         Console.WriteLine($"Player {account.Username} has logged in.");
 

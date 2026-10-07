@@ -12,7 +12,7 @@ public class TurnRealTimePlayManager()
             return Results.BadRequest("This server does not allow real-time-play.");
         }
 
-        Nation? nation = entities.TryGetEntity<Nation>(session.PlayerId);
+        Nation? nation = entities.TryGet<Nation>(session.PlayerId);
         
         if (nation is null)
         {
@@ -34,7 +34,7 @@ public class TurnRealTimePlayManager()
     {
         int playerNationCount = 0;
 
-        foreach (Nation nation in EntityLibrary.GetAllEntitiesOfType<Nation>())
+        foreach (Nation nation in entities.GetAll<Nation>())
         {
             // Ensure all player run countries are ready
             if (nation.playerId != null)
@@ -58,7 +58,7 @@ public class TurnRealTimePlayManager()
 
     public IResult GetReadiness(EntityLibrary entities)
     {
-        var nations = EntityLibrary.GetAllEntitiesOfType<Nation>();
+        var nations = entities.GetAll<Nation>();
         
         int numNations = 0;
         int numNationsReady = 0;

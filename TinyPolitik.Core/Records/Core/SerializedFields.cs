@@ -107,7 +107,7 @@ public class SerializedList<T>  where T : GameRecord
     [JsonIgnore] public List<T> Values {get; private set; }
     [JsonProperty] private List<string> SerializedValues;
 
-    public SerializedList(IList<T> values)
+    public SerializedList(IReadOnlyList<T> values)
     {
         Values = new List<T>(values);
         SerializedValues = Values.Select(v => v.UniqueIdentifier).ToList();

@@ -22,7 +22,7 @@ public class ProvinceTurnResolver
     /// </summary>
     public void TickPopulation()
     {
-        ProvinceEntity[] provinces = EntityLibrary.GetAllEntitiesOfType<ProvinceEntity>();
+        ProvinceEntity[] provinces = _entities.GetAll<ProvinceEntity>();
         float baseGrowth = WorldConfig.GetFloat("province_population_growth_base");
         int minPop = WorldConfig.GetInt("province_min_population");
         int maxPop = WorldConfig.GetInt("province_max_population");
@@ -64,8 +64,8 @@ public class ProvinceTurnResolver
     /// </summary>
     public void TickProvinceLevel()
     {
-        ProvinceDevelopmentLevel[] developmentLevels = DefinitionLibrary.GetAllDefinitionsOfType<ProvinceDevelopmentLevel>();
-        ProvinceEntity[] provinces = EntityLibrary.GetAllEntitiesOfType<ProvinceEntity>();
+        ProvinceDevelopmentLevel[] developmentLevels = _definitions.GetAll<ProvinceDevelopmentLevel>();
+        ProvinceEntity[] provinces =_entities.GetAll<ProvinceEntity>();
 
         foreach (ProvinceEntity province in provinces)
         {

@@ -1,6 +1,6 @@
 namespace PolitikServer.Core;
 
-public static class RandomCountryNameGenerator
+public static class RandomCountryGenerator
 {
     private static List<string> NationPrefixes = new()
     {
@@ -56,7 +56,7 @@ public static class RandomCountryNameGenerator
         {"uguay", "uguayan"}
     };
 
-    public static RandomlyGeneratedName Generate()
+    public static Nation.Decoration Generate()
     {
         string start = NameStart[RandomUtil.Range(0, NameStart.Count)];
         
@@ -80,24 +80,14 @@ public static class RandomCountryNameGenerator
             longName = $"{shortName} {postfix}";
         }
 
-        return new RandomlyGeneratedName()
+        return new Nation.Decoration()
         {
-            shortName = shortName,
-            longName = longName,
-            noun = verb
+            nameShort = shortName,
+            nameLong = longName,
+            noun = verb,
+            colorPrimary = "not implemented",
+            colorTertiary = "not implemented"
         };
     }
 
-}
-
-public struct RandomlyGeneratedName()
-{
-    public required string longName;
-    public required string shortName;
-    public required string noun;
-
-    public override string ToString()
-    {
-        return $"Long: '{longName}', Shortened: '{shortName}', Verb: '{noun}'";
-    }
 }

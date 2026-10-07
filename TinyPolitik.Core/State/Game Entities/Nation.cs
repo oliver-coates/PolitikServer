@@ -18,6 +18,7 @@ public class Nation : GameEntity
     public required SerializedList<ProvinceEntity> provincesControlled;
     public required SerializedField<ProvinceEntity> captialProvince;
 
+    [Newtonsoft.Json.JsonConstructor]
     public Nation(string UniqueIdentifier, string? playerId, string nameLong, string nameShort, string colorPrimary, string colorTertiary, string noun, SerializedList<ProvinceEntity> provincesControlled, SerializedField<ProvinceEntity> captialProvince) : base(UniqueIdentifier)
     {
         this.playerId = playerId;
@@ -31,6 +32,21 @@ public class Nation : GameEntity
         this.captialProvince = captialProvince;
     }
 
+    [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
+    public Nation(string UniqueIdentifier, string? playerId, Decoration decoration, IReadOnlyList<ProvinceEntity> provincesControlled, ProvinceEntity captialProvince) : base(UniqueIdentifier)
+    {
+        this.UniqueIdentifier = UniqueIdentifier;
+        this.playerId = playerId;
+        this.nameLong = decoration.nameLong;
+        this.nameShort = decoration.nameShort;
+        this.colorPrimary = decoration.colorPrimary;
+        this.colorTertiary = decoration.colorTertiary;
+        this.noun = decoration.noun;
+    
+        this.provincesControlled = new SerializedList<ProvinceEntity>(provincesControlled);
+        this.captialProvince = new SerializedField<ProvinceEntity>(captialProvince);
+    }
+
     public override string GetReadableName()
     {
         return $"Nation {nameLong}, Capitol: '{captialProvince.Get().province.Get().UniqueIdentifier}";
@@ -41,5 +57,19 @@ public class Nation : GameEntity
     {
         provincesControlled.Load();
         captialProvince.Load();
+    }
+
+    public class Decoration
+    {
+        public required string nameLong;
+        public required string nameShort;
+        public required string colorPrimary;
+        public required string colorTertiary;
+        public required string noun;
+
+        public override string ToString()
+    {
+        return $"[Nation Decoration] Long: '{nameLong}', Shortened: '{nameShort}', Verb: '{noun}', Colors ({colorPrimary}/{colorTertiary})";
+    }
     }
 }

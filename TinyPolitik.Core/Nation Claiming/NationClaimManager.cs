@@ -22,7 +22,7 @@ public class NationClaimManager
     public string[] GetAllUnclaimedNationIds()
     {
         // Gets all nation IDs without a player id assigned.
-        return EntityLibrary.GetAllEntitiesOfType<Nation>().Where(n => n.playerId == null).Select(n => n.UniqueIdentifier).ToArray();
+        return _entityLib.GetAll<Nation>().Where(n => n.playerId == null).Select(n => n.UniqueIdentifier).ToArray();
     }
 
     public ClaimAttemptResult TryClaimNation(string claimingPlayerId, string nationId)
@@ -30,7 +30,7 @@ public class NationClaimManager
 
         lock (_claimAttemptLock)
         {
-            Nation? nation = _entityLib.TryGetEntity<Nation>(nationId); 
+            Nation? nation = _entityLib.TryGet<Nation>(nationId); 
             
             if (nation == null)
             {
@@ -42,7 +42,7 @@ public class NationClaimManager
                 return ClaimAttemptResult.AlreadyClaimed;
             }
 
-            bool playerAlreadyHasNation = EntityLibrary.GetAllEntitiesOfType<Nation>().Any(n => n.playerId == claimingPlayerId);
+            bool playerAlreadyHasNation = _entityLib.GetAll<Nation>().Any(n => n.playerId == claimingPlayerId);
             if (playerAlreadyHasNation)
             {
                 return ClaimAttemptResult.ThisPlayerAlreadyHasNation;
@@ -60,6 +60,6 @@ public class NationClaimManager
             "President", 
             "Prime Minister",
             "Your Highness",
-            "Supreme Chairman"]);
+            "Chairman"]);
     }
 }

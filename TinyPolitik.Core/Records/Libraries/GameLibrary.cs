@@ -205,6 +205,18 @@ public abstract class GameLibrary<LibType> : IGameRecordLibrary where LibType : 
 
         return Newtonsoft.Json.JsonConvert.SerializeObject(dict);
     }
+
+    public virtual T? TryGet<T>(string uid) where T : LibType
+    {
+        if (_dict.ContainsKey(uid))
+        {
+            return (T) _dict[uid];
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
 
 internal interface IGameRecordLibrary

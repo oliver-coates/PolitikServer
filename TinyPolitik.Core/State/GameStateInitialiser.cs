@@ -55,17 +55,17 @@ public class GameStateInitialiser
         int popBase = WorldConfig.GetInt("province_starting_population");
         int pop = (int) RandomUtil.ApplyVariance(popBase, popVariance, RandomUtil.VarianceMethod.Multiplicative);
         var level = ProvinceDevelopmentLevel.Evaluate(_definitions.GetAll<ProvinceDevelopmentLevel>(), pop);
+        ProvinceEntity[] connectedProvinces = []; // TODO: Implement this.
 
-        var newProvince = new ProvinceEntity()
-        {
-            UniqueIdentifier = Guid.NewGuid().ToString(),
-            province = new SerializedField<ProvinceDefinition>(definition),
-            population = pop,
-            buildings = [],
-            ownerNation = new SerializedNullableField<Nation?>(),
-            occupierNation = new SerializedNullableField<Nation?>(),
-            developmentLevel = new SerializedField<ProvinceDevelopmentLevel>(level)
-        };
+        ProvinceEntity newProvince = new(
+            Guid.NewGuid().ToString(), 
+            definition, 
+            connectedProvinces, 
+            null, 
+            null, 
+            pop, 
+            level
+        );
 
         _logger.LogInformation("Initialised: {newProvince}", newProvince);
 
@@ -194,21 +194,16 @@ public class GameStateInitialiser
 
     private Nation GenerateNation(ProvinceEntity[] provinces)
     {
-        RandomlyGeneratedName randomName = RandomCountryNameGenerator.Generate();
+        Nation.Decoration randDecoration = RandomCountryGenerator.Generate();
         ProvinceEntity capitol = RandomUtil.Pick(provinces);
 
-        Nation newNation = new()
-        {
-            UniqueIdentifier = Guid.NewGuid().ToString(),
-            playerId = null,
-            nameShort = randomName.shortName,
-            nameLong = randomName.longName,
-            colorPrimary = "not implemented",
-            colorTertiary = "not implemented",
-            noun = randomName.noun,
-            captialProvince = new SerializedField<ProvinceEntity>(capitol),
-            provincesControlled = new SerializedList<ProvinceEntity>(provinces),
-        };  
+        Nation newNation = new(
+            Guid.NewGuid().ToString(),
+            null,
+            randDecoration,
+            provinces,
+            capitol
+        );
 
         // Register the new nation with all of its controlled provinces
         foreach (ProvinceEntity controlledProvince in provinces)
