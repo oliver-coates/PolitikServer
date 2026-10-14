@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class GameLibrary<LibType> : IGameRecordLibrary where LibType : GameRecord
+public abstract class GameLibrary<LibType> where LibType : GameRecord
 {
     public static GameLibrary<LibType>? Instance { get; private set; }
 
@@ -33,7 +33,7 @@ public abstract class GameLibrary<LibType> : IGameRecordLibrary where LibType : 
         }
     }
 
-    void IGameRecordLibrary.Populate(GameRecord[] records, Type t)
+    public void Populate(GameRecord[] records, Type t)
     {
         if (!_typeDict.ContainsKey(t)) { _typeDict.Add(t, new()); }
         
@@ -219,8 +219,4 @@ public abstract class GameLibrary<LibType> : IGameRecordLibrary where LibType : 
     }
 }
 
-internal interface IGameRecordLibrary
-{
-    internal void Populate(GameRecord[] records, Type t);
-}
 

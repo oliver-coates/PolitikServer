@@ -18,7 +18,7 @@ public static class SerializationSchema
         { typeof(BuildingType), Path.Join("world", "buildings")},
         { typeof(ProvinceDevelopmentLevel), Path.Join("world", "developmentLevel")},
         { typeof(ProvinceFeature), Path.Join("world", "features")},
-        { typeof(ProductionMode), Path.Join("world", "productionMode")},
+        { typeof(ProductionMode), Path.Join("world", "productionModes")},
         { typeof(ProvinceModifier), Path.Join("world", "provinceModifiers")},
         { typeof(StrategicResource), Path.Join("world", "strategicResources")},
         { typeof(TerrainType), Path.Join("world", "terrain")},

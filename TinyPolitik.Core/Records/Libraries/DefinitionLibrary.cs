@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PolitikServer.Core;
 
-public class DefinitionLibrary : GameLibrary<GameDefinition>, IGameRecordLibrary
+public class DefinitionLibrary : GameLibrary<GameDefinition>
 {
     public string VersionHash { get; private set; } = "";
     
