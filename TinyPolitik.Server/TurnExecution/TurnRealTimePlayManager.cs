@@ -8,8 +8,6 @@ public class TurnRealTimePlayManager
     public TurnRealTimePlayManager(ILogger<TurnRealTimePlayManager> logger)
     {
         _logger = logger;
-
-        _logger.LogInformation("This server is running in Real-time-play. All players must be ready before a turn will advance.");
     }
 
     public async Task<IResult> ReadyNation(HttpContext ctx, EntityLibrary entities, ServerConfig config, TurnProcessor turnProcessor)

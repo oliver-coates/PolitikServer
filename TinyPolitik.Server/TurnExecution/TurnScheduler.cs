@@ -12,8 +12,6 @@ public class TurnSchedulerService : BackgroundService
         _services = services;
         _logger = logger;
         _config = config;
-
-        _logger.LogInformation("This server is running in fixed-turn mode. Turns will execute at designated times.");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

@@ -19,8 +19,14 @@ public class TurnManager
     /// </summary>
     public TurnMetaData TurnMetaData { get; private set; }
 
-    public TurnManager(ServerConfig config)
+    private readonly ServerConfig _config;
+    private readonly ILogger<TurnManager> _logger;
+
+    public TurnManager(ServerConfig config, ILogger<TurnManager> logger)
     {
+        _config = config;
+        _logger = logger;
+
         // Convert turn times from string format e.g. "12:30" into int tuples of hour/minute
         turnTimes = new Tuple<int, int>[config.TurnTimesLocal.Length];
         
@@ -49,6 +55,15 @@ public class TurnManager
     {
         // Initialise with turn meta data
         TurnMetaData = GenerateMetaData();
+
+        if (_config.AllowRealTimePlay)
+        {
+            _logger.LogInformation("This server is running in Real-time-play. All players must be ready before a turn will advance.");
+        }
+        else
+        {
+            _logger.LogInformation("This server is running in fixed-turn mode. Turns will execute at designated times.");            
+        }
     }
 
     /// <summary>

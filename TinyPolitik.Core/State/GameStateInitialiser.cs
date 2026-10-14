@@ -67,7 +67,7 @@ public class GameStateInitialiser
             level
         );
 
-        _logger.LogInformation("Initialised: {newProvince}", newProvince);
+        _logger.LogInformation("Initialised new province: {newProvince}", newProvince);
 
         return newProvince;
     }
@@ -212,7 +212,7 @@ public class GameStateInitialiser
             controlledProvince.ownerNation.Set(newNation);
         }
 
-        _logger.LogInformation("Initialised: {newNation}", newNation);
+        _logger.LogInformation("Initialised new nation: {newNation}", newNation);
 
         return newNation;
     }
