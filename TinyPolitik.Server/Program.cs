@@ -32,6 +32,7 @@ builder.Services.AddSingleton<AccountManager>();
 builder.Services.AddSingleton(new CertificateLoader(builder, serverConfig));
 
 // Setup world:
+builder.Services.AddSingleton<PolitikServer.Core.Serialization.DefinitionLoader>();
 builder.Services.AddSingleton<DefinitionLibrary>();
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
@@ -61,10 +62,12 @@ else
 // Setup commands:
 builder.Services.AddHostedService<ServerCommandService>();
 
-
+// Build the app:
 var app = builder.Build();
 
 // Initialise everything:
+app.Services.GetRequiredService<PolitikServer.Core.Serialization.DefinitionLoader>().LoadDefinitions();
+
 bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
 if (doInitialiseGame)
 { 
