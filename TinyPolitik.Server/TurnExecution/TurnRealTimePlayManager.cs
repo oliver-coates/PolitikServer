@@ -46,6 +46,7 @@ public class TurnRealTimePlayManager
     {
         int playerNationCount = 0;
 
+        // Iterate through all nations and check if they have a player and are ready
         foreach (Nation nation in entities.GetAll<Nation>())
         {
             // Ensure all player run countries are ready
