@@ -3,7 +3,7 @@ namespace PolitikServer.Core;
 
 public class TurnRealTimePlayManager()
 {
-    public async Task<IResult> ReadyNation(HttpContext ctx, EntityLibrary entities, GameConfig config, TurnProcessor turnProcessor)
+    public async Task<IResult> ReadyNation(HttpContext ctx, EntityLibrary entities, ServerConfig config, TurnProcessor turnProcessor)
     {
         var session = ctx.GetSession();
         

@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace PolitikServer.Core;
 
-public class GameConfig
+public class ServerConfig
 {
     public const string DEFAULT_PASSWORD = "change me";
 
@@ -29,7 +29,7 @@ public class GameConfig
     /// <summary>
     /// This constructor sets up the default game configuration settings
     /// </summary>
-    public GameConfig()
+    public ServerConfig()
     {
         ServerName = "Unnamed Server";
         MaxPlayers = 32;
@@ -43,7 +43,7 @@ public class GameConfig
     }
 }
 
-public static class GameConfigLoader
+public static class ServerConfigLoader
 {
     private static readonly JsonSerializerOptions jsonOptions = new()
     {
@@ -52,7 +52,7 @@ public static class GameConfigLoader
         RespectNullableAnnotations = false
     };
 
-    public static GameConfig LoadOrCreate(string path)
+    public static ServerConfig LoadOrCreate(string path)
     {
         // Get the user to setup their config:
         if (!File.Exists(path))
@@ -66,7 +66,7 @@ public static class GameConfigLoader
         }
 
         // Read and validate the current game config
-        GameConfig config = JsonSerializer.Deserialize<GameConfig>(File.ReadAllText(path))
+        ServerConfig config = JsonSerializer.Deserialize<ServerConfig>(File.ReadAllText(path))
         ?? throw new InvalidDataException($"Failed to parse config file '{path}'.");
         
         Validate(config);
@@ -97,7 +97,7 @@ public static class GameConfigLoader
         }
     }
 
-    private static void SaveConfigFile(string path, GameConfig config)
+    private static void SaveConfigFile(string path, ServerConfig config)
     {
         if (File.Exists(path))
         {
@@ -109,21 +109,21 @@ public static class GameConfigLoader
 
     private static void CreateNewConfigFile(string path)
     {
-        GameConfig config = new GameConfig()
+        ServerConfig config = new ServerConfig()
         {
-            InvitePassword = GameConfig.DEFAULT_PASSWORD
+            InvitePassword = ServerConfig.DEFAULT_PASSWORD
         };
 
         File.WriteAllText(path, JsonSerializer.Serialize(config, jsonOptions));
     }
 
-    private static void Validate(GameConfig config)
+    private static void Validate(ServerConfig config)
     {
         if (config.MaxPlayers <= 0)
         {
             throw new InvalidDataException("Maximum player count cannot be less than 1");
         }
-        else if ((string.IsNullOrEmpty(config.ServerPasswordHash) && string.IsNullOrEmpty(config.ServerPasswordSalt)) && (string.IsNullOrEmpty(config.InvitePassword) || config.InvitePassword == GameConfig.DEFAULT_PASSWORD))
+        else if ((string.IsNullOrEmpty(config.ServerPasswordHash) && string.IsNullOrEmpty(config.ServerPasswordSalt)) && (string.IsNullOrEmpty(config.InvitePassword) || config.InvitePassword == ServerConfig.DEFAULT_PASSWORD))
         {
             throw new InvalidDataException("No password has been configured - Set 'password' in the server config file and restart");
         }

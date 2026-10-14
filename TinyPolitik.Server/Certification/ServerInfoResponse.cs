@@ -5,7 +5,7 @@ public record ServerInfoResponse(string Game, int ApiVersion, string WorldVersio
 
 public static class ServerInfo
 {
-    public static IResult Get(DefinitionLibrary defLib, GameConfig config)
+    public static IResult Get(DefinitionLibrary defLib, ServerConfig config)
     {
         return Results.Json(new ServerInfoResponse(
             Game: "TinyPolitik",

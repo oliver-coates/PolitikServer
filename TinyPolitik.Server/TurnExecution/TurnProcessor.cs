@@ -9,10 +9,10 @@ public class TurnProcessor
     private readonly IServiceProvider _services;
     private readonly ILogger<TurnProcessor> _logger;
     private readonly LogWriter _writer;
-    private readonly GameConfig _config;
+    private readonly ServerConfig _config;
     private readonly SemaphoreSlim _lock = new(1, 1);
 
-    public TurnProcessor(IServiceProvider services, ILogger<TurnProcessor> logger, LogWriter writer, GameConfig config)
+    public TurnProcessor(IServiceProvider services, ILogger<TurnProcessor> logger, LogWriter writer, ServerConfig config)
     {
         _services = services;
         _logger = logger;

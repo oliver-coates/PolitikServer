@@ -7,12 +7,12 @@ public record AccountAuthenticationResponse(string Token, string PlayerId, strin
 public class AccountManager
 {
     private readonly SessionStore _sessionStore;
-    private readonly GameConfig _config;
+    private readonly ServerConfig _config;
     private readonly AccountStore _accounts;
     private readonly LoginRateLimiter _loginLimiter;
     private readonly EntityLibrary _entityLib;
 
-    public AccountManager(SessionStore store, GameConfig config, AccountStore accounts, LoginRateLimiter limiter, EntityLibrary entities)
+    public AccountManager(SessionStore store, ServerConfig config, AccountStore accounts, LoginRateLimiter limiter, EntityLibrary entities)
     {
         _sessionStore = store;
         _config = config;

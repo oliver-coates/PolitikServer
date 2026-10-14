@@ -16,7 +16,7 @@ public class TurnManager
     /// </summary>
     public TurnMetaData TurnMetaData { get; private set; }
 
-    public TurnManager(GameConfig config)
+    public TurnManager(ServerConfig config)
     {
         // Convert turn times from string format e.g. "12:30" into int tuples of hour/minute
         turnTimes = new Tuple<int, int>[config.TurnTimesLocal.Length];

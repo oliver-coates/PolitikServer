@@ -17,7 +17,7 @@ public class ServerCommandService : BackgroundService
     {
         Register("turn", "listTimes", _ =>
         {
-            var config = _services.GetRequiredService<GameConfig>();
+            var config = _services.GetRequiredService<ServerConfig>();
             if (config.AllowRealTimePlay)
             {
                 Console.WriteLine($"Real Time Play is enabled. A turn will occur once all players are ready.");   
@@ -32,7 +32,7 @@ public class ServerCommandService : BackgroundService
         Register("turn", "getNext", _ =>
         {
             var turnManager = _services.GetRequiredService<TurnManager>();
-            var config = _services.GetRequiredService<GameConfig>();
+            var config = _services.GetRequiredService<ServerConfig>();
            
             if (config.AllowRealTimePlay)
             {

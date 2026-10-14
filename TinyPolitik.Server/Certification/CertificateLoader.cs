@@ -7,7 +7,7 @@ public static class CertificateLoader
 {
     private static X509Certificate2? _Cert;
 
-    public static void Setup(WebApplicationBuilder builder, GameConfig config)
+    public static void Setup(WebApplicationBuilder builder, ServerConfig config)
     {
         var certPath = Path.Combine(builder.Environment.ContentRootPath, "server.pfx");
         _Cert = SelfSignedCertHelper.GetOrCreate(certPath, password: "banana");

@@ -15,10 +15,10 @@ Directory.CreateDirectory(contentRoot);
 Directory.CreateDirectory(dataRoot);
 Directory.CreateDirectory(logsRoot);
 
-GameConfig gameConfig = new();
+ServerConfig serverConfig = new();
 try
 {
-    gameConfig = GameConfigLoader.LoadOrCreate(Path.Combine(dataRoot, "config.json"));
+    serverConfig = ServerConfigLoader.LoadOrCreate(Path.Combine(dataRoot, "config.json"));
 }
 catch (Exception e)
 {
@@ -34,7 +34,7 @@ builder.Services.AddSingleton(logWriter);
 builder.Logging.AddProvider(new TurnFileLoggerProvider(logWriter));
 
 // Setup networking:
-builder.Services.AddSingleton(gameConfig);
+builder.Services.AddSingleton(serverConfig);
 builder.Services.AddSingleton<LoginRateLimiter>();
 builder.Services.AddSingleton<SessionStore>();
 builder.Services.AddSingleton(new AccountStore(accountsPath));
@@ -56,7 +56,7 @@ builder.Services.AddSingleton<TurnProcessor>();
 builder.Services.AddSingleton<TurnBackupManager>();
 
 // Turn Scheduling:
-if (gameConfig.AllowRealTimePlay)
+if (serverConfig.AllowRealTimePlay)
 {
     // Real time play
     builder.Services.AddSingleton<TurnRealTimePlayManager>();
@@ -70,7 +70,7 @@ else
 // Setup commands:
 builder.Services.AddHostedService<ServerCommandService>();
 
-CertificateLoader.Setup(builder, gameConfig); // Make not static
+CertificateLoader.Setup(builder, serverConfig); // Make not static
 
 var app = builder.Build();
 
@@ -91,7 +91,7 @@ if (doInitialiseGame)
 
 // PUBLIC ROUTES:
 // Getting content version (Game Version, Game Definition Version, etc)
-app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary, [FromServices] GameConfig config) => ServerInfo.Get(definitionLibrary, config));
+app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary, [FromServices] ServerConfig config) => ServerInfo.Get(definitionLibrary, config));
 
 app.MapPost("/account/login", 
     (HttpContext ctx, AccountLoginRequest request, [FromServices] AccountManager accountManager) => accountManager.Login(ctx, request));
@@ -113,12 +113,12 @@ authed.MapGet("/world/data", ([FromServices] DefinitionLibrary lib) => Results.T
 authed.MapGet("/gamestate/data", ([FromServices] EntityLibrary lib) => Results.Text(lib.ToJson(), "application/json"));
 
 // Readying your nation - only allowed in real-time-play
-if (gameConfig.AllowRealTimePlay)
+if (serverConfig.AllowRealTimePlay)
 {
     authed.MapPost("/turn/ready", async (HttpContext context,
                                     [FromServices] TurnRealTimePlayManager rtpManager,
                                     [FromServices] EntityLibrary entityLibrary,
-                                    [FromServices] GameConfig config,
+                                    [FromServices] ServerConfig config,
                                     [FromServices] TurnProcessor turnProcessor) => await rtpManager.ReadyNation(context, entityLibrary, config, turnProcessor));
 
     authed.MapGet("/turn/readiness", ([FromServices] EntityLibrary entities, [FromServices] TurnRealTimePlayManager rtpManager)
