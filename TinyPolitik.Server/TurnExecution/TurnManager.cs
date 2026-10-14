@@ -1,5 +1,8 @@
 namespace PolitikServer.Core;
 
+/// <summary>
+/// Managest turn times and turn metadata.
+/// </summary>
 public class TurnManager
 {
     public int turnNumber { get; private set; }
