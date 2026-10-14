@@ -1,8 +1,17 @@
 
 namespace PolitikServer.Core;
 
-public class TurnRealTimePlayManager()
+public class TurnRealTimePlayManager
 {
+    private ILogger<TurnRealTimePlayManager> _logger;
+
+    public TurnRealTimePlayManager(ILogger<TurnRealTimePlayManager> logger)
+    {
+        _logger = logger;
+
+        _logger.LogInformation("This server is running in Real-time-play. All players must be ready before a turn will advance.");
+    }
+
     public async Task<IResult> ReadyNation(HttpContext ctx, EntityLibrary entities, ServerConfig config, TurnProcessor turnProcessor)
     {
         var session = ctx.GetSession();
@@ -20,12 +29,17 @@ public class TurnRealTimePlayManager()
         }
         
         nation.isReady = true;
+        _logger.LogInformation("Player '{player}' ({nation}) is ready!", nation.playerId, nation.nameLong);        
+
 
         if (AreAllNationsReady(entities))
         {
-            await turnProcessor.ProcessTurnAsync();
-        }
+            _logger.LogInformation("All players are ready, processing turn...");        
 
+            await turnProcessor.ProcessTurnAsync();
+
+            _logger.LogInformation("Real time play is enabled! The turn will process once all players are ready.");            
+        }
 
         return Results.Ok();
     }

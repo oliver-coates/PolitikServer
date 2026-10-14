@@ -4,12 +4,16 @@ public class TurnSchedulerService : BackgroundService
 {
     private readonly IServiceProvider _services;
     private readonly ILogger<TurnSchedulerService> _logger;
+    private readonly ServerConfig _config;
     private static readonly TimeSpan PollInterval = TimeSpan.FromSeconds(15);
         
     public TurnSchedulerService(IServiceProvider services, ILogger<TurnSchedulerService> logger, ServerConfig config)
     {
         _services = services;
         _logger = logger;
+        _config = config;
+
+        _logger.LogInformation("This server is running in fixed-turn mode. Turns will execute at designated times.");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,6 +38,11 @@ public class TurnSchedulerService : BackgroundService
         {
             // Turn not scheduled yet.
             return;
+        }
+
+        if (_config.AllowRealTimePlay)
+        {
+            throw new Exception("This server is using real time play.");
         }
 
         _logger.LogInformation("Turn boundary reached ({Time:u}) -- Advancing turn.", manager.NextTurnTime);

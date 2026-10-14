@@ -60,6 +60,6 @@ public class ProvinceEntity : GameEntity
 
     public override string GetReadableName()
     {
-        return $"Province Entity for '{province.Get().GetReadableName()}' Pop: '{population}', Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation.Get()?.nameShort) ?? "None"}/{(occupierNation.Get()?.nameShort) ?? "None"}";
+        return $"Province Entity for '{province.Get().UniqueIdentifier}' Pop: '{population}', Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation.Get()?.nameShort) ?? "None"}/{(occupierNation.Get()?.nameShort) ?? "None"}";
     }
 }
