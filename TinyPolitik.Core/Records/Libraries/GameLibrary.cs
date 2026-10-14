@@ -33,7 +33,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
         }
     }
 
-    public void Populate(GameRecord[] records, Type t)
+    public void Populate(IReadOnlyList<GameRecord> records, Type t)
     {
         if (!_typeDict.ContainsKey(t)) { _typeDict.Add(t, new()); }
         

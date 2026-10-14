@@ -66,7 +66,7 @@ builder.Services.AddHostedService<ServerCommandService>();
 var app = builder.Build();
 
 // Initialise everything:
-app.Services.GetRequiredService<PolitikServer.Core.Serialization.DefinitionLoader>().LoadDefinitions();
+app.Services.GetRequiredService<PolitikServer.Core.Serialization.DefinitionLoader>().Load();
 
 bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
 if (doInitialiseGame)
