@@ -35,13 +35,13 @@ public class AccountStore
     private readonly object _lock = new();
     private Dictionary<string, Account> _accountDictionary = new();
 
-    public AccountStore(string path)
+    public AccountStore()
     {
-        _path = path;
+        _path = ApplicationPaths.AccountsPath;
 
-        if (File.Exists(path))
+        if (File.Exists(_path))
         {
-            var accounts = JsonSerializer.Deserialize<List<Account>>(File.ReadAllText(path)) ?? new();
+            var accounts = JsonSerializer.Deserialize<List<Account>>(File.ReadAllText(_path)) ?? new();
             _accountDictionary = accounts.ToDictionary(a => a.PlayerId);
         }
     }

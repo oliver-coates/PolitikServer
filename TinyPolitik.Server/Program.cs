@@ -3,22 +3,12 @@ using PolitikServer.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Paths:
-var logsRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "logs");
-var dataRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata");
-var contentRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "gameworld");
-var backupsRoot = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "snapshots");
-var accountsPath = Path.Combine(builder.Environment.ContentRootPath, "gamedata", "accounts.json");
-
-// Initialising Directories:
-Directory.CreateDirectory(contentRoot);
-Directory.CreateDirectory(dataRoot);
-Directory.CreateDirectory(logsRoot);
+ApplicationPaths.InitialiseDirectories(builder.Environment.ContentRootPath);
 
 ServerConfig serverConfig = new();
 try
 {
-    serverConfig = ServerConfigLoader.LoadOrCreate(Path.Combine(dataRoot, "config.json"));
+    serverConfig = ServerConfigLoader.LoadOrCreate(ApplicationPaths.ServerConfigPath);
 }
 catch (Exception e)
 {
@@ -29,7 +19,7 @@ catch (Exception e)
 }
 
 // Setup logging:
-var logWriter = new LogWriter(logsRoot);
+var logWriter = new LogWriter(ApplicationPaths.LogsRoot);
 builder.Services.AddSingleton(logWriter);
 builder.Logging.AddProvider(new TurnFileLoggerProvider(logWriter));
 
@@ -37,12 +27,12 @@ builder.Logging.AddProvider(new TurnFileLoggerProvider(logWriter));
 builder.Services.AddSingleton(serverConfig);
 builder.Services.AddSingleton<LoginRateLimiter>();
 builder.Services.AddSingleton<SessionStore>();
-builder.Services.AddSingleton(new AccountStore(accountsPath));
+builder.Services.AddSingleton<AccountStore>();
 builder.Services.AddSingleton<AccountManager>();
 builder.Services.AddSingleton(new CertificateLoader(builder, serverConfig));
 
 // Setup world:
-builder.Services.AddSingleton(new DefinitionLibrary());
+builder.Services.AddSingleton<DefinitionLibrary>();
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
 builder.Services.AddSingleton<TurnManager>();
@@ -75,8 +65,6 @@ builder.Services.AddHostedService<ServerCommandService>();
 var app = builder.Build();
 
 // Initialise everything:
-app.Services.GetRequiredService<TurnBackupManager>().Initialise(backupsRoot);
-
 bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
 if (doInitialiseGame)
 { 

@@ -10,12 +10,7 @@ public class TurnBackupManager
     public TurnBackupManager(ILogger<TurnBackupManager> logger)
     {
         _logger = logger;
-        _backupRoot = "Not Yet Initialised";
-    }
-
-    public void Initialise(string root)
-    {
-        _backupRoot = root;
+        _backupRoot = ApplicationPaths.BackupsRoot;
 
         try
         {
