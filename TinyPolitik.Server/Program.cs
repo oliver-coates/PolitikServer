@@ -39,6 +39,7 @@ builder.Services.AddSingleton<LoginRateLimiter>();
 builder.Services.AddSingleton<SessionStore>();
 builder.Services.AddSingleton(new AccountStore(accountsPath));
 builder.Services.AddSingleton<AccountManager>();
+builder.Services.AddSingleton(new CertificateLoader(builder, serverConfig));
 
 // Setup world:
 builder.Services.AddSingleton(new DefinitionLibrary());
@@ -70,7 +71,6 @@ else
 // Setup commands:
 builder.Services.AddHostedService<ServerCommandService>();
 
-CertificateLoader.Setup(builder, serverConfig); // Make not static
 
 var app = builder.Build();
 
@@ -103,9 +103,6 @@ app.MapPost("/account/register",
 // PRIVATE ROUTES:
 // These require an authentication token
 var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
-
-// Account creation:
-
 
 // Getting game data:
 // If we want to speed this up we could cache the below data - to prevent having to serialize every endpoint call.
@@ -158,11 +155,9 @@ authed.MapPost("/nations/{nationId}/claim",
 
 // --- End routes
 
-CertificateLoader.NotifyInConsole();
-
+app.Services.GetRequiredService<CertificateLoader>().NotifyInConsole();
 
 var testEntities = app.Services.GetService<EntityLibrary>()?.ToJson();
 var testDefinitions = app.Services.GetService<DefinitionLibrary>()?.ToJson();
 
 app.Run();
-

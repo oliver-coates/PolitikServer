@@ -3,11 +3,11 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace PolitikServer.Core;
 
-public static class CertificateLoader
+public class CertificateLoader
 {
     private static X509Certificate2? _Cert;
 
-    public static void Setup(WebApplicationBuilder builder, ServerConfig config)
+    public CertificateLoader(WebApplicationBuilder builder, ServerConfig config)
     {
         var certPath = Path.Combine(builder.Environment.ContentRootPath, "server.pfx");
         _Cert = SelfSignedCertHelper.GetOrCreate(certPath, password: "banana");
@@ -18,7 +18,7 @@ public static class CertificateLoader
         });
     }
 
-    public static void NotifyInConsole()
+    public void NotifyInConsole()
     {
         if (_Cert == null)
         {
