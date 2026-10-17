@@ -11,19 +11,9 @@ public class DefinitionLibrary : GameLibrary<GameDefinition>
     
     public string ComputeHash()
     {
-        var sb = new StringBuilder();
-        Dictionary<string, string[]> allAsjson = ToJsonDict();
+        string asJson = ToJson();
 
-        // Concatenate all world data:
-        foreach (KeyValuePair<string, string[]> contentDict in allAsjson)
-        {
-            foreach (string json in contentDict.Value)
-            {
-                sb.Append(json);
-            }
-        }
-
-        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(asJson));
 
         return Convert.ToHexString(hash).ToLowerInvariant();
     }

@@ -8,12 +8,18 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
 {
     public static GameLibrary<LibType>? Instance { get; private set; }
 
-    private Dictionary<string, LibType> _dict;
+    /// <summary>
+    /// Dictionary relating a UID to a gamerecord that this library is storing
+    /// </summary>
+    private Dictionary<string, LibType> _idDict;
+    /// <summary>
+    /// Dictionary relating a type to a list of all gamerecord of this type that this library is storing
+    /// </summary>
     private Dictionary<Type, List<LibType>> _typeDict;
 
     protected GameLibrary()
     {
-        _dict = new();
+        _idDict = new();
         _typeDict = new();
         Instance = this;
 
@@ -27,7 +33,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     /// </summary>
     public void Deserialize()
     {
-        foreach (LibType record in _dict.Values)
+        foreach (LibType record in _idDict.Values)
         {
             record.Deserialize();
         }
@@ -41,7 +47,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
         {
             LibType obj = (LibType) record;
             
-            _dict.Add(record.UniqueIdentifier, obj);
+            _idDict.Add(record.UniqueIdentifier, obj);
             _typeDict[t].Add(obj);
         }
     }
@@ -51,7 +57,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     {
         try
         {
-            return (T) _dict[uid];
+            return (T) _idDict[uid];
         }
         catch (KeyNotFoundException e)
         {
@@ -60,7 +66,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     }
     public virtual LibType Get(string uid)
     {
-        return _dict[uid];
+        return _idDict[uid];
     }
 
 
@@ -70,7 +76,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
         {
             try
             {
-                return (T) _dict[uid];                
+                return (T) _idDict[uid];                
             }
             catch (Exception e)
             {
@@ -85,7 +91,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
         {
             try
             {
-                return _dict[uid];                
+                return _idDict[uid];                
             }
             catch
             {
@@ -98,12 +104,12 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     public virtual T[] GetAll<T>() where T : LibType
     {
         Type requestedType = typeof(T);
-        return _dict.Values.Where(e => e.GetType() == requestedType).Select(e => (T) e).ToArray();
+        return _idDict.Values.Where(e => e.GetType() == requestedType).Select(e => (T) e).ToArray();
     }          
 
     public virtual LibType[] GetAll(Type requestedType)
     {
-        return _dict.Values.Where(e => e.GetType() == requestedType).ToArray();
+        return _idDict.Values.Where(e => e.GetType() == requestedType).ToArray();
     }          
 
     public virtual Dictionary<Type, List<LibType>> GetAllByType()
@@ -113,7 +119,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     
     public virtual void Add<T>(LibType item) where T : LibType
     {
-        _dict.Add(item.UniqueIdentifier, item);
+        _idDict.Add(item.UniqueIdentifier, item);
         
         if (!_typeDict.ContainsKey(typeof(T)))
         {
@@ -124,7 +130,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
 
     public virtual void Add(LibType item, Type t)
     {
-        _dict.Add(item.UniqueIdentifier, item);
+        _idDict.Add(item.UniqueIdentifier, item);
         
         if (!_typeDict.ContainsKey(t))
         {
@@ -137,7 +143,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     {
         foreach (LibType i in items)
         {
-            _dict.Add(i.UniqueIdentifier, i);
+            _idDict.Add(i.UniqueIdentifier, i);
         }
 
         if (!_typeDict.ContainsKey(typeof(T)))
@@ -151,7 +157,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
     {
         foreach (LibType i in items)
         {
-            _dict.Add(i.UniqueIdentifier, i);
+            _idDict.Add(i.UniqueIdentifier, i);
         }
 
         if (!_typeDict.ContainsKey(t))
@@ -164,53 +170,36 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
 
     public virtual void Remove<T>(LibType item) where T : LibType
     {
-        _dict.Remove(item.UniqueIdentifier);
+        _idDict.Remove(item.UniqueIdentifier);
         _typeDict[typeof(T)].Remove(item);
     } 
 
     public virtual void Remove(LibType item, Type t)
     {
-        _dict.Remove(item.UniqueIdentifier);
+        _idDict.Remove(item.UniqueIdentifier);
         _typeDict[t].Remove(item);
     }
     
-    /// <summary>
-    /// Converts all records within this dictionary into JSON,
-    /// Returns a Dictionary mapping the name of the type, to an array of values. 
-    /// </summary>
-    public virtual Dictionary<string, string[]> ToJsonDict()
-    {
-        Dictionary<string, string[]> jsonDict = new();
-
-        foreach (Type recordType in _typeDict.Keys.OrderBy(k => k.Name))
-        {
-            string typeName = recordType.Name;
-            List<string> jsonList = new();
-
-            foreach (LibType record in _typeDict[recordType].OrderBy(k => k.UniqueIdentifier))
-            {
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(record);
-                jsonList.Add(json);
-            }
-
-            jsonDict.Add(typeName, jsonList.ToArray());
-        }
-
-        return jsonDict;   
-    }
-
     public virtual string ToJson()
     {
-        var dict = ToJsonDict();
+        // Libtype is GameDefinition here
+        Dictionary<string, LibType[]> dict = new();
 
-        return Newtonsoft.Json.JsonConvert.SerializeObject(dict);
+        foreach ((Type t, List<LibType> objects) in _typeDict)
+        {
+            dict.Add(t.Name, objects.ToArray());
+        }
+
+        var test = Newtonsoft.Json.JsonConvert.SerializeObject(dict);
+
+        return test; 
     }
 
     public virtual T? TryGet<T>(string uid) where T : LibType
     {
-        if (_dict.ContainsKey(uid))
+        if (_idDict.ContainsKey(uid))
         {
-            return (T) _dict[uid];
+            return (T) _idDict[uid];
         }
         else
         {

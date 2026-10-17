@@ -8,12 +8,27 @@ namespace PolitikServer.Core;
 
 public class SerializedField<T> where T : GameRecord
 {
-    [JsonIgnore] public T Value { get; private set; }
+    private T? _value;
+    [JsonIgnore] public T Value 
+    { 
+        get
+        {
+            return _value ?? throw new InvalidOperationException($"SerializedField<{typeof(T).Name}> read before Load() was called.");
+        } 
+    }
+    [JsonIgnore] public bool IsLoaded {get; private set; } = false;
     [JsonRequired] private string SerializedValue;
 
+    [JsonConstructor]
+    public SerializedField(string SerializedValue)
+    {
+        this.SerializedValue = SerializedValue;
+    }
+    
+    // User constructor:
     public SerializedField(T value)
     {
-        Value = value;
+        this._value = value;
         SerializedValue = value.UniqueIdentifier;
     }
 
@@ -24,7 +39,7 @@ public class SerializedField<T> where T : GameRecord
 
     public void Set(T newValue)
     {
-        Value = newValue;
+        this._value = newValue;
         SerializedValue = newValue.UniqueIdentifier;
     }
 
@@ -37,12 +52,12 @@ public class SerializedField<T> where T : GameRecord
         else if (typeof(T).IsSubclassOf(typeof(GameDefinition)))
         {
             GameRecord definition = DefinitionLibrary.Get(SerializedValue);
-            Value = (T) definition;
+            this._value = (T) definition;
         }
         else if (typeof(T).IsSubclassOf(typeof(GameEntity)))
         {
             GameRecord entity = EntityLibrary.Get(SerializedValue); 
-            Value = (T) entity;
+            this._value = (T) entity;
         }
         else
         {

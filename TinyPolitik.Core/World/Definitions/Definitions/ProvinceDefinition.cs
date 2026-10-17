@@ -3,15 +3,22 @@ namespace PolitikServer.Core;
 public class ProvinceDefinition : GameDefinition
 {
     public string Name { get; private set; }
-    public WorldPoint Centre { get; private set; }
+    public GlobeArea Area { get; private set; }
     public SerializedList<ProvinceDefinition> ConnectedProvinces { get; private set; }
-    
-    public ProvinceDefinition(string uid, string name, WorldPoint centre, SerializedList<ProvinceDefinition> ConnectedProvinces) : base(uid)
-    {
-        Name = name;
+    public SerializedField<TerrainType> Terrain { get; private set; }
+    public SerializedList<ProvinceFeature> Features { get; private set; }
 
-        Centre = centre;
+    
+
+    [Newtonsoft.Json.JsonConstructor]
+    public ProvinceDefinition(string UniqueIdentifier, string Name, GlobeArea Area, SerializedList<ProvinceDefinition> ConnectedProvinces, SerializedField<TerrainType> Terrain, SerializedList<ProvinceFeature> Features) : base(UniqueIdentifier)
+    {
+        this.Name = Name;
+        this.Area = Area;
+
         this.ConnectedProvinces = ConnectedProvinces;
+        this.Terrain = Terrain;
+        this.Features = Features;
     }
 
 
@@ -22,13 +29,24 @@ public class ProvinceDefinition : GameDefinition
 
     protected override string GetFullName()
     {
-        return $"Province '{Name}', center {Centre}, Connected to: {String.Join(',', ConnectedProvinces.Get().Select(p => p.UniqueIdentifier))}";
+        return $"Province '{Name}', center {Area.centre}, Connected to: {String.Join(',', ConnectedProvinces.Get().Select(p => p.UniqueIdentifier))}";
     }
 
     public override string GetReadableName()
     {
         return "Province.";
     }
+}
+
+public class GlobeArea
+{
+    public required AreaBorder[] borders;
+    public required WorldPoint centre;
+}
+
+public class AreaBorder
+{
+    public required WorldPoint[] points;
 }
 
 
@@ -52,3 +70,4 @@ public struct WorldPoint
         return $"World Point ({x:0.000},{y:0.000})";
     }
 }
+
