@@ -7,7 +7,7 @@ namespace PolitikServer.Core;
 
 public class DefinitionLibrary : GameLibrary<GameDefinition>
 {
-    public string VersionHash { get; private set; } = "";
+    public string VersionHash { get => ComputeHash(); }
     
     public string ComputeHash()
     {
