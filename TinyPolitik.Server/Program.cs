@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PolitikServer.Core;
+using PolitikServer.Core.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,8 @@ builder.Services.AddSingleton<AccountManager>();
 builder.Services.AddSingleton(new CertificateLoader(builder, serverConfig));
 
 // Setup world:
-builder.Services.AddSingleton<PolitikServer.Core.Serialization.DefinitionLoader>();
+builder.Services.AddSingleton<DefinitionValidator>();
+builder.Services.AddSingleton<DefinitionLoader>();
 builder.Services.AddSingleton<DefinitionLibrary>();
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
@@ -65,8 +67,32 @@ builder.Services.AddHostedService<ServerCommandService>();
 // Build the app:
 var app = builder.Build();
 
-// Initialise everything:
-app.Services.GetRequiredService<PolitikServer.Core.Serialization.DefinitionLoader>().Load();
+// --- Initialise everything:
+
+// Validate then initialise game world:
+try
+{
+    app.Services.GetRequiredService<DefinitionValidator>().ValidateGameWorld();
+}
+catch (Exception e)
+{
+    Console.WriteLine($"Could not locate game world file. Ensure you have a valid TinyPolitik game world located at '{ApplicationPaths.ContentRoot}'.");
+    Console.WriteLine(e);
+
+    Environment.Exit(0);
+}
+
+try
+{
+    app.Services.GetRequiredService<DefinitionLoader>().Load();
+}
+catch (Exception e)
+{
+    Console.WriteLine("Error while loading game world:");
+    Console.WriteLine(e);
+
+    Environment.Exit(0);
+}
 
 bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
 if (doInitialiseGame)
