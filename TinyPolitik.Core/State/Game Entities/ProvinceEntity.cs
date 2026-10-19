@@ -3,7 +3,7 @@ namespace PolitikServer.Core;
 public class ProvinceEntity : GameEntity
 {
     // Core data:
-    public required SerializedField<ProvinceDefinition> province { get; init; }
+    public required SerializedField<ProvinceDefinition> definition { get; init; }
     public SerializedList<ProvinceEntity> connectedProvinces = new();
     
     // Owner & Occupier:
@@ -20,7 +20,7 @@ public class ProvinceEntity : GameEntity
     [Newtonsoft.Json.JsonConstructor]
     public ProvinceEntity(string UniqueIdentifier, int population, SerializedField<ProvinceDefinition> province, SerializedList<ProvinceEntity> connectedProvinces, SerializedNullableField<Nation?> ownerNation, SerializedNullableField<Nation?> occupierNation, SerializedField<ProvinceDevelopmentLevel> developmentLevel) : base(UniqueIdentifier)
     {
-        this.province = province;
+        this.definition = province;
         this.connectedProvinces = connectedProvinces;
 
         this.ownerNation = ownerNation;
@@ -35,7 +35,7 @@ public class ProvinceEntity : GameEntity
     {
         this.UniqueIdentifier = UniqueIdentifier;
 
-        this.province = new SerializedField<ProvinceDefinition>(provinceDefinition);
+        this.definition = new SerializedField<ProvinceDefinition>(provinceDefinition);
         this.connectedProvinces = new SerializedList<ProvinceEntity>(connectedProvinces); 
 
         this.ownerNation = new SerializedNullableField<Nation?>(ownerNation);
@@ -49,7 +49,7 @@ public class ProvinceEntity : GameEntity
 
     internal override void Deserialize()
     {
-        province.Load();
+        definition.Load();
         connectedProvinces.Load();
 
         ownerNation.Load();
@@ -60,6 +60,6 @@ public class ProvinceEntity : GameEntity
 
     public override string GetReadableName()
     {
-        return $"Province Entity for '{province.Get().UniqueIdentifier}' Pop: '{population}', Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation.Get()?.nameShort) ?? "None"}/{(occupierNation.Get()?.nameShort) ?? "None"}";
+        return $"Province Entity for '{definition.Get().UniqueIdentifier}' Pop: '{population}', Buildings: [{string.Join(',', buildings)}], Owned/Controlled: {(ownerNation.Get()?.nameShort) ?? "None"}/{(occupierNation.Get()?.nameShort) ?? "None"}";
     }
 }

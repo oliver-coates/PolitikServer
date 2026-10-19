@@ -78,7 +78,7 @@ public class ProvinceTurnResolver
             }
 
             province.developmentLevel.Set(correctLevel);
-            string provinceUid = province.province.Get().UniqueIdentifier;
+            string provinceUid = province.definition.Get().UniqueIdentifier;
 
             _logger.LogInformation($"Province '{provinceUid}`' development level has changed (old: '{currentLevel.UniqueIdentifier}', new: '{correctLevel.UniqueIdentifier}')");
         }

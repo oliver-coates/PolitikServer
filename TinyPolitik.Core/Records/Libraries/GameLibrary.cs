@@ -190,9 +190,7 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
             dict.Add(t.Name, objects.ToArray());
         }
 
-        var test = Newtonsoft.Json.JsonConvert.SerializeObject(dict);
-
-        return test; 
+        return Newtonsoft.Json.JsonConvert.SerializeObject(dict); 
     }
 
     public virtual T? TryGet<T>(string uid) where T : LibType

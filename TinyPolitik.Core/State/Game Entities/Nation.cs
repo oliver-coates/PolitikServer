@@ -49,7 +49,7 @@ public class Nation : GameEntity
 
     public override string GetReadableName()
     {
-        return $"Nation '{nameLong}', Capitol: '{captialProvince.Get().province.Get().UniqueIdentifier}";
+        return $"Nation '{nameLong}', Capitol: '{captialProvince.Get().definition.Get().UniqueIdentifier}";
     }
 
 
