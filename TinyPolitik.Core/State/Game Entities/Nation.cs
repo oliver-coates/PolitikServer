@@ -16,7 +16,7 @@ public class Nation : GameEntity
 
 
     public required SerializedList<ProvinceEntity> provincesControlled;
-    public required SerializedField<ProvinceEntity> captialProvince;
+    public required SerializedField<ProvinceEntity> capitalProvince;
 
     [Newtonsoft.Json.JsonConstructor]
     public Nation(string UniqueIdentifier, string? playerId, string nameLong, string nameShort, string colorPrimary, string colorTertiary, string noun, SerializedList<ProvinceEntity> provincesControlled, SerializedField<ProvinceEntity> captialProvince) : base(UniqueIdentifier)
@@ -29,7 +29,7 @@ public class Nation : GameEntity
         this.noun = noun;
     
         this.provincesControlled = provincesControlled;
-        this.captialProvince = captialProvince;
+        this.capitalProvince = captialProvince;
     }
 
     [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
@@ -44,19 +44,19 @@ public class Nation : GameEntity
         this.noun = decoration.noun;
     
         this.provincesControlled = new SerializedList<ProvinceEntity>(provincesControlled);
-        this.captialProvince = new SerializedField<ProvinceEntity>(captialProvince);
+        this.capitalProvince = new SerializedField<ProvinceEntity>(captialProvince);
     }
 
     public override string GetReadableName()
     {
-        return $"Nation '{nameLong}', Capitol: '{captialProvince.Get().definition.Get().UniqueIdentifier}";
+        return $"Nation '{nameLong}', Capitol: '{capitalProvince.Get().definition.Get().UniqueIdentifier}";
     }
 
 
     internal override void Deserialize()
     {
         provincesControlled.Load();
-        captialProvince.Load();
+        capitalProvince.Load();
     }
 
     public class Decoration

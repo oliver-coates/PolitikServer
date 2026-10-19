@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace PolitikServer.Core;
 
 public class NationClaimManager
@@ -10,13 +12,15 @@ public class NationClaimManager
         ThisPlayerAlreadyHasNation
     }
 
-    private EntityLibrary _entityLib;
+    private readonly EntityLibrary _entityLib;
+    private readonly ILogger<NationClaimManager> _logger;
 
     private readonly object _claimAttemptLock = new(); // Lock object to prevent two players from claiming the exact same nation.
 
-    public NationClaimManager(EntityLibrary entityLib)
+    public NationClaimManager(EntityLibrary entityLib, ILogger<NationClaimManager> logger)
     {
         _entityLib = entityLib;
+        _logger = logger;
     }
 
     public string[] GetAllUnclaimedNationIds()
@@ -27,7 +31,6 @@ public class NationClaimManager
 
     public ClaimAttemptResult TryClaimNation(string claimingPlayerId, string nationId)
     {
-
         lock (_claimAttemptLock)
         {
             Nation? nation = _entityLib.TryGet<Nation>(nationId); 
@@ -49,6 +52,8 @@ public class NationClaimManager
             }
 
             nation.playerId = claimingPlayerId;
+            _logger.LogInformation("Player {player} has claimed nation {nation}", claimingPlayerId, nation.GetReadableName());
+
             return ClaimAttemptResult.Success;
         }
     }
