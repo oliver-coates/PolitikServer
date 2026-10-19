@@ -14,13 +14,15 @@ public class NationClaimManager
 
     private readonly EntityLibrary _entityLib;
     private readonly ILogger<NationClaimManager> _logger;
+    private readonly AccountStore _accountStore;
 
     private readonly object _claimAttemptLock = new(); // Lock object to prevent two players from claiming the exact same nation.
 
-    public NationClaimManager(EntityLibrary entityLib, ILogger<NationClaimManager> logger)
+    public NationClaimManager(EntityLibrary entityLib, ILogger<NationClaimManager> logger, AccountStore accountStore)
     {
         _entityLib = entityLib;
         _logger = logger;
+        _accountStore = accountStore;
     }
 
     public string[] GetAllUnclaimedNationIds()
@@ -53,6 +55,10 @@ public class NationClaimManager
 
             nation.playerId = claimingPlayerId;
             _logger.LogInformation("Player {player} has claimed nation {nation}", claimingPlayerId, nation.GetReadableName());
+            
+            Account account = _accountStore.FindById(claimingPlayerId) ?? throw new Exception($"Could not find account with id {claimingPlayerId}.");
+            account.NationId = nationId;
+            _accountStore.Save();
 
             return ClaimAttemptResult.Success;
         }

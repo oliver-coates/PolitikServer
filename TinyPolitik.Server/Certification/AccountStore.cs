@@ -13,6 +13,7 @@ public class Account
     public string PasswordSalt { get; set; } = "";
     public DateTime CreatedAtUTC { get; set; } = DateTime.UtcNow;
     public long CreatedAtUtcBinary { get; set; } = DateTime.UtcNow.ToBinary();
+    public string NationId { get; set; } = "null";
 
 }
 
@@ -96,7 +97,7 @@ public class AccountStore
         }
     }
 
-    private void Save()
+    public void Save()
     {
         var tempPath = _path + ".tmp";
         File.WriteAllText(tempPath, 
