@@ -32,13 +32,18 @@ public class AccountStore
         InvalidPassword = 3,
     }
 
+    private readonly ILogger<AccountStore> _logger;
+    private readonly EntityLibrary _entityLib;
+
     private readonly string _path;
     private readonly object _lock = new();
     private Dictionary<string, Account> _accountDictionary = new();
 
-    public AccountStore()
+    public AccountStore(ILogger<AccountStore> logger, EntityLibrary entityLib)
     {
         _path = ApplicationPaths.AccountsPath;
+        _entityLib = entityLib;
+        _logger = logger;
 
         if (File.Exists(_path))
         {
@@ -58,6 +63,10 @@ public class AccountStore
         return _accountDictionary.Values.FirstOrDefault(a => a.Username == username);
     }
 
+    public Account? FindByNation(string nationId)
+    {
+        return _accountDictionary.Values.FirstOrDefault(a => a.NationId == nationId);
+    }
 
     public CreationResult TryCreateAccount(string username, string password, out Account? account)
     {
@@ -131,5 +140,60 @@ public class AccountStore
         }       
 
         return true;
+    }
+
+    /// <summary>
+    /// Checks to see if an accounts file exists, and load them if so.
+    /// </summary>
+    /// <returns>True on a successful load.</returns>
+    public bool TryLoad()
+    {
+        if (!File.Exists(_path))
+        {
+            return false;
+        }
+        
+        try
+        {
+            Load();
+            return true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Unhandled exception occured while loading accounts : {error}", e);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Loads all accounts from disk
+    /// </summary>
+    public void Load()
+    {
+        if (!File.Exists(_path))
+        {
+            throw new Exception($"No accounts file found at expected path: {_path}.");
+        }
+        
+        string accountsJson = File.ReadAllText(_path);
+        Account[]? accounts = JsonSerializer.Deserialize<Account[]>(accountsJson);
+
+        _accountDictionary = new();
+        
+        if (accounts != null)
+        {
+            foreach (Account account in accounts)
+            {
+                _accountDictionary.Add(account.PlayerId, account);
+
+                if (_entityLib.TryGet<Nation>(account.NationId) == null)
+                {
+                    _logger.LogWarning($"Player '{account.Username} ({account.PlayerId})' is listed as owner of nation '{account.NationId}' which no record of exists. Setting to null.");   
+                    account.NationId = "null";
+                }            
+            }
+        }
+
+        // Done.
     }
 }

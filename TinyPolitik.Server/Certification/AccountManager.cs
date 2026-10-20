@@ -8,7 +8,7 @@ public class AccountManager
 {
     private readonly SessionStore _sessionStore;
     private readonly ServerConfig _config;
-    private readonly AccountStore _accounts;
+    private readonly AccountStore _accountsStore;
     private readonly LoginRateLimiter _loginLimiter;
     private readonly EntityLibrary _entityLib;
 
@@ -16,7 +16,7 @@ public class AccountManager
     {
         _sessionStore = store;
         _config = config;
-        _accounts = accounts;
+        _accountsStore = accounts;
         _loginLimiter = limiter;
         _entityLib = entities;
     }
@@ -38,7 +38,7 @@ public class AccountManager
             return Results.Unauthorized();
         }
 
-        var result = _accounts.TryCreateAccount(request.Username, request.Password, out var account);
+        var result = _accountsStore.TryCreateAccount(request.Username, request.Password, out var account);
 
         // Handle failure resutls:
         switch (result)
@@ -81,7 +81,7 @@ public class AccountManager
             return Results.StatusCode(StatusCodes.Status429TooManyRequests);  
         }
 
-        Account? account =  _accounts.FindByUsername(request.Username);
+        Account? account =  _accountsStore.FindByUsername(request.Username);
         if (account is null)
         {
             _loginLimiter.RecordFailure(ip);
@@ -109,4 +109,6 @@ public class AccountManager
             )
         );
     }
+
+    
 }

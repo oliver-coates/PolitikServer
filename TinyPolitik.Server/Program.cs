@@ -94,6 +94,7 @@ catch (Exception e)
     Environment.Exit(0);
 }
 
+// Initialise the game state
 bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
 if (doInitialiseGame)
 { 
@@ -105,6 +106,8 @@ if (doInitialiseGame)
     app.Services.GetRequiredService<TurnBackupManager>().MakeWorldBackup(worldJson);
 }
 
+// Finally load our accounts
+app.Services.GetRequiredService<AccountStore>().TryLoad();
 
 // PUBLIC ROUTES:
 // Getting content version (Game Version, Game Definition Version, etc)
