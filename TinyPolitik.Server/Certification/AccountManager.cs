@@ -2,7 +2,7 @@ namespace PolitikServer.Core;
 
 public record AccountRegisterRequest(string InvitePassword, string Username, string Password);
 public record AccountLoginRequest(string Username, string Password);
-public record AccountAuthenticationResponse(string Token, string PlayerId, string Username, string? ControlledNationId);
+public record AccountAuthenticationResponse(string Token, string PlayerId, string Username, string NationId);
 
 public class AccountManager
 {
@@ -66,7 +66,7 @@ public class AccountManager
                 token,
                 account.PlayerId,
                 account.Username,
-                null
+                account.NationId // Will be 'null' when an account is first created.
             )
         );
     }
@@ -85,7 +85,7 @@ public class AccountManager
         if (account is null)
         {
             _loginLimiter.RecordFailure(ip);
-            return Results.NotFound($"No record of a player with name {request.Username} exists.");
+            return Results.NotFound($"No record of a player with name '{request.Username}' exists.");
         }
         
         if (!PasswordHasher.Verify(request.Password, account.PasswordHash, account.PasswordSalt))
@@ -98,14 +98,14 @@ public class AccountManager
 
         var token = _sessionStore.CreateSession(account.PlayerId);
         
-        Console.WriteLine($"Player {account.Username} has logged in.");
+        Console.WriteLine($"Player '{account.Username}' has logged in, they control nation '{account.NationId}'.");
 
         return Results.Json(
             new AccountAuthenticationResponse(
                 token,
                 account.PlayerId,
                 account.Username,
-                account.NationId ?? "null"
+                account.NationId
             )
         );
     }

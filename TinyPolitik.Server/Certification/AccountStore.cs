@@ -87,6 +87,7 @@ public class AccountStore
                 PasswordSalt = salt,
                 CreatedAtUTC = DateTime.UtcNow,
                 CreatedAtUtcBinary = DateTime.UtcNow.ToBinary(),
+                NationId = "null"
             };
 
             _accountDictionary.Add(account.PlayerId, account);

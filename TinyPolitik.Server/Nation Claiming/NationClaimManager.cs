@@ -57,7 +57,7 @@ public class NationClaimManager
             _logger.LogInformation("Player {player} has claimed nation {nation}", claimingPlayerId, nation.GetReadableName());
             
             Account account = _accountStore.FindById(claimingPlayerId) ?? throw new Exception($"Could not find account with id {claimingPlayerId}.");
-            account.NationId = nationId;
+            account.NationId = nation.UniqueIdentifier;
             _accountStore.Save();
 
             return ClaimAttemptResult.Success;
