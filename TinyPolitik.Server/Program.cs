@@ -156,8 +156,11 @@ authed.MapPost("/nations/{nationId}/claim",
 
         switch (result)
         {
-            case NationClaimManager.ClaimAttemptResult.NotFound:
+            case NationClaimManager.ClaimAttemptResult.NationNotFound:
                 return Results.NotFound($"Nation '{nationId}' does not exist.");
+            
+            case NationClaimManager.ClaimAttemptResult.PlayerNotFound:
+                return Results.NotFound($"Player '{session.PlayerId}' does not exist.");
             
             case NationClaimManager.ClaimAttemptResult.AlreadyClaimed:
                 return Results.Conflict($"This nation has already been claimed :(");
@@ -170,6 +173,31 @@ authed.MapPost("/nations/{nationId}/claim",
 
             default:
                 throw new Exception($"Unhanded Claim Request!");
+        }
+    });
+
+authed.MapPost("/nations/{nationId}/abandon",
+    (HttpContext ctx, string nationId, [FromServices] NationClaimManager claimManager) =>
+    {
+        var session = ctx.GetSession();
+        var result = claimManager.TryAbandonNation(session.PlayerId, nationId);
+
+        switch (result)
+        {
+            case NationClaimManager.AbandonAttemptResult.NationNotFound:
+                return Results.NotFound($"Nation '{nationId}' does not exist.");
+            
+            case NationClaimManager.AbandonAttemptResult.PlayerNotFound:
+                return Results.NotFound($"Player '{session.PlayerId}' does not exist.");
+        
+            case NationClaimManager.AbandonAttemptResult.DoesNotControlNation:
+                return Results.BadRequest($"You do not control nation '{nationId}'.");
+            
+            case NationClaimManager.AbandonAttemptResult.Success:
+                return Results.Accepted("You have abandoned your country.");
+            
+            default:
+                throw new Exception("Unhandled abandon request.");
         }
     });
 

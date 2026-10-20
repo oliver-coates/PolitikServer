@@ -6,10 +6,19 @@ public class NationClaimManager
 {
     public enum ClaimAttemptResult
     {
-        Success,
-        NotFound,
-        AlreadyClaimed,         
-        ThisPlayerAlreadyHasNation
+        Success = 0,
+        NationNotFound = 1,
+        PlayerNotFound = 2,
+        AlreadyClaimed = 3,         
+        ThisPlayerAlreadyHasNation = 4
+    }
+
+    public enum AbandonAttemptResult
+    {
+        Success = 0,
+        NationNotFound = 1,
+        PlayerNotFound = 2,
+        DoesNotControlNation = 3   
     }
 
     private readonly EntityLibrary _entityLib;
@@ -36,10 +45,16 @@ public class NationClaimManager
         lock (_claimAttemptLock)
         {
             Nation? nation = _entityLib.TryGet<Nation>(nationId); 
+            Account? account = _accountStore.FindById(claimingPlayerId);
             
+            if (account == null)
+            {
+                return ClaimAttemptResult.PlayerNotFound;
+            }
+
             if (nation == null)
             {
-                return ClaimAttemptResult.NotFound;
+                return ClaimAttemptResult.NationNotFound;
             }
 
             if (!string.IsNullOrEmpty(nation.playerId))
@@ -54,13 +69,44 @@ public class NationClaimManager
             }
 
             nation.playerId = claimingPlayerId;
-            _logger.LogInformation("Player {player} has claimed nation {nation}", claimingPlayerId, nation.GetReadableName());
+            _logger.LogInformation("Player {player} has claimed nation {nation}", account.Username, nation.GetReadableName());
             
-            Account account = _accountStore.FindById(claimingPlayerId) ?? throw new Exception($"Could not find account with id {claimingPlayerId}.");
             account.NationId = nation.UniqueIdentifier;
             _accountStore.Save();
 
             return ClaimAttemptResult.Success;
+        }
+    }
+
+    public AbandonAttemptResult TryAbandonNation(string abandoningPlayerId, string nationId)
+    {
+        lock (_claimAttemptLock)
+        {
+            Nation? nation = _entityLib.TryGet<Nation>(nationId);
+            Account? account = _accountStore.FindById(abandoningPlayerId);
+
+            if (account == null)
+            {
+                return AbandonAttemptResult.PlayerNotFound;
+            }
+
+            if (nation == null)
+            {
+                return AbandonAttemptResult.NationNotFound;   
+            }
+
+            if (nation.playerId != abandoningPlayerId)
+            {
+                return AbandonAttemptResult.DoesNotControlNation;
+            }
+
+            _logger.LogInformation("Player '{player}' has abandoned nation '{nation}'", account.Username, nation.GetReadableName());
+            
+            nation.playerId = null;
+            account.NationId = "null";
+
+            _accountStore.Save();
+            return AbandonAttemptResult.Success;
         }
     }
 
