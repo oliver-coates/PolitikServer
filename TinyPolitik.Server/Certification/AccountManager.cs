@@ -2,7 +2,7 @@ namespace PolitikServer.Core;
 
 public record AccountRegisterRequest(string InvitePassword, string Username, string Password);
 public record AccountLoginRequest(string Username, string Password);
-public record AccountAuthenticationResponse(string Token, string PlayerId, string Username, string NationId);
+public record AccountAuthenticationResponse(string Token, string PlayerId, string Username, string? NationId);
 
 public class AccountManager
 {
@@ -98,7 +98,14 @@ public class AccountManager
 
         var token = _sessionStore.CreateSession(account.PlayerId);
         
-        Console.WriteLine($"Player '{account.Username}' has logged in, they control nation '{account.NationId}'.");
+        if (account.NationId == null ||  account.NationId == "null")
+        {
+            Console.WriteLine($"Player '{account.Username}' has logged in, they do not control a nation.");
+        }
+        else
+        {
+            Console.WriteLine($"Player '{account.Username}' has logged in, they control nation '{_entityLib.Get<Nation>(account.NationId).GetReadableName()}' ({account.NationId}).");
+        }
 
         return Results.Json(
             new AccountAuthenticationResponse(
