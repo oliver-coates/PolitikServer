@@ -19,6 +19,10 @@ catch (Exception e)
     Environment.Exit(0);
 }
 
+#if DEBUG
+serverConfig.ExecuteDebugChecks();
+#endif
+
 // Setup logging:
 var logWriter = new LogWriter(ApplicationPaths.LogsRoot);
 builder.Services.AddSingleton(logWriter);

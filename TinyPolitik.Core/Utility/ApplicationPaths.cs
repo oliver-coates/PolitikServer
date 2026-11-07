@@ -32,6 +32,7 @@ public static class ApplicationPaths
     /// </summary>
     public static string ServerConfigPath { get; private set; } = "";
 
+    
     public static void InitialiseDirectories(string contentRootPath)
     {
         // Paths:
@@ -51,4 +52,27 @@ public static class ApplicationPaths
         Directory.CreateDirectory(LogsRoot);
     }
 
+    /// <summary>
+    /// Clears all non-gameworld data, such as snapshots, account data and logs. 
+    /// </summary>
+    public static void ClearCache()
+    {
+        if (Directory.Exists(LogsRoot))
+        {
+            Directory.Delete(LogsRoot, true);
+        }
+        if (Directory.Exists(BackupsRoot))
+        {
+            Directory.Delete(BackupsRoot, true);
+        }
+
+        if (File.Exists(AccountsPath))
+        {
+            File.Delete(AccountsPath);
+        }
+
+        // Recreate the deleted directories
+        Directory.CreateDirectory(LogsRoot);
+        Directory.CreateDirectory(BackupsRoot);
+    }
 }

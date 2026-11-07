@@ -6,7 +6,6 @@ public class ServerConfig
 {
     public const string DEFAULT_PASSWORD = "change me";
 
-
     public string ServerName { get; set; }
     public int MaxPlayers { get; set; }
 
@@ -26,6 +25,11 @@ public class ServerConfig
     // -- Port:
     public int Port { get; set; }
 
+    #if DEBUG
+    // -- Admin:
+    public bool DoClearCacheOnStartup { get; set;} 
+    #endif
+    
     /// <summary>
     /// This constructor sets up the default game configuration settings
     /// </summary>
@@ -40,7 +44,21 @@ public class ServerConfig
         Port = 2000;
 
         // Turn times UTC & password hash and salt are left blank.
+    
+        #if DEBUG
+        DoClearCacheOnStartup = false;
+        #endif
     }
+
+    #if DEBUG
+    public void ExecuteDebugChecks()
+    {
+        if (DoClearCacheOnStartup)
+        {
+            ApplicationPaths.ClearCache();
+        }
+    }
+    #endif
 }
 
 public static class ServerConfigLoader
@@ -142,5 +160,4 @@ public static class ServerConfigLoader
             }
         }
     }
-
 }
