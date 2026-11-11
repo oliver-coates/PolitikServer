@@ -99,16 +99,23 @@ catch (Exception e)
 }
 
 // Initialise the game state
-bool doInitialiseGame = true; // Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
-if (doInitialiseGame)
+app.Services.GetRequiredService<TurnManager>().Initialise();   
+
+// Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
+bool doResetWorld = false; 
+if (doResetWorld)
 { 
     app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
-    app.Services.GetRequiredService<TurnManager>().Initialise();   
-
-    // Make a backup of the world (this will move somewhere else eventually)
-    string worldJson = app.Services.GetRequiredService<DefinitionLibrary>().ToJson();
-    app.Services.GetRequiredService<TurnBackupManager>().MakeWorldBackup(worldJson);
 }
+else
+{
+    app.Services.GetRequiredService<TurnBackupManager>().TryGetLastGamestateBackup(out string json);
+}
+
+
+// This world backup is useful for running serverless on the client, but not needed for server operation
+string worldJson = app.Services.GetRequiredService<DefinitionLibrary>().ToJson();
+app.Services.GetRequiredService<TurnBackupManager>().MakeWorldBackup(worldJson);
 
 // Finally load our accounts
 app.Services.GetRequiredService<AccountStore>().TryLoad();

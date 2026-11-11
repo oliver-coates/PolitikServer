@@ -24,7 +24,7 @@ public class ServerCommandService : BackgroundService
             }
             else
             {
-                Console.WriteLine($"Turns are scheduled for {string.Join(',', config.TurnTimesLocal)} daily (local time).");   
+                Console.WriteLine($"Turns are scheduled for {string.Join(", ", config.TurnTimesLocal)} daily (local time).");   
             }
             return Task.CompletedTask;
         });
