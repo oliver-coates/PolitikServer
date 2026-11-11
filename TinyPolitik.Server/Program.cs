@@ -37,8 +37,8 @@ builder.Services.AddSingleton<AccountManager>();
 builder.Services.AddSingleton(new CertificateLoader(builder, serverConfig));
 
 // Setup world:
-builder.Services.AddSingleton<DefinitionValidator>();
-builder.Services.AddSingleton<DefinitionLoader>();
+builder.Services.AddSingleton<GameWorldValidator>();
+builder.Services.AddSingleton<RecordLoader>();
 builder.Services.AddSingleton<DefinitionLibrary>();
 builder.Services.AddSingleton<EntityLibrary>();
 builder.Services.AddSingleton<GameStateInitialiser>();
@@ -76,7 +76,7 @@ var app = builder.Build();
 // Validate then initialise game world:
 try
 {
-    app.Services.GetRequiredService<DefinitionValidator>().ValidateGameWorld();
+    app.Services.GetRequiredService<GameWorldValidator>().ValidateGameWorld();
 }
 catch (Exception e)
 {
@@ -88,7 +88,7 @@ catch (Exception e)
 
 try
 {
-    app.Services.GetRequiredService<DefinitionLoader>().Load();
+    app.Services.GetRequiredService<RecordLoader>().Load();
 }
 catch (Exception e)
 {

@@ -1,14 +1,14 @@
 namespace PolitikServer.Core.Serialization;
 
 /// <summary>
-/// Loads all game definitions from the game's content root, initialises libraries
+/// Loads all records (Game Definitions, Game Entities, Game Requests, Game Notifications) from the game's content root, initialises libraries
 /// </summary>
-public class DefinitionLoader
+public class RecordLoader
 {
     private DefinitionLibrary _definitionLibrary;
     private Dictionary<Type, List<GameDefinition>> _allDefinitions = new();
     
-    public DefinitionLoader(DefinitionLibrary lib)
+    public RecordLoader(DefinitionLibrary lib)
     {
         _definitionLibrary = lib;
     }

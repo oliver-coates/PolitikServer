@@ -3,7 +3,7 @@ namespace PolitikServer.Core.Serialization;
 /// <summary>
 /// Validates the existence of the gameworld.
 /// </summary>
-public class DefinitionValidator
+public class GameWorldValidator
 {
     public bool ValidateGameWorld()
     {
