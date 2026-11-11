@@ -55,6 +55,24 @@ public class TurnBackupManager
         _logger.LogInformation("Successfully saved snapshot to '{path}'", path);
     }
 
+    public bool DoBackupsExist()
+    {
+        if (!Directory.Exists(_backupRoot))
+        {
+            return false;
+        }
+
+        var allJsons = Directory.GetFiles(_backupRoot, "*.json"); 
+
+        // Check that there is at least one entity backup
+        if (allJsons.Count(j => j.Contains(ENTITIES_FILE_PREFIX)) == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     private void LoadBackups()
     {
         if (!Directory.Exists(_backupRoot))

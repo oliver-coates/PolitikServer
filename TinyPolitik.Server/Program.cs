@@ -101,15 +101,19 @@ catch (Exception e)
 // Initialise the game state
 app.Services.GetRequiredService<TurnManager>().Initialise();   
 
-// Eventaully we will want to be loading from an existing save (in cases of power outage, etc), for now always initialise as though a new server
-bool doResetWorld = false; 
-if (doResetWorld)
+var backupManager = app.Services.GetRequiredService<TurnBackupManager>(); 
+
+if (backupManager.DoBackupsExist())
 { 
-    app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
+    if (backupManager.TryGetLastGamestateBackup(out string json))
+    {
+        // TODO, implement pulling from json backups here:
+    }
+    
 }
 else
 {
-    app.Services.GetRequiredService<TurnBackupManager>().TryGetLastGamestateBackup(out string json);
+    app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
 }
 
 
