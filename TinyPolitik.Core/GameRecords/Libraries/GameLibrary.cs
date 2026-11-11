@@ -39,6 +39,16 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
         }
     }
 
+    public void Populate(GameRecord record, Type t)
+    {
+        if (!_typeDict.ContainsKey(t)) { _typeDict.Add(t, new()); }
+        
+        LibType obj = (LibType) record;
+        
+        _idDict.Add(record.UniqueIdentifier, obj);
+        _typeDict[t].Add(obj);
+    }
+
     public void Populate(IReadOnlyList<GameRecord> records, Type t)
     {
         if (!_typeDict.ContainsKey(t)) { _typeDict.Add(t, new()); }
@@ -52,6 +62,11 @@ public abstract class GameLibrary<LibType> where LibType : GameRecord
         }
     }
 
+    public void Flush()
+    {
+        _idDict = new();
+        _typeDict = new();
+    }
 
     public virtual T Get<T>(string uid) where T : LibType
     {

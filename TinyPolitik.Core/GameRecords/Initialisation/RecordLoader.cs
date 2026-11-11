@@ -5,24 +5,48 @@ namespace PolitikServer.Core.Serialization;
 /// </summary>
 public class RecordLoader
 {
-    private DefinitionLibrary _definitionLibrary;
-    private Dictionary<Type, List<GameDefinition>> _allDefinitions = new();
-    
-    public RecordLoader(DefinitionLibrary lib)
+    public enum LoadMethod
     {
-        _definitionLibrary = lib;
+        DefinitionsOnly, // Only attempts to load game definitions.
+        AllRecords // Attempts to load all records, including entities.
     }
 
-    public void Load()
+    private readonly DefinitionLibrary _definitionLibrary;
+    private readonly EntityLibrary _entityLibrary;
+
+    private string _entitiesJson = String.Empty;
+
+    public RecordLoader(DefinitionLibrary definitions, EntityLibrary entities)
     {
-        // First load all definition files into memory
-        LoadAllDefinitions();
+        _definitionLibrary = definitions;
+        _entityLibrary = entities;
+    }
 
-        // Then populate the definition library with the definitions
-        PopulateAllDefinitions();
+    public void Load(LoadMethod method)
+    {
+        try
+        {
+            // Ensure all libraries are clear
+            FlushAllLibraries();
 
-        // Finally initialise all definitions
-        DeserializeAllDefinitions();
+            // Load all definition files into memory
+            LoadAllDefinitions();
+
+            if (method == LoadMethod.AllRecords)
+            {
+                LoadAllEntities();
+            }
+
+            // Finally initialise all definitions
+            DeserializeAllRecords();    
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Error while loading game world:");
+            Console.WriteLine(e);
+
+            Environment.Exit(0);
+        }
     }
 
     private void LoadAllDefinitions()
@@ -32,58 +56,56 @@ public class RecordLoader
         {
             string path = Path.Combine(ApplicationPaths.ContentRoot, SerializationSchema.DefinitionFiles[definitionType]);
             
-            GameDefinition definition = LoadDefinition(path, definitionType);        
-            _allDefinitions.Add(definitionType, new List<GameDefinition>() {definition});
+            LoadDefinition(path, definitionType);        
         }
 
         // Then load all the directories
         foreach (Type definitionType in SerializationSchema.DefinitionDirectories.Keys)
         {
-            _allDefinitions.Add(definitionType, new List<GameDefinition>());
-
             string dir = Path.Combine(ApplicationPaths.ContentRoot, SerializationSchema.DefinitionDirectories[definitionType]);
 
             foreach (string path in Directory.GetFiles(dir))
             {
-                GameDefinition definition = LoadDefinition(path, definitionType);
-                _allDefinitions[definitionType].Add(definition);
+                LoadDefinition(path, definitionType);
             }
         }
     }
 
-    private GameDefinition LoadDefinition(string path, Type definitionType)
+    private void LoadAllEntities()
+    {
+        if (_entitiesJson == String.Empty)
+        {
+            throw new Exception("Entities are attempting to be loaded, but no entity data has been declared.");
+        }
+
+        // TODO: Implement this
+        Console.WriteLine("Todo: Implement entity backup loading here");
+    }
+
+    public void SetEntityData(string json)
+    {
+        _entitiesJson = json;
+    }
+
+    private void LoadDefinition(string path, Type definitionType)
     {
         string content = File.ReadAllText(path);
         GameDefinition definition = (GameDefinition) (Newtonsoft.Json.JsonConvert.DeserializeObject(content, definitionType) ?? throw new Exception($"Could not deserialize game definition at: {path}"));
     
-        return definition;
+        _definitionLibrary.Populate(definition, definitionType);
     }
 
-    private void DeserializeAllDefinitions()
+    private void FlushAllLibraries()
     {
-        foreach (List<GameDefinition> definitions in _allDefinitions.Values)
-        {
-            foreach (GameDefinition definition in definitions)
-            {
-                try
-                {
-                    definition.Deserialize();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Exception occured while deserializing a game definition: {e}");
-                }
-
-            }
-        }
+        _definitionLibrary.Flush();
+        _entityLibrary.Flush();
     }
 
-    private void PopulateAllDefinitions()
+    private void DeserializeAllRecords()
     {
-        foreach (KeyValuePair<Type, List<GameDefinition>> pair in _allDefinitions)
-        {
-            _definitionLibrary.Populate(pair.Value, pair.Key);
-        }
+        _definitionLibrary.Deserialize();
+        _entityLibrary.Deserialize();
     }
+
 
 }

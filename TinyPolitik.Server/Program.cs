@@ -86,33 +86,23 @@ catch (Exception e)
     Environment.Exit(0);
 }
 
-try
-{
-    app.Services.GetRequiredService<RecordLoader>().Load();
-}
-catch (Exception e)
-{
-    Console.WriteLine("Error while loading game world:");
-    Console.WriteLine(e);
-
-    Environment.Exit(0);
-}
 
 // Initialise the game state
 app.Services.GetRequiredService<TurnManager>().Initialise();   
 
+var recordLoader = app.Services.GetRequiredService<RecordLoader>(); 
 var backupManager = app.Services.GetRequiredService<TurnBackupManager>(); 
 
-if (backupManager.DoBackupsExist())
+if (backupManager.DoBackupsExist() && backupManager.TryGetLastGamestateBackup(out string json))
 { 
-    if (backupManager.TryGetLastGamestateBackup(out string json))
-    {
-        // TODO, implement pulling from json backups here:
-    }
-    
+    recordLoader.SetEntityData(json);
+
+    recordLoader.Load(RecordLoader.LoadMethod.AllRecords);
 }
 else
 {
+    recordLoader.Load(RecordLoader.LoadMethod.DefinitionsOnly);
+    
     app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
 }
 
