@@ -7,8 +7,15 @@ public class NationalEconomy : GameEntity
 {
     public required int money;
 
+    // -- Power:
     public required int powerGeneration;
     public required int powerConsumption;
+
+    /// <summary>
+    /// What percentage of this nation's power requirement has been fulfilled.
+    /// Between 0.0 = 0%, 1.0 = 100%.
+    /// </summary>
+    [Newtonsoft.Json.JsonIgnore] public float powerFulfillment;
 
     
     /// <summary>

@@ -24,7 +24,13 @@ public class EconomyResolver
         {
             NationalEconomy economy = nation.economy.Get();
 
+            // Calculate passive money and power income:
             CalcuateProvincePassives(ref economy, nation);
+        
+            // Power:
+            CalculatePowerGeneration(ref economy, nation);
+            CalculatePowerConsumption(ref economy, nation);
+            CalculatePowerFulfillment(ref economy);
         }
     }
 
@@ -58,4 +64,34 @@ public class EconomyResolver
         economy.passivePower = power;
     }
 
+    private void CalculatePowerGeneration(ref NationalEconomy economy, Nation nation)
+    {
+        int totalProduction = 0;
+
+        // TODO: iterate over buildings here and determine net power production
+
+        economy.powerGeneration = totalProduction;
+    }
+
+    private void CalculatePowerConsumption(ref NationalEconomy economy, Nation nation)
+    {
+        int totalConsumption = 0;
+
+        // TODO: iterate over building here and determine net power consumption
+
+        economy.powerConsumption = totalConsumption;
+
+    }
+
+    private void CalculatePowerFulfillment(ref NationalEconomy economy)
+    {
+        float rawFulfillment = economy.powerGeneration / economy.powerConsumption;
+
+        if (rawFulfillment == float.NaN)
+        {
+            rawFulfillment = 0f;
+        }
+
+        economy.powerFulfillment = Math.Clamp(rawFulfillment, 0.0f, 0.0f);        
+    }
 }
