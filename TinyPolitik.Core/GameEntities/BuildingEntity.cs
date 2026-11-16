@@ -6,14 +6,15 @@ public class BuildingEntity : GameEntity
 
     public readonly SerializedNullableField<ProductionMode> productionMode;
 
-
+    public int level;
 
     [Newtonsoft.Json.JsonConstructor]
     public BuildingEntity(string UniqueIdentifier, SerializedField<BuildingType> buildingDefinition, 
-        SerializedNullableField<ProductionMode> productionMode) : base(UniqueIdentifier)
+        SerializedNullableField<ProductionMode> productionMode, int level) : base(UniqueIdentifier)
     {
         this.buildingDefinition = buildingDefinition;
         this.productionMode = productionMode;
+        this.level = level;
     }
 
     public BuildingEntity(BuildingType type, ProductionMode? mode) : base (Guid.NewGuid().ToString())
@@ -21,6 +22,8 @@ public class BuildingEntity : GameEntity
         buildingDefinition = new SerializedField<BuildingType>(type);
      
         productionMode = new SerializedNullableField<ProductionMode>(mode);
+
+        level = 1;
     }
 
     public override string GetReadableName()

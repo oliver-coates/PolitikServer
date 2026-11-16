@@ -14,7 +14,7 @@ public class ProvinceEntity : GameEntity
 
     // Economy:
     public required int population;
-    public required List<string> buildings; // Not yet implemented...
+    public required SerializedList<BuildingEntity> buildings; 
     public required SerializedField<ProvinceDevelopmentLevel> developmentLevel;
 
 
@@ -22,18 +22,20 @@ public class ProvinceEntity : GameEntity
     public ProvinceEntity(string UniqueIdentifier, int population, SerializedField<ProvinceDefinition> province, 
         SerializedList<ProvinceEntity> connectedProvinces, SerializedNullableField<Nation?> ownerNation, 
         SerializedNullableField<Nation?> occupierNation, 
-        SerializedField<ProvinceDevelopmentLevel> developmentLevel, bool isOccupied) : base(UniqueIdentifier)
+        SerializedField<ProvinceDevelopmentLevel> developmentLevel, bool isOccupied,
+        SerializedList<BuildingEntity> buildings) : base(UniqueIdentifier)
     {
         this.definition = province;
         this.connectedProvinces = connectedProvinces;
 
         this.ownerNation = ownerNation;
         this.occupierNation = occupierNation;
+        this.isOccupied = isOccupied;
 
         this.population = population;
         this.developmentLevel = developmentLevel;
 
-        this.isOccupied = isOccupied;
+        this.buildings = buildings;
     }
 
     [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]

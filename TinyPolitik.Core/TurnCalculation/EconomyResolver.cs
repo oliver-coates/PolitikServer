@@ -29,7 +29,6 @@ public class EconomyResolver
         
             // Power:
             CalculatePowerGeneration(ref economy, nation);
-            CalculatePowerConsumption(ref economy, nation);
             CalculatePowerFulfillment(ref economy);
         }
     }
@@ -67,20 +66,27 @@ public class EconomyResolver
     private void CalculatePowerGeneration(ref NationalEconomy economy, Nation nation)
     {
         int totalProduction = 0;
-
-        // TODO: iterate over buildings here and determine net power production
-
-        economy.powerGeneration = totalProduction;
-    }
-
-    private void CalculatePowerConsumption(ref NationalEconomy economy, Nation nation)
-    {
         int totalConsumption = 0;
 
-        // TODO: iterate over building here and determine net power consumption
+        foreach (ProvinceEntity province in nation.provincesControlled.Get())
+        {
+            foreach (BuildingEntity building in province.buildings.Get())
+            {
+                ProductionMode? productionMode = building.productionMode.Get();
+                int level = building.level;
 
+                if (productionMode == null)
+                {
+                    continue;
+                }
+
+                totalProduction += level * productionMode.PowerGenerated;
+                totalConsumption += level * productionMode.PowerDraw;
+            }
+        }
+
+        economy.powerGeneration = totalProduction;
         economy.powerConsumption = totalConsumption;
-
     }
 
     private void CalculatePowerFulfillment(ref NationalEconomy economy)
