@@ -7,11 +7,13 @@ public class EconomyResolver
 {
     private readonly ILogger<EconomyResolver> _logger;
     private readonly EntityLibrary _entities;
+    private readonly DefinitionLibrary _definitions;
 
-    public EconomyResolver(ILogger<EconomyResolver> logger, EntityLibrary entityLibrary)
+    public EconomyResolver(ILogger<EconomyResolver> logger, EntityLibrary entityLibrary, DefinitionLibrary definitionLibrary)
     {
         _logger = logger;
         _entities = entityLibrary;
+        _definitions = definitionLibrary;
     }
 
     internal void Tick()
@@ -30,6 +32,9 @@ public class EconomyResolver
             // Power:
             CalculatePowerGeneration(ref economy, nation);
             CalculatePowerFulfillment(ref economy);
+
+            // Resources:
+            CalculateResourcesExtracted(ref economy, nation);
         }
     }
 
@@ -45,12 +50,6 @@ public class EconomyResolver
 
         foreach (ProvinceEntity province in nation.provincesControlled.Get())
         {
-            if (province.isOccupied)
-            {
-                // Occupied provinces do not provide any passives.
-                continue;
-            }
-
             ProvinceDevelopmentLevel level = province.developmentLevel.Get(); 
             
             power += level.PowerProduced;
@@ -99,5 +98,42 @@ public class EconomyResolver
         }
 
         economy.powerFulfillment = Math.Clamp(rawFulfillment, 0.0f, 0.0f);        
+    }
+
+    /// <summary>
+    /// Finds how many resources were extracted this turn and of what type
+    /// </summary>
+    /// <param name="economy"></param>
+    /// <param name="nation"></param>
+    private void CalculateResourcesExtracted(ref NationalEconomy economy, Nation nation)
+    {
+        Dictionary<StrategicResource, int> produced = new();
+        
+        // Assign all resources to the dictionary
+        foreach (StrategicResource resource in _definitions.GetAll<StrategicResource>())
+        {
+            produced.Add(resource, 0);
+        }
+
+        foreach (ProvinceEntity provinceEntity in nation.provincesControlled.Get())
+        {
+            // Province development level provides additional resources:
+            ProvinceDevelopmentLevel developmentLevel = provinceEntity.developmentLevel.Get();
+            int resourcesFromPopulation = developmentLevel.ResourcesProvided;
+
+            foreach (ProvinceFeature feature in provinceEntity.definition.Get().Features.Get())
+            {
+                foreach (StrategicResource resource in feature.StrategicResources)
+                {
+                    // We can add additional logic in here, some buildings might give resource bonus...
+                    int amount = resourcesFromPopulation;
+
+                    produced[resource] += amount;
+                }
+            }
+            
+        }
+
+        economy.producedResources = produced;
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace PolitikServer.Core;
 
 /// <summary>
@@ -28,6 +30,11 @@ public class NationalEconomy : GameEntity
     /// </summary>
     public required int passivePower;
 
+    /// <summary>
+    /// Dictionary of all strategic resources in the game and how many we producted this turn
+    /// </summary>
+    [Newtonsoft.Json.JsonIgnore] public required Dictionary<StrategicResource, int> producedResources;
+
 
     [Newtonsoft.Json.JsonConstructor]
     public NationalEconomy(string UniqueIdentifier, int money, int powerGeneration, int powerConsumption) : base(UniqueIdentifier)
@@ -38,7 +45,6 @@ public class NationalEconomy : GameEntity
         this.powerConsumption = powerConsumption;
     }
 
-
     [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
     public NationalEconomy() : base(Guid.NewGuid().ToString())
     {
@@ -46,6 +52,7 @@ public class NationalEconomy : GameEntity
 
         powerGeneration = 0;
         powerConsumption = 0;
+        producedResources = [];
     }
 
 
