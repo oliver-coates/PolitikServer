@@ -1,4 +1,3 @@
-using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.Logging;
 using PolitikServer.Core;
 
@@ -37,6 +36,8 @@ public class EconomyResolver
         int power = 0;
         int money = 0;
 
+        float population_tax_rate = WorldConfig.GetFloat("economy_population_tax_rate");
+
         foreach (ProvinceEntity province in nation.provincesControlled.Get())
         {
             if (province.isOccupied)
@@ -48,14 +49,13 @@ public class EconomyResolver
             ProvinceDevelopmentLevel level = province.developmentLevel.Get(); 
             
             power += level.PowerProduced;
-            money += 1; // TODO: Implement this.
+            money += (int) MathF.Floor(province.population * population_tax_rate);
 
             _logger.LogInformation("Province '{province}' provides {power} power and ${money} this turn.", province.UniqueIdentifier, power, money);
         }
 
         economy.passiveMoney = money;
         economy.passivePower = power;
-
     }
 
 }
