@@ -5,13 +5,35 @@ namespace PolitikServer.Core;
 /// </summary>
 public class NationalEconomy : GameEntity
 {
-    public NationalEconomy(string UniqueIdentifier) : base(UniqueIdentifier)
+    public required int money;
+
+    public required int powerGeneration;
+    public required int powerConsumption;
+
+
+    [Newtonsoft.Json.JsonConstructor]
+    public NationalEconomy(string UniqueIdentifier, int money, int powerGeneration, int powerConsumption) : base(UniqueIdentifier)
     {
+        this.money = money;
+
+        this.powerGeneration = powerGeneration;
+        this.powerConsumption = powerConsumption;
     }
+
+
+    [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
+    public NationalEconomy() : base(Guid.NewGuid().ToString())
+    {
+        money = 0;
+
+        powerGeneration = 0;
+        powerConsumption = 0;
+    }
+
 
     public override string GetReadableName()
     {
-        return "Not yet implemented";
+        return "National Economy";
     }
 
     internal override void Deserialize()

@@ -58,7 +58,6 @@ public class GameStateInitialiser
         ProvinceEntity[] connectedProvinces = []; // TODO: Implement this.
 
         ProvinceEntity newProvince = new(
-            Guid.NewGuid().ToString(), 
             definition, 
             connectedProvinces, 
             null, 
@@ -198,7 +197,6 @@ public class GameStateInitialiser
         ProvinceEntity capitol = RandomUtil.Pick(provinces);
 
         Nation newNation = new(
-            Guid.NewGuid().ToString(),
             null,
             randDecoration,
             provinces,

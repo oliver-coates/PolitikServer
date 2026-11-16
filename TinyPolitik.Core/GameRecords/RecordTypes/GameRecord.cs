@@ -3,7 +3,7 @@ namespace PolitikServer.Core;
 [Newtonsoft.Json.JsonObject]
 public abstract class GameRecord
 {
-    [Newtonsoft.Json.JsonRequired] public required string UniqueIdentifier;
+    [Newtonsoft.Json.JsonRequired] public string UniqueIdentifier { get; private set; }
 
     internal abstract void Deserialize();
 

@@ -18,7 +18,10 @@ public class ProvinceEntity : GameEntity
 
 
     [Newtonsoft.Json.JsonConstructor]
-    public ProvinceEntity(string UniqueIdentifier, int population, SerializedField<ProvinceDefinition> province, SerializedList<ProvinceEntity> connectedProvinces, SerializedNullableField<Nation?> ownerNation, SerializedNullableField<Nation?> occupierNation, SerializedField<ProvinceDevelopmentLevel> developmentLevel) : base(UniqueIdentifier)
+    public ProvinceEntity(string UniqueIdentifier, int population, SerializedField<ProvinceDefinition> province, 
+        SerializedList<ProvinceEntity> connectedProvinces, SerializedNullableField<Nation?> ownerNation, 
+        SerializedNullableField<Nation?> occupierNation, 
+        SerializedField<ProvinceDevelopmentLevel> developmentLevel) : base(UniqueIdentifier)
     {
         this.definition = province;
         this.connectedProvinces = connectedProvinces;
@@ -31,10 +34,10 @@ public class ProvinceEntity : GameEntity
     }
 
     [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
-    public ProvinceEntity(string UniqueIdentifier, ProvinceDefinition provinceDefinition, IReadOnlyList<ProvinceEntity> connectedProvinces, Nation? ownerNation, Nation? occupierNation, int population, ProvinceDevelopmentLevel developmentLevel) : base(UniqueIdentifier)
+    public ProvinceEntity(ProvinceDefinition provinceDefinition, IReadOnlyList<ProvinceEntity> connectedProvinces, 
+                            Nation? ownerNation, Nation? occupierNation, int population, 
+                            ProvinceDevelopmentLevel developmentLevel) : base(Guid.NewGuid().ToString())
     {
-        this.UniqueIdentifier = UniqueIdentifier;
-
         this.definition = new SerializedField<ProvinceDefinition>(provinceDefinition);
         this.connectedProvinces = new SerializedList<ProvinceEntity>(connectedProvinces); 
 
