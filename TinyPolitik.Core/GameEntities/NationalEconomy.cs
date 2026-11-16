@@ -10,6 +10,17 @@ public class NationalEconomy : GameEntity
     public required int powerGeneration;
     public required int powerConsumption;
 
+    
+    /// <summary>
+    /// Revenue gained passively from controlled provinces.
+    /// </summary>
+    public required int passiveMoney;
+
+    /// <summary>
+    /// Power gained passively from controlled provinces.
+    /// </summary>
+    public required int passivePower;
+
 
     [Newtonsoft.Json.JsonConstructor]
     public NationalEconomy(string UniqueIdentifier, int money, int powerGeneration, int powerConsumption) : base(UniqueIdentifier)

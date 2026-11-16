@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
+using PolitikServer.Core;
 
-namespace PolitikServer.Core;
+
+namespace PolitikServer.TurnResolution;
 
 public class ProvinceTurnResolver
 {
@@ -81,6 +83,17 @@ public class ProvinceTurnResolver
             string provinceUid = province.definition.Get().UniqueIdentifier;
 
             _logger.LogInformation($"Province '{provinceUid}`' development level has changed (old: '{currentLevel.UniqueIdentifier}', new: '{correctLevel.UniqueIdentifier}')");
+        }
+    }
+
+    /// <summary>
+    /// Updates the province's occupation bool to match whether it is currently occupied. 
+    /// </summary>
+    public void TickOccupation()
+    {
+        foreach (ProvinceEntity province in _entities.GetAll<ProvinceEntity>())
+        {
+            province.isOccupied = province.ownerNation.Get() != province.occupierNation.Get();
         }
     }
 }

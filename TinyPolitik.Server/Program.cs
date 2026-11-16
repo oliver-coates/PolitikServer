@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PolitikServer.Core;
+using PolitikServer.TurnResolution;
 using PolitikServer.Core.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,7 @@ builder.Services.AddSingleton<TurnManager>();
 builder.Services.AddSingleton<NationClaimManager>();
 
 // Setup turn resolution:
+builder.Services.AddSingleton<EconomyResolver>();
 builder.Services.AddSingleton<ProvinceTurnResolver>();
 builder.Services.AddSingleton<TurnResolver>();
 

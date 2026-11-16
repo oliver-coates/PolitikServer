@@ -9,6 +9,7 @@ public class ProvinceEntity : GameEntity
     // Owner & Occupier:
     public required SerializedNullableField<Nation?> ownerNation;
     public required SerializedNullableField<Nation?> occupierNation;
+    public required bool isOccupied;
 
 
     // Economy:
@@ -21,7 +22,7 @@ public class ProvinceEntity : GameEntity
     public ProvinceEntity(string UniqueIdentifier, int population, SerializedField<ProvinceDefinition> province, 
         SerializedList<ProvinceEntity> connectedProvinces, SerializedNullableField<Nation?> ownerNation, 
         SerializedNullableField<Nation?> occupierNation, 
-        SerializedField<ProvinceDevelopmentLevel> developmentLevel) : base(UniqueIdentifier)
+        SerializedField<ProvinceDevelopmentLevel> developmentLevel, bool isOccupied) : base(UniqueIdentifier)
     {
         this.definition = province;
         this.connectedProvinces = connectedProvinces;
@@ -31,6 +32,8 @@ public class ProvinceEntity : GameEntity
 
         this.population = population;
         this.developmentLevel = developmentLevel;
+
+        this.isOccupied = isOccupied;
     }
 
     [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
@@ -48,6 +51,8 @@ public class ProvinceEntity : GameEntity
         this.developmentLevel = new SerializedField<ProvinceDevelopmentLevel>(developmentLevel);
     
         this.buildings = new();
+        
+        isOccupied = false;
     }
 
     internal override void Deserialize()
