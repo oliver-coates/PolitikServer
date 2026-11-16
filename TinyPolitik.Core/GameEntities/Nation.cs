@@ -16,13 +16,18 @@ public class Nation : GameEntity
 
 
     public required SerializedList<ProvinceEntity> provincesControlled;
+    public required SerializedList<ProvinceEntity> provincesOwned;
     public required SerializedField<ProvinceEntity> capitalProvince;
 
     public readonly SerializedField<NationalEconomy> economy;
 
 
     [Newtonsoft.Json.JsonConstructor]
-    public Nation(string UniqueIdentifier, string? playerId, string nameLong, string nameShort, string colorPrimary, string colorTertiary, string noun, SerializedList<ProvinceEntity> provincesControlled, SerializedField<ProvinceEntity> captialProvince, SerializedField<NationalEconomy> economy) : base(UniqueIdentifier)
+    public Nation(string UniqueIdentifier, string? playerId, string nameLong,
+        string nameShort, string colorPrimary, string colorTertiary,
+        string noun, SerializedList<ProvinceEntity> provincesControlled,
+        SerializedList<ProvinceEntity> provincesOwned, SerializedField<ProvinceEntity> captialProvince,
+        SerializedField<NationalEconomy> economy) : base(UniqueIdentifier)
     {
         this.playerId = playerId;
         this.nameLong = nameLong;
@@ -32,13 +37,14 @@ public class Nation : GameEntity
         this.noun = noun;
     
         this.provincesControlled = provincesControlled;
+        this.provincesOwned = provincesOwned;
         this.capitalProvince = captialProvince;
         
         this.economy = economy;
     }
 
     [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
-    public Nation(string? playerId, Decoration decoration, IReadOnlyList<ProvinceEntity> provincesControlled, ProvinceEntity captialProvince) : base(Guid.NewGuid().ToString())
+    public Nation(string? playerId, Decoration decoration, IReadOnlyList<ProvinceEntity> provinces, ProvinceEntity captialProvince) : base(Guid.NewGuid().ToString())
     {
         this.playerId = playerId;
         this.nameLong = decoration.nameLong;
@@ -47,7 +53,8 @@ public class Nation : GameEntity
         this.colorTertiary = decoration.colorTertiary;
         this.noun = decoration.noun;
     
-        this.provincesControlled = new SerializedList<ProvinceEntity>(provincesControlled);
+        this.provincesControlled = new SerializedList<ProvinceEntity>(provinces);
+        this.provincesOwned = new SerializedList<ProvinceEntity>(provinces);
         this.capitalProvince = new SerializedField<ProvinceEntity>(captialProvince);
         
         var economy = new NationalEconomy();
