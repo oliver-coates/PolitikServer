@@ -45,11 +45,18 @@ public class AccountStore
         _entityLib = entityLib;
         _logger = logger;
 
+        ServerInitialiser.OnSecondaryInitialise += Initialise;
+
         if (File.Exists(_path))
         {
             var accounts = JsonSerializer.Deserialize<List<Account>>(File.ReadAllText(_path)) ?? new();
             _accountDictionary = accounts.ToDictionary(a => a.PlayerId);
         }
+    }
+
+    private void Initialise(ServerInitialisationMode mode)
+    {
+        TryLoad();
     }
 
     public Account? FindById(string playerId)

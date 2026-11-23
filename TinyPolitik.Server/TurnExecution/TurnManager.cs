@@ -27,6 +27,8 @@ public class TurnManager
         _config = config;
         _logger = logger;
 
+        ServerInitialiser.OnPrimarlyInitialise += Initialise;
+
         // Convert turn times from string format e.g. "12:30" into int tuples of hour/minute
         turnTimes = new Tuple<int, int>[config.TurnTimesLocal.Length];
         
@@ -51,7 +53,7 @@ public class TurnManager
         TurnMetaData = new(); // This will be overwritten by either the Initialise method or by loading the saved turn metadata
     }
 
-    public void Initialise()
+    public void Initialise(ServerInitialisationMode mode)
     {
         // Initialise with turn meta data
         TurnMetaData = GenerateMetaData();

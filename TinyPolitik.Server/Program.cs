@@ -42,7 +42,7 @@ builder.Services.AddSingleton<GameWorldValidator>();
 builder.Services.AddSingleton<RecordLoader>();
 builder.Services.AddSingleton<DefinitionLibrary>();
 builder.Services.AddSingleton<EntityLibrary>();
-builder.Services.AddSingleton<GameStateInitialiser>();
+builder.Services.AddSingleton<GameWorldCreator>();
 builder.Services.AddSingleton<TurnManager>();
 builder.Services.AddSingleton<NationClaimManager>();
 
@@ -70,53 +70,22 @@ else
 // Setup commands:
 builder.Services.AddHostedService<ServerCommandService>();
 
+// Setup additional helpers:
+builder.Services.AddSingleton<ProvinceDevelopmentResolver>();
+
 // Build the app:
 var app = builder.Build();
 
 // --- Initialise everything:
-
-// Validate then initialise game world:
-try
-{
-    app.Services.GetRequiredService<GameWorldValidator>().ValidateGameWorld();
-}
-catch (Exception e)
-{
-    Console.WriteLine($"Could not locate game world file. Ensure you have a valid TinyPolitik game world located at '{ApplicationPaths.ContentRoot}'.");
-    Console.WriteLine(e);
-
-    Environment.Exit(0);
-}
-
-
-// Initialise the game state
-app.Services.GetRequiredService<TurnManager>().Initialise();   
-
-var recordLoader = app.Services.GetRequiredService<RecordLoader>(); 
-var backupManager = app.Services.GetRequiredService<TurnBackupManager>(); 
-
-if (backupManager.DoBackupsExist() && backupManager.TryGetLastGamestateBackup(out string json))
-{ 
-    recordLoader.SetEntityData(json);
-
-    recordLoader.Load(RecordLoader.LoadMethod.AllRecords);
-}
-else
-{
-    recordLoader.Load(RecordLoader.LoadMethod.DefinitionsOnly);
-    
-    app.Services.GetRequiredService<GameStateInitialiser>().Initialise();
-}
-
+var mode = ServerInitialiser.InitialisePrimary(app);
+WorldInitialiser.Initialise(mode);
+ServerInitialiser.InitialiseSecondary(mode);
 
 // This world backup is useful for running serverless on the client, but not needed for server operation
 string worldJson = app.Services.GetRequiredService<DefinitionLibrary>().ToJson();
 app.Services.GetRequiredService<TurnBackupManager>().MakeWorldBackup(worldJson);
 
-// Finally load our accounts
-app.Services.GetRequiredService<AccountStore>().TryLoad();
-
-// PUBLIC ROUTES:
+// --- PUBLIC ROUTES:
 // Getting content version (Game Version, Game Definition Version, etc)
 app.MapGet("/server/version", ([FromServices] DefinitionLibrary definitionLibrary, [FromServices] ServerConfig config) => ServerInfo.Get(definitionLibrary, config));
 
@@ -127,7 +96,7 @@ app.MapPost("/account/register",
     (HttpContext ctx, AccountRegisterRequest request, [FromServices] AccountManager accountManager) => accountManager.RegisterAccount(ctx, request));
 
 
-// PRIVATE ROUTES:
+// --- PRIVATE ROUTES:
 // These require an authentication token
 var authed = app.MapGroup("").AddEndpointFilter<RequireSessionFilter>();
 

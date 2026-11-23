@@ -20,9 +20,25 @@ public class RecordLoader
     {
         _definitionLibrary = definitions;
         _entityLibrary = entities;
+
+        WorldInitialiser.OnInitialiseMain += OnServerInitialisation;
     }
 
-    public void Load(LoadMethod method)
+    public void OnServerInitialisation(ServerInitialisationMode mode)
+    {
+        if (mode is InitialiseFromBackup backup)
+        {
+            _entitiesJson = backup.backupJson;
+
+            Load(LoadMethod.AllRecords);
+        }
+        else if (mode is InitialiseNewWorld newWorld)
+        {
+            Load(LoadMethod.DefinitionsOnly);
+        }
+    }
+
+    private void Load(LoadMethod method)
     {
         try
         {
@@ -80,11 +96,6 @@ public class RecordLoader
 
         // TODO: Implement this
         Console.WriteLine("Todo: Implement entity backup loading here");
-    }
-
-    public void SetEntityData(string json)
-    {
-        _entitiesJson = json;
     }
 
     private void LoadDefinition(string path, Type definitionType)
