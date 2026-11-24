@@ -103,6 +103,8 @@ public class EconomyResolver
     /// <summary>
     /// Finds how many resources were extracted this turn and of what type
     /// </summary>
+    /// <param name="economy"></param>
+    /// <param name="nation"></param>
     private void CalculateResourcesExtracted(ref NationalEconomy economy, Nation nation)
     {
         Dictionary<StrategicResource, int> produced = new();
