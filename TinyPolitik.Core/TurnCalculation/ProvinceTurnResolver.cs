@@ -8,15 +8,16 @@ public class ProvinceTurnResolver
 {
     private readonly ILogger<ProvinceTurnResolver> _logger;
 
-    private readonly DefinitionLibrary _definitions;
     private readonly EntityLibrary _entities;
 
-    public ProvinceTurnResolver(ILogger<ProvinceTurnResolver> logger, DefinitionLibrary definitions, EntityLibrary entityLibrary)
+    private readonly ProvinceDevelopmentResolver _provinceDevelopmentResolver;
+
+    public ProvinceTurnResolver(ILogger<ProvinceTurnResolver> logger, EntityLibrary entityLibrary, ProvinceDevelopmentResolver provinceDevelopmentResolver)
     {
         _logger = logger;
-        _definitions = definitions;
         _entities = entityLibrary;
 
+        _provinceDevelopmentResolver = provinceDevelopmentResolver;
     }
 
     /// <summary>
@@ -66,13 +67,12 @@ public class ProvinceTurnResolver
     /// </summary>
     public void TickProvinceLevel()
     {
-        ProvinceDevelopmentLevel[] developmentLevels = _definitions.GetAll<ProvinceDevelopmentLevel>();
         ProvinceEntity[] provinces =_entities.GetAll<ProvinceEntity>();
 
         foreach (ProvinceEntity province in provinces)
         {
             ProvinceDevelopmentLevel currentLevel = province.developmentLevel.Get();
-            ProvinceDevelopmentLevel correctLevel = ProvinceDevelopmentLevel.Evaluate(developmentLevels, province.population);
+            ProvinceDevelopmentLevel correctLevel = _provinceDevelopmentResolver.Evaluate(province.population);
 
             if (currentLevel == correctLevel)
             {
@@ -82,7 +82,7 @@ public class ProvinceTurnResolver
             province.developmentLevel.Set(correctLevel);
             string provinceUid = province.definition.Get().UniqueIdentifier;
 
-            _logger.LogInformation($"Province '{provinceUid}`' development level has changed (old: '{currentLevel.UniqueIdentifier}', new: '{correctLevel.UniqueIdentifier}')");
+            _logger.LogInformation($"Province '{provinceUid}' development level has changed (old: '{currentLevel.UniqueIdentifier}', new: '{correctLevel.UniqueIdentifier}')");
         }
     }
 

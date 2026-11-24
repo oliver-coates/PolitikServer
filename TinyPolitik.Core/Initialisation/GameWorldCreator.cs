@@ -10,12 +10,14 @@ public class GameWorldCreator
     private readonly ILogger<GameWorldCreator> _logger;
     private readonly DefinitionLibrary _definitions;
     private readonly EntityLibrary _entities;
+    private readonly ProvinceDevelopmentResolver _provinceDevelopmentResolver;
 
-    public GameWorldCreator(ILogger<GameWorldCreator> logger, DefinitionLibrary definitions, EntityLibrary entities)
+    public GameWorldCreator(ILogger<GameWorldCreator> logger, DefinitionLibrary definitions, EntityLibrary entities, ProvinceDevelopmentResolver developmentResolver)
     {
         _logger = logger;
         _definitions = definitions;
         _entities = entities;
+        _provinceDevelopmentResolver = developmentResolver;
 
         WorldInitialiser.OnInitialiseLate += Initialise;
     }
@@ -60,7 +62,7 @@ public class GameWorldCreator
         float popVariance = WorldConfig.GetFloat("province_starting_population_variance");
         int popBase = WorldConfig.GetInt("province_starting_population");
         int pop = (int) RandomUtil.ApplyVariance(popBase, popVariance, RandomUtil.VarianceMethod.Multiplicative);
-        var level = ProvinceDevelopmentLevel.Evaluate(_definitions.GetAll<ProvinceDevelopmentLevel>(), pop);
+        var level = _provinceDevelopmentResolver.Evaluate(pop);
         ProvinceEntity[] connectedProvinces = []; // TODO: Implement this.
 
         ProvinceEntity newProvince = new(

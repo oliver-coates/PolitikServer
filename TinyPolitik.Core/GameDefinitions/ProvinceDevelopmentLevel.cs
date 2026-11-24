@@ -31,26 +31,5 @@ public class ProvinceDevelopmentLevel : GameDefinition
         return "Development Level.";
     }
 
-    /// <summary>
-    /// Takes an array of province development levels and a population and returnss the development level that this population is at.
-    /// </summary>
-    public static ProvinceDevelopmentLevel Evaluate(ProvinceDevelopmentLevel[] levels, int population)
-    {
-        // Order development levels by the ones with the highest population thresholds first.
-        ProvinceDevelopmentLevel[] orderedLevels = levels.OrderBy(s => s.PopulationThreshold).ToArray();
-        
-        foreach (ProvinceDevelopmentLevel level in orderedLevels)
-        {
-            // If the population exceeds this threshold, this is the correct development level
-            if (population >= level.PopulationThreshold)
-            {
-                return level;
-            }
-        }
-
-        // If all else fails, return the last (lowest threshold) level.
-        return orderedLevels[^1];
-    }
-
     
 }
