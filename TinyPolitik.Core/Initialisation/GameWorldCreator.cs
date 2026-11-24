@@ -3,26 +3,34 @@ using Microsoft.Extensions.Logging;
 namespace PolitikServer.Core;
 
 /// <summary>
-/// Responsible for creating all game entities at server intialisation.
+/// Responsible for creating all game entities at first-time server intialisation, I.E when a new game world is being created.
 /// </summary>
-public class GameStateInitialiser
+public class GameWorldCreator
 {
-    private readonly ILogger<GameStateInitialiser> _logger;
+    private readonly ILogger<GameWorldCreator> _logger;
     private readonly DefinitionLibrary _definitions;
     private readonly EntityLibrary _entities;
+    private readonly ProvinceDevelopmentResolver _provinceDevelopmentResolver;
 
-    public GameStateInitialiser(ILogger<GameStateInitialiser> logger, DefinitionLibrary definitions, EntityLibrary entities)
+    public GameWorldCreator(ILogger<GameWorldCreator> logger, DefinitionLibrary definitions, EntityLibrary entities, ProvinceDevelopmentResolver developmentResolver)
     {
         _logger = logger;
         _definitions = definitions;
         _entities = entities;
+        _provinceDevelopmentResolver = developmentResolver;
+
+        WorldInitialiser.OnInitialiseLate += Initialise;
     }
 
-    public void Initialise()
+    public void Initialise(ServerInitialisationMode mode)
     {
-        SetupProvinces();
+        if (mode is InitialiseNewWorld)
+        {
+            SetupProvinces();
+                
+            SetupNations();
+        }
 
-        SetupNations();
     }
 
     private void SetupProvinces()
@@ -54,7 +62,7 @@ public class GameStateInitialiser
         float popVariance = WorldConfig.GetFloat("province_starting_population_variance");
         int popBase = WorldConfig.GetInt("province_starting_population");
         int pop = (int) RandomUtil.ApplyVariance(popBase, popVariance, RandomUtil.VarianceMethod.Multiplicative);
-        var level = ProvinceDevelopmentLevel.Evaluate(_definitions.GetAll<ProvinceDevelopmentLevel>(), pop);
+        var level = _provinceDevelopmentResolver.Evaluate(pop);
         ProvinceEntity[] connectedProvinces = []; // TODO: Implement this.
 
         ProvinceEntity newProvince = new(
